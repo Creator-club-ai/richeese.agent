@@ -1,0 +1,2963 @@
+All right, thanks for having me and
+
+thanks for that introduction. It's been
+
+a while since I saw the the movie
+
+trailer. Um, so today I thought I'd um
+
+talk about um some of the uh keys to
+
+creating a a unicorn. Uh does everyone
+
+here kind of know what a unicorn is now?
+
+Sort of this um Yeah. So basically uh
+
+there's a good article in in TechCrunch
+
+recently um talking about um about um
+
+the probabilities of creating you know
+
+startups creating a billion dollar
+
+company and they were rare enough that
+
+um the author sort of label them
+
+unicorns. Um probably the most
+
+frequently asked question I get asked by
+
+um entrepreneurs is you know what it
+
+takes to create a a successful startup.
+
+What what would be considered a good
+
+startup idea? or they ask me to evaluate
+
+their specific idea and this is the
+
+mental model that that I use um is what
+
+I'm going to talk about uh today. So
+
+what does it for succeed and as part of
+
+that I want to talk about the problem of
+
+distribution which is how people find
+
+out about your product. Um and then I'm
+
+going to sort of tie things together by
+
+answering the question um what was in
+
+the water at at PayPal? Why why did
+
+PayPal spawn so many successful um
+
+companies? There are um seven uh
+
+unicorns have been founded by um by
+
+PayPal sort of the PayPal mafia group
+
+which is the the um group of people who
+
+um were part of PayPal before it was um
+
+acquired by eBay. And there were only
+
+about um 220 people in that group. So um
+
+statistically it's been this um you know
+
+really unusual thing that a relatively
+
+few number of people in Silicon Valley
+
+have created so many valuable companies.
+
+I want to talk about why that might be
+
+the case.
+
+Um, so to my mental model, um, this is
+
+sort of what I run through when somebody
+
+presents me with with an idea. So, you
+
+know, start at the top of this funnel
+
+and you've got a founder who, um, has an
+
+idea, um, but it's still sort of in in
+
+the realm of of fantasy. They're hoping
+
+it can be a billion-dollar idea. And I
+
+kind of run it through these filters.
+
+So, the first thing I kind of ask is, is
+
+there a market need? Um the raise on
+
+detr of every entrepreneur is to figure
+
+out um some need that isn't being
+
+addressed by the current market. And
+
+this isn't exactly easy because um
+
+markets aren't totally inefficient. So
+
+there's a lot of existing companies
+
+addressing needs. And so to figure out
+
+something that isn't properly being
+
+addressed is um is non-trivial. Um, you
+
+know, I think one of the the tricky
+
+things about um discovering markets is
+
+that is that it it can neither be too
+
+small nor too big. And um let me kind of
+
+explain what I mean on on the too small
+
+side. I once had um an entrepreneur
+
+pitched me this idea for um for a new
+
+auction site that would use videos of
+
+the product. And I said, "Well, wait,
+
+that's basically eBay, but instead of
+
+photos, you're using videos." And
+
+they're like, "Well, yeah, but videos
+
+are a lot better than photos." And I
+
+said, "Well, that might be the case, but
+
+you haven't really discovered a market
+
+need." That that amount of
+
+differentiation is not sufficient to
+
+really create a new uh a new site and
+
+and disrupt eBay. That would be an
+
+example of something being too small. I
+
+think you see this sort of um problem
+
+quite a bit where the innovation is just
+
+too incremental to really um truly be
+
+addressing a sort of a market need that
+
+the market for that is just going to be
+
+too small. On the other side of it um a
+
+market can be too big. So, I think one
+
+of the the um problems with that
+
+happened with the whole kind of clean
+
+tech um boom is that um is that they
+
+were trying to disrupt the energy space
+
+which was just so big that fracking came
+
+out of nowhere and um and um and um and
+
+basically almost like um stole that
+
+opportunity. And so most of the clean
+
+tech companies um have not worked. And
+
+so there's this problem that if your
+
+market is too vast that um or if you've
+
+defined it to be too vast, there's going
+
+to be too much competition and too many
+
+unforeseen things can happen. And so you
+
+you almost want the market to be
+
+discreet um something that you can get a
+
+foothold very quickly but then you can
+
+expand it um over time. And so the the
+
+classic example would be um something
+
+like Facebook where its initial market
+
+was Harvard. Uh within two weeks it had
+
+completely taken over Harvard. Then it
+
+expanded to the Ivy League. Then it
+
+expanded to all colleges and
+
+universities. Then it took over the
+
+whole world. And so ideally what you
+
+want is for your initial market to be
+
+something you can win. It's small enough
+
+that you can win it and yet it's still a
+
+meaningful market. Uh that can then you
+
+can kind of expand um what you're doing
+
+to um to to do something um bigger and
+
+bigger and and so those types of
+
+combinations are are sort of difficult
+
+to
+
+find. Um once you sort of have an idea
+
+of what your market need is, um you you
+
+you develop the product. And the thing I
+
+look for for a product is what I call
+
+the the hook, which is a simple
+
+interaction that users will believably
+
+engage in. So sometimes I see
+
+entrepreneurs who've got this great idea
+
+for a market. They they they have
+
+pointed out it's a market that's
+
+inefficient, but they haven't been able
+
+to productize that insight into
+
+something that I believe people will
+
+actually use. The product is too
+
+complicated. It doesn't immediately
+
+engage people. And really, what you're
+
+looking for here is a simple behavior
+
+that users will repeatedly engage in.
+
+So, it could be the tweet, right? It's a
+
+simple status update or it's, you know,
+
+the um the you push a button and a town
+
+car shows up. And um and that sort of um
+
+uberification now, which is the sort of
+
+um creating push button um interfaces
+
+that do one thing. It's I think it's
+
+even more um sort of important design
+
+principle now in the age of mobile. Um
+
+you know, the the problem with designing
+
+um a site that doesn't have a have a
+
+hook is that it's very hard to get users
+
+to engage in more complicated behaviors
+
+if you can't get them to engage in a
+
+simple behavior. Um, and so
+
+complexifying your product and adding a
+
+whole lot of bells and whistles won't
+
+necessarily improve it if there's not
+
+like a core behavior um that that users
+
+are willing to engage in. Now, sometime
+
+sometimes you'll get products that the
+
+hook is just explosive and and even to
+
+the point where the entrepreneurs didn't
+
+even know what their market need was.
+
+They just built this product. Um, I
+
+mean, Twitter was kind of like that
+
+where it just took off. Um, I'm not sure
+
+that the the creators knew exactly
+
+they'd be disrupting the news industry
+
+or sort of taking that over. Um, but
+
+they felt like people would use the
+
+product. And I think that's um also a
+
+very sound way to go that you can sort
+
+of, you know, given a choice between a
+
+founder who's discovered a market need
+
+versus one that has a great product
+
+hook. Um, I would rather take the
+
+product hook even if it means that they
+
+still have to figure out what market
+
+they're actually disrupting. Um and this
+
+is why um you know entrepreneurial types
+
+tend not to be the um super analytical
+
+um sort of um it it it's not like a it's
+
+not necessarily the McKenzie consultants
+
+or the Harvard MBAs who figure out these
+
+new markets. It's the more, you know,
+
+eclectic, idiosyncratic entrepreneurs
+
+who who figure this stuff out because
+
+they're able to actually build a product
+
+that that has a hooking and gets
+
+traction, which I think is very
+
+frustrating to kind of the um the people
+
+who would like this process to be more
+
+tracked and and sort of um analytical,
+
+but I think it's it's worth keeping that
+
+in mind. So on once you have sort of a a
+
+product hook and a market need, you've
+
+got product market fit, you know, which
+
+is sort of that um allimportant concept.
+
+Um but but I don't think that product
+
+market fit is um is sort of the entirety
+
+of what you need to build a billion
+
+dollar company. I think there's two
+
+other things that that you really
+
+need. Um so the third one is is a
+
+scalable distri distribution model. Um
+
+again distribution is the question of
+
+how do people find and discover use your
+
+product. Um it could be sales, it could
+
+be um SEO, it could be um using um
+
+friend viral using Facebook's platform
+
+to go viral in the feed. Um it could be
+
+uh what I would call real world virality
+
+where you share uh an Uber with somebody
+
+and now that person has discovered Uber
+
+and they will use it. Um, so this idea
+
+of how do you quickly scale, how do you
+
+have a technique that gets you to to
+
+scale is is very important. And what's I
+
+think tricky about this is um what I
+
+would call the the law of distribution
+
+arbitrage, which is
+
+that successful distribution techniques
+
+are copied until they are no longer
+
+unusually effective. Okay. So if you
+
+think about um SEO, the first people to
+
+use that technique um got a lot of
+
+traffic from Google. Then a whole bunch
+
+of people started doing it and they
+
+started gaming the system and then
+
+eventually Google did their notorious
+
+Panda release and everyone who was using
+
+SEO basically lost most of that traffic
+
+and the rug was pulled out from under
+
+them. If you look at like Facebook
+
+platform, um the friend virality was
+
+very very powerful in the early days and
+
+then eventually people got sick of the
+
+spam and they stopped paying attention
+
+to it. Uh if you look at kind of the
+
+early days of social networks, all of
+
+them used an address book importer and
+
+would blast your whole, you know, email
+
+address book. Uh and that worked until
+
+people stopped clicking on the invites.
+
+And so the the techniques that work
+
+initially to get distribution do not
+
+they don't stay working, I guess. And
+
+the reason is because everyone copies
+
+them until they're the channels are just
+
+spammed to death. And so what this means
+
+is that typically if you're going to
+
+have a breakout startup, you've really
+
+got to think about how you're going to
+
+innovate on distribution, not just
+
+product, right? And the the biggest
+
+mistake I see these days that um I see
+
+brilliant startup founders who are
+
+brilliant product people and they've
+
+really thought about their product, but
+
+they haven't really thought about how
+
+they're going to make it grow. And then
+
+they launch their product and it's like
+
+crickets chirping. No one no one's using
+
+it and they're kind of flumx as to what
+
+to do because they've never really spent
+
+time thinking about it and they just
+
+kind of assume that hey if you build a
+
+good product everyone's going to find
+
+it. And the reality is it's a big web
+
+out there and um that's not necessarily
+
+true. You really have to think about how
+
+people are going to get to it. And you
+
+know one of the issues here is that is
+
+that um you know I'm pretty impatient. I
+
+think people who invest VCs are pretty
+
+impatient. I mean, you kind of have
+
+about five, six years or so to build a
+
+billion dollar company or people kind of
+
+assume that um it's not going to happen
+
+and it'll be hard for you to raise
+
+money. It'll be hard for you to recruit
+
+um talent and and so on down the line.
+
+And so, you know, if you're going to
+
+build that much value in such a short
+
+amount of time, you've got to have some
+
+really unusually effective way of
+
+getting lots of users really fast. Um
+
+and when you just think about the fact
+
+that um that users resist being you know
+
+new ways of acquiring them they sort of
+
+get enerured to all the ways that uh you
+
+try to get their attention. Uh this
+
+really raises I think the difficulty. Um
+
+the the one that I the technique that I
+
+like the best is um is virality. So all
+
+the products that I've been part of
+
+creating whether it's PayPal gener all
+
+had a viral dimension to them. Um but
+
+virality
+
+uh in terms of just doing this whole
+
+sort of invite your friend address book
+
+importer virality doesn't work anymore.
+
+I mean people are sick of filling out
+
+invite forms. There has to be something
+
+in it for the inviter or the recommener.
+
+So thinking about their motivation and
+
+why they would do do this why they would
+
+invite a friend or or business colleague
+
+or something like that is is critical.
+
+You know, at Yammer, we were one of the
+
+first companies to make enterprise
+
+software viral. And because that had
+
+never really been done before, we were
+
+able to get tremendous traction in the
+
+enterprise. I'm not sure those same
+
+techniques would work today because
+
+enough people have now copied Yammer's
+
+distribution technique that it might not
+
+be as effective five years five years
+
+later. So, something to really keep in
+
+mind. Then there's there's one more
+
+thing. So, if this wasn't challenging
+
+enough, um, you've got a product that's
+
+got product market fit. You've also
+
+figured out scalable distribution
+
+techniques, so it's growing really fast.
+
+There's just really one more thing you
+
+have to figure out, which is how do you
+
+create a moat around your business. Um,
+
+one of the problems with software,
+
+creating software, is that it's very
+
+easy to copy. And I don't mean pirate.
+
+I'm not saying anyone steals your code.
+
+I'm just saying anybody can look at your
+
+UI and basically reverse engineer their
+
+own version of your product. And
+
+um believe me this will if you get any
+
+measure of success if you create a pro
+
+uh a product that gets any kind of
+
+product market fit or distribution
+
+within months you will have um people
+
+copying you whether it's sort of the
+
+European version of your product
+
+launched by the Samour brothers or some
+
+big company takes notice and puts what
+
+you're doing on their their road map
+
+somebody's going to notice and start
+
+copying what what you're doing. Um, you
+
+know, within months of launching PayPal,
+
+Genie and Yammer, we had sort of um
+
+copycats, including really big
+
+companies. In the case of Yammer with
+
+with Salesforce, it took them about 18
+
+months to um to launch their product.
+
+Um, which sounds like a long time, but
+
+they also have um a lot more um sales
+
+and marketing muscle behind their
+
+product than we did. And so even though
+
+it was 18 months delayed behind us and
+
+um the product wasn't as good um they
+
+already had an existing customer base
+
+and a huge army of salespeople and a
+
+huge marketing budget and we didn't have
+
+any of those things. And so the question
+
+is how are you going to compete against
+
+the inevitable um copycats, clones,
+
+competitors and and big companies who
+
+wake up to the idea once you've taught
+
+the market that um it was it was
+
+lacking. Um, and so I think the key here
+
+is there's a number of different
+
+techniques. I mean, obviously probably
+
+the best one is is network effects of
+
+some kind. You know, you've got like a
+
+two or three-sided marketplace here. And
+
+so it's very very hard. You can copy the
+
+product, but you can't copy the the
+
+network of of people who started using
+
+it. You can't copy the community. Um,
+
+maybe there's some um I like this less,
+
+but there could be some technical
+
+barrier that's just extremely difficult
+
+to to copy. So if you take look at like
+
+Dropbox um you would think that um
+
+desktop sync would have been copied a
+
+long time ago. But it was actually such
+
+a technically difficult problem to get
+
+that to get the usability of it so
+
+perfect the way that Dropbox did that
+
+that that um barrier has proven to be
+
+pretty pretty enduring. And then there's
+
+sort of this um this sort of um network
+
+effect that comes about through sharing.
+
+So again, I think that's sort of the
+
+fourth thing to think about is just how
+
+do you make your product non-copyable?
+
+How do you make it defensible? And I
+
+don't want to make this too depressing
+
+because I think it's like almost
+
+impossible to figure out these four
+
+things Xanti before you you launch your
+
+product. If you can just think about the
+
+first three, I think you're in pretty
+
+good shape. And quite frankly, if you
+
+can figure out your product hook and a
+
+scalable distribution model, you can
+
+figure out everything else later. you
+
+can figure out actually you may not even
+
+have total clarity about the market
+
+you're disrupting but you'll learn that
+
+over time and you may not have figured
+
+out how to build your moat but you'll
+
+figure that out but you do need I think
+
+a pretty clear idea of what your product
+
+hook is going to be and um and how to
+
+scale distribution once you do those
+
+four things you will have a billion
+
+dollar company um no fast growing um
+
+product that has a real market behind it
+
+and can't easily be copied in Silicon
+
+Valley doesn't achieve a billion dollar
+
+valuation
+
+So that gets me to bonus points, what I
+
+would call bonus billions, which is if
+
+you can create a product with
+
+adjacencies, then you will not just have
+
+a billion dollar company, you could have
+
+a 10 billion or hundred billion dollar
+
+plus company. And and an adjacency are
+
+markets that are very closely adjacent
+
+to yours. Um, and your product gives you
+
+tremendous leverage into moving into
+
+those markets. So it's very hard for um
+
+even an existing company that's
+
+successful to move into doing new
+
+things. But sometimes your existing
+
+product gives you the capability and the
+
+leverage, the assets to do that. And so
+
+if you think about like the classic
+
+example would be um with Microsoft um
+
+when you think about the synergy that um
+
+that Windows gave them into winning sort
+
+of the office productivity um space. uh
+
+classic adjacency probably double the
+
+value of the company. Um if you think
+
+about um you know companies like um like
+
+Facebook when you think about the power
+
+of the social graph the leverage the
+
+opportunities the option value that that
+
+gives them to move into closely related
+
+spaces um it's very powerful that's what
+
+makes I think a company go from you know
+
+a billion to 10 billion or 100 billion
+
+is that there's a lot of sort of options
+
+um for the company to move into um to
+
+adjacent markets and um expand what
+
+they're
+
+So that's my framework. Um, you know,
+
+that's kind of what I run through when
+
+an entrepreneur shows me their product
+
+or or, um, pitches me their their idea.
+
+And, um, I think, you know, it drives,
+
+um, you know, um, other investors may
+
+not have this framework quite this
+
+formalized, but I think a lot of these
+
+are are factors in in their thinking as
+
+well.
+
+So, I want to I'll I'm going to end with
+
+sort of this question, then I'm going to
+
+open it up to to you guys to to ask
+
+questions. what was in the water at
+
+PayPal. And I think one of the really
+
+key things was that PayPal innovated not
+
+just on product but on distribution as
+
+well. And so this goes to my my point
+
+earlier. Um PayPal was one of the first
+
+products to use a viral strategy. So you
+
+could email money to somebody even if
+
+they didn't have a PayPal account and
+
+then they would get an email saying
+
+click here to get your money. And then
+
+when they click they would sign up. And
+
+so the product was sort of viral from
+
+from day one.
+
+We were one of the first uh products to
+
+use a platform strategy. So this is
+
+really before the days before web
+
+platforms existed. Um you know we eBay
+
+we kind of turned eBay into an
+
+involuntary platform for our
+
+application. So we we we did all these
+
+things to kind of bootstrap ourselves
+
+off of an existing platform which is you
+
+know a great tactic for getting
+
+distribution. you go somewhere where uh
+
+where the users already are and um and
+
+in this case um PayPal was able to get
+
+this kind of explosive growth by um by
+
+bootstrapping off of eBay. At the time,
+
+eBay called us a parasite. You know,
+
+they didn't like the fact that we were
+
+this um application on their platform. I
+
+think uh but remember this was in like
+
+the early 2000s. I think circa 2006
+
+Facebook changed everything by launching
+
+a platform for for web apps. And I think
+
+that changed the psychology of the whole
+
+industry and big web companies started
+
+thinking of themselves as um platforms
+
+or potential platforms and that
+
+therefore kind of um derivative activity
+
+or applications was actually something
+
+to be encouraged not suppressed. And so
+
+today, um, there's a whole host of of
+
+platforms for for you to choose from in
+
+terms of of getting bootstrapped, uh,
+
+that are going to be much more, um, sort
+
+of friendly uh, to your application than
+
+than um, sort of eBay was was to pay
+
+PayPal before before we ultimately sold
+
+the company to them. And then I think
+
+the third the third sort of tactic that
+
+we used um, and this sort of goes along
+
+with the second one is is we were one of
+
+the first companies to use embed. So,
+
+you could actually embed a PayPal
+
+payment logo or a payment form um on
+
+your website or auction and that would
+
+drive um users back to to um PayPal. And
+
+again, this is very common place today.
+
+Um but back in the early 2000s, this was
+
+like a really um new technique. Um and
+
+it was one that I think some other
+
+PayPal mafia companies were able to use
+
+very effectively, most notably uh
+
+YouTube. So if you think about the way
+
+that YouTube embedded videos on MySpace
+
+and and other sites in the early days
+
+and that's what really rocketed it. Um
+
+that's that was a technique that uh was
+
+sort of pioneered at at PayPal. And so
+
+you know again all of these techniques
+
+today are are commonplace but in the
+
+early 2000s we were one of the first
+
+companies to do them. And um and I think
+
+again that innovativeness that we were
+
+innovating not just on product but on
+
+distribution as well is um something
+
+that all the PayPal mafia companies h
+
+have done. You know it's it's
+
+interesting to compare you know I
+
+mentioned that there's about um there
+
+were about 220 sort of pre IPO um PayPal
+
+uh people here in in management um and
+
+they produced seven sort of post PayPal
+
+unicorns. If you look at a company like
+
+Google, which has something like 20,000
+
+employees, literally 100 times more
+
+employees, um there aren't seven sort of
+
+unicorns created by ex x ex googers. And
+
+um you know, it's a really interesting
+
+question why. I mean, it's basically I
+
+think there's maybe one or two sort of
+
+ex Google um unicorn type companies and
+
+um even though they had a hundred times
+
+more employees. And I think one of I I
+
+think this sort of scrappiness around
+
+distribution is a big part of the
+
+explanation. When you work at a big
+
+company, distribution is guaranteed,
+
+right? I mean, Google already has
+
+hundreds of millions of users. And so
+
+when you think about creating a product
+
+at Google, I mean, Google understands
+
+hits and misses. I mean, they understand
+
+good products versus bad products. But
+
+the one thing they really don't have to
+
+pay tremendous attention to is this
+
+problem of you're an entrepreneur
+
+working in a small team with very few
+
+resources, right? I mean, the one thing
+
+they have are tons of resources, tons of
+
+users, and you've got to figure out from
+
+zero, how do I get my first user? How do
+
+I get the second user? How does that
+
+grow to 10 users? How does that go to
+
+100? Then a thousand, then a million.
+
+They never have to think about that.
+
+They've got guaranteed distribution of
+
+half a billion users. And so I think
+
+that scrainess about distribution is one
+
+of the key reasons um that that um that
+
+there's been sort of so many kind of
+
+PayPal mafia companies. I think it's
+
+interesting thing to to think about as
+
+you guys uh create your own startups. So
+
+with that I will um open up to
+
+questions.
+
+Sure. So the question was um about embed
+
+strategy. So um an embed is um it's this
+
+simple little line of of JavaScript that
+
+some third party can um can embed in
+
+their in their site or their blog or
+
+their um eBay auction. And what PayPal
+
+did is we gave people that little
+
+snippet of of code and so they could
+
+just append it to their eBay auctions
+
+and that would create a PayPal logo and
+
+drive traffic back to our site so people
+
+could complete the payment. There's
+
+quite a bit you can do with this stuff.
+
+It doesn't just have to be like a logo.
+
+It can be a form of some kind. So, I
+
+think we when we got more elaborate with
+
+it, we actually let you enter the dollar
+
+amount
+
+um of the transaction in the form and
+
+then you click submit and it would kick
+
+you over to a a PayPal payment form
+
+where you could complete the
+
+transaction. Um so, if you think about
+
+like the YouTube example, YouTube gives
+
+you this snippet of code. If you put
+
+that on your blog, it'll display the
+
+auction in line. So, it's a way to
+
+essentially create inline distribution
+
+for your product.
+
+Um, you know, the value of it is that if
+
+you can get third parties to copy and
+
+paste um that snippet into their sites,
+
+you drive awareness of your distribution
+
+throughout the web. Um, now I guess I
+
+should say that this is a tactic that
+
+works best on the web. I mean, it's
+
+really a
+
+browserbased tactic. I don't think this
+
+works in the new world of applications.
+
+Um, and this is what I mean by saying
+
+that a lot of the techniques that worked
+
+10 years ago or even five years ago or
+
+maybe even one or two years ago won't
+
+work today. You have to constantly
+
+innovate new stuff. So for instance,
+
+SEO. SEO was something that worked for
+
+many years, but today because of the
+
+shift to mobile, people don't really
+
+search the same way. Um, so you're very
+
+unlikely to get meaningful SEO traffic.
+
+I mean, it's it's something that's nice,
+
+but I don't think by itself, if someone
+
+came to me today and their distribution
+
+strategy was SEO, I would say that's not
+
+going to cut
+
+it. There was a time when it would cut
+
+it, right? So, Yelp got tremendous
+
+distribution initially off SEO.
+
+Hello. Thank you for being here. I want
+
+to ask about the product hook. Mhm. Can
+
+you elaborate a little bit more on this?
+
+What was the hook in Yammer and in Po
+
+like the initial one or did you pivot it
+
+and make another hook? How how can you
+
+figure out what hook to use? Right. So,
+
+so the question is um what was the hook
+
+with PayPal and Yammer and how do you
+
+figure out what what hook to use? Yes.
+
+Um I I think so let me talk about PayPal
+
+and Yammer first. So, with PayPal, it
+
+was simply having a payment form where
+
+you address a dollar amount to an email
+
+address, enter your credit card, and
+
+click submit. And I believed that that
+
+was an interaction that users would
+
+engage with. Um, so to me, it's all
+
+about I mean, again, we're evaluating an
+
+idea before it's launched. Um, once it
+
+launches, you can just see whether it
+
+gets traction or not. But before it
+
+launches, the question I ask myself is,
+
+is this believable? Will users actually
+
+engage in this? Um, and frankly that
+
+comes down to um, a lot of product
+
+intuition. Um, you know, fundamentally
+
+founders need to be good product people
+
+and that just means having intuitions
+
+about what users will actually do and it
+
+comes from looking at what people are
+
+doing on other sites. So on for Yammer,
+
+the product hook was simply a little
+
+status update form that said, what are
+
+you working on? So uh, we had this idea
+
+for enterprise social networking. Our
+
+fundamental belief was that social
+
+networking wouldn't just stay in the
+
+consumer space, that employees would
+
+want to use this tool at work as well.
+
+But we had to figure out what the right
+
+incarnation was of that idea, like what
+
+was the right product took. And um once
+
+Twitter launched in mid 2007, that was a
+
+huge um lesson for us because it showed
+
+how simple social could be. It was
+
+really just about posting into a feed.
+
+And I didn't think, for instance, that
+
+people would be willing to create like
+
+the um sort of a corporate Facebook in
+
+the early days with all the bells and
+
+whistles, not as a hook. I thought we
+
+could get people over time to build
+
+that, which they did, but I thought that
+
+it wasn't a hook. And once Twitter
+
+launched and they sort of had that
+
+status update, um I thought just asking
+
+the simple question, what are you
+
+working on? was enough of a hook because
+
+pe enough people would fill that out
+
+that all of a sudden your feed is
+
+populated with content and that makes
+
+the site interesting enough for
+
+everybody else who's coming to the site
+
+and that gets them to contribute content
+
+and then they'll fill out their profiles
+
+and then you've got an enterprise social
+
+network. So you start with a simple
+
+behavior and then you can layer stuff on
+
+top of that. Um and again it's it's um
+
+you know it kind of comes down to um
+
+will users
+
+um realistically want to do this? you
+
+know, it's hard to get users to do
+
+anything, you know, as you guys know.
+
+So, keep it simple and then if there's
+
+precedence for users engaging this type
+
+of behavior elsewhere on the web, it's
+
+very
+
+helpful.
+
+Who's point? Yeah. Oh, whoever's got the
+
+mic. Yeah. Hello. Um, I have a question
+
+concerning um copying. I'm from Germany
+
+and like um 95% I think of startups that
+
+are copied in the US, right? and I
+
+wanted to hear what your take on that is
+
+and yeah
+
+um elaborate. Yeah. Well, I think it's
+
+it's basically just a fact of life that
+
+um you know
+
+um that sort of imitation is the best
+
+form of flattery that if you do
+
+something interesting or successful,
+
+there's going to be no shortage of
+
+people trying to sort of copy it. And um
+
+and so therefore, it's incumbent upon
+
+you as a startup founder to figure out
+
+what makes your idea non-copyable. I
+
+mean, I just kind of take it as a fact
+
+of life. I don't I'm not I'm not
+
+intending to like criticize anyone who's
+
+doing this. Um I do think that
+
+um for you guys, it's better to think
+
+about original ideas. Um now, you can be
+
+inspired by things other people are
+
+doing. So for instance, you know,
+
+clearly in creating Yammer, we were
+
+influenced by both what Facebook and
+
+Twitter had done on the consumer side,
+
+but at least that was really I mean
+
+enterprise and consumer are two
+
+different markets and we really kind of
+
+started with learning what they had done
+
+and then tried to port it over to the
+
+enterprise in a um enterprise friendly
+
+way. So I don't think if you want to be
+
+successful, you can just be completely
+
+derivative. You have to innovate
+
+somewhere. Um, but I guess my point here
+
+is once you have figured out your
+
+innovation, you also have to figure out
+
+how to make sure that other people don't
+
+um, copy you to death. And um, and you
+
+know, like especially if you're selling
+
+your product, so like if you're doing
+
+enterprise software and everyone starts
+
+um, creating a version of your product
+
+and giving away for free, what's going
+
+to allow you to maintain your pricing
+
+pressure? So um so it's it's a
+
+particularly acute problem if you plan
+
+on charging uh for for your product is
+
+what's going to allow you because you
+
+know a lot of software wants to be free.
+
+A lot of software goes open source. So
+
+you've got to really figure out why um
+
+why you'll be able to maintain that
+
+pricing power over time.
+
+Yeah. Whoever's got the mic. uh what
+
+were your initial strategies on user
+
+engagement and customer retention
+
+mainly for B2C companies? Sorry with
+
+respect to as in like most of the
+
+companies uh into B2C space uh the user
+
+engagement is like really important. So
+
+what were your it would be great if you
+
+can give some suggestions on the user
+
+engagement part. Yeah. Uh so the
+
+question is about user engagement. Um, I
+
+think you want to make sure that you're
+
+measuring your the way you define users
+
+in in terms of some sort of like active
+
+or engaged number. You don't want to
+
+just be looking at like total signups or
+
+total registered users. Um, you want to
+
+be looking at um the um the um sort of
+
+recurrence rate and so you want to be
+
+looking at like monthly active users or
+
+DA user, WA, you know, weekly active
+
+users or something like that. Um, one of
+
+the things I think we did pretty well at
+
+Yammer was start to apply all these
+
+consumer techniques and metrics to an
+
+enterprise product. So, we actually did
+
+track our DAUs, WAUS, MAUs, U, we
+
+tracked our one-day retention rate, um,
+
+which is something. So we um we ran a
+
+lot of AV tests like a consumer internet
+
+company would and these ideas were all
+
+pretty common place now but back then no
+
+enterprise company was really using
+
+these techniques. Um so the one day
+
+retention rate is a really important
+
+metric. It's basically just tells you
+
+what percent of yesterday's users came
+
+back the next day. And the reason why
+
+that's really valuable is because you
+
+can also look at what your one month
+
+retention rate is. meaning how many of
+
+last month's users came back this month.
+
+But the 1-day retention rate and the
+
+30-day retention rate are extremely
+
+correlated. So, um directionally you
+
+will know whether things are um going
+
+well if you just look at the one-day
+
+retention rate and obviously you can get
+
+that data within 24 hours of launching a
+
+new feature. So, you don't have to wait
+
+30 days. So, we always looked at the one
+
+day retention rate of um of any new
+
+feature we we did. we were able to sort
+
+of um we we would sort of run it against
+
+a control and see whether it boosted the
+
+the one day retention rate. Um I think
+
+it's like a really useful technique.
+
+So how do you measure the market need if
+
+you're having uh if you're having a
+
+totally original product in a total like
+
+new space, right? Yeah. Well, I mean,
+
+like I said, I mean, I'm not sure this
+
+was top of mind for um you know, Mark
+
+Zuckerberg when he created Facebook or
+
+um or the the Twitter founders um when
+
+they when they started Twitter. So, you
+
+can sort of
+
+um grope towards this, but nonetheless,
+
+I think that and and I think it
+
+certainly matters more on the enterprise
+
+side than the consumer side. I mean the
+
+consumer um internet at the these days
+
+is really um about you launch a product
+
+and then it gets like it's like a hit or
+
+miss and like if it hits it gets crazy
+
+traction and no one would have thought x
+
+anti that there was a market for it and
+
+then it somehow catched like sort of
+
+Snapchat or something like that and it
+
+catches fire and the founders have vague
+
+intuitions about what the market need is
+
+but it's not completely thought out. Um
+
+on the enterprise side you really have
+
+to think this through. You can't just
+
+kind of wing it. You really have to
+
+think about like who is going to pay for
+
+the software? Like whose pain point are
+
+we solving to the point where they're
+
+willing to open up their wallet? And so,
+
+you know, if that's your model, you
+
+really have to think through this stuff.
+
+Okay. So, you mentioned that Yammer was
+
+acquired by Microsoft. Um, I'm sure
+
+before that you guys had other offers.
+
+What made you say no to those other
+
+companies and finally yes to Microsoft?
+
+When did you know that it would kind of
+
+reach its big point?
+
+Yeah. So um so I mean there there are a
+
+bunch of reasons why the the Microsoft
+
+deal happened. Um you know
+
+fundamentally Yammer is a enterprise
+
+social network. Um social networks need
+
+killer apps and Microsoft has kind of
+
+all the killer apps that we wanted to
+
+integrate with in the enterprise. So
+
+office, Skype, you know, link um you
+
+know the list kind of goes on and on. So
+
+it was a very attractive company for us
+
+to be um part of in that sense. I also
+
+think that culturally Microsoft is very
+
+um engineering centric whereas a lot of
+
+the other enterprise companies are very
+
+sales centric and that was appealing to
+
+us as well. Um, so you know, we just
+
+thought that the opportunity for us to
+
+kind of grow um what we were doing as
+
+part of an integrated suite with these
+
+killer apps was more attractive than
+
+what we could do by ourselves. I mean,
+
+that was sort of the fundamental thing.
+
+Um, in terms of the the business terms,
+
+I'm not, you know, saying anything that
+
+wasn't sort of public at at the time,
+
+but, you know, we had just raised a
+
+funding round less than three months
+
+before at, you know, less than half the
+
+valuation. And so, we had a fresh
+
+valuation to compare the offer against.
+
+And so, in terms of getting our
+
+investors aligned with wanting to do it,
+
+um, sort of the numbers spoke for
+
+themselves.
+
+Hi. Uh, I'm from China. So, this
+
+question is about copycat.
+
+we have I think it's a very successful
+
+copycat called Alip Pay uh I'm sure you
+
+know that and it is uh developed by
+
+ta.com which is the biggest online
+
+shopping uh site in China and like many
+
+years ago uh eBay also has its market in
+
+China and Tao said we're going to beat
+
+eBay out of China and at that time
+
+everyone think it's a joke but they did
+
+it like eBay has no market in China at
+
+all like now. So what do you think of
+
+Alip Pay? Because for me uh it has more
+
+like features and is more convenient
+
+than PayPal at least for you know people
+
+in China. So what do you think of this
+
+copycat? Well honestly I haven't used I
+
+haven't used Alip Pay so I can't I can't
+
+really speak to it. Um but based on what
+
+you're saying it actually sounds like
+
+it's not precisely a copycat in the
+
+sense that you said it had a lot more
+
+features. So, um, you know, I my guess
+
+is that, um, they learn a lot from what
+
+PayPal was doing, but they also had
+
+their own ideas and that's sort of the
+
+combination that that you want.
+
+So, um, I'm curious to where you think
+
+you said because everything's going
+
+mobile, so where do you see the
+
+distribution model kind of going now
+
+that things are going mobile because
+
+everything's changing. So, yeah. Um, so
+
+yeah, I mean, one of the things I I've
+
+kind of said is that um, the web is sort
+
+of the long tale of applications you
+
+haven't installed yet. I mean, it's
+
+really kind of amazing that we're back
+
+to the world of the desktop as opposed
+
+to kind of, you know, there was this
+
+belief, I think, in the 2000s that the
+
+desktop was kind of withering away and
+
+that everything would move into the
+
+browser. And now we've gone 180 degrees
+
+away from that where every all like sort
+
+of the browser is withering and
+
+everything's moving into applications.
+
+Um the main difference between the
+
+desktop of today versus the desktop of
+
+the 90s is that there's a cloud back end
+
+to it. Right? So before all the assets
+
+were on the client. Now it's a shared
+
+model where um there's some assets that
+
+are on the the local device namely the
+
+app sort of the graphics and the
+
+framework but the data resides in the
+
+cloud and that makes it super convenient
+
+for you to get your data across multiple
+
+devices and it's obviously perfectly in
+
+sync and there's one copy and you don't
+
+have to you know email file formats
+
+around and all that sort of stuff. Um so
+
+it's really interesting how the how the
+
+model has changed. Um you know I think
+
+that um it's always hard to specify in
+
+advance exactly what distribution
+
+techniques are necessary for the new
+
+medium precisely because you have to be
+
+innovative. So if I like figured this
+
+all out then like probably it's too you
+
+know what I mean it's like it's almost
+
+like too late. You have to figure that
+
+out for yourself. Now we can look at
+
+what other people have done that's
+
+successful and again that may work for
+
+some period of time but eventually
+
+that'll get tapped out too. I think to
+
+me the trend right now that I see is
+
+again what I've called
+
+uberification which is the um slimming
+
+down of application interfaces into push
+
+button experiences that do one thing. I
+
+need to get a ride. I push a button. A
+
+car shows up. Um, if you can uber your
+
+experiences so that they're slimmed
+
+down, so that there's a like a single
+
+call to action um that users want to
+
+engage in repeatedly. Um, I mean, I
+
+don't know how extensible this is. I
+
+don't know how many things in the world
+
+um that UI applies to, but that
+
+certainly seems to be the zeicist right
+
+now.
+
+Okay. So, uh, yeah, this side. Hello.
+
+Yeah.
+
+Okay. So as entrepreneurs you know we
+
+always keep hearing this fact that uh to
+
+gauge market need and to see whether
+
+this product market really needs this
+
+product or not go and talk to customers
+
+build a minimum viable product and see
+
+whether people are really willing to and
+
+looking forward to using something like
+
+this. Do you have a refreshing take on
+
+how entrepreneurs can probably gauge a
+
+market need for a product or is it like
+
+just the lean startup method go along
+
+build and change and pivot pivot pivot
+
+till the time you get the right fit? G
+
+now I feel like I wasted your time and
+
+that you already knew everything that I
+
+was talking about. though um you know
+
+um I guess you the lean startup
+
+methodology makes a lot of sense in that
+
+um it's very hard to predict Xanti
+
+what's going to work and so I think what
+
+I mean honestly you're doing in the
+
+early stages is throwing spaghetti
+
+against a wall and seeing what sticks I
+
+mean you'd like to say that it's a
+
+completely predictable process but it's
+
+not I mean we're all constantly being
+
+surprised by what works you know how
+
+many people would have said that like
+
+Snapchat would have brokeen out or or
+
+some you know something like that and so
+
+you know I would urge you to keep these
+
+concepts in mind because I think they're
+
+very important but at the on the other
+
+hand this is not an analytical top- down
+
+process it's an experimental bottom-up
+
+process to figure out what works um now
+
+I would say that and this might be a
+
+little different than the lean startup
+
+model is once you have a product that
+
+starts getting traction I don't believe
+
+in staying lean anymore I think you
+
+should go fat And what I mean by that is
+
+you should rapidly scale up. So, and the
+
+reason is because you're going to have
+
+all these copycats and they're going to
+
+start eroding your market. And so, um,
+
+one of the things we did with Yammer
+
+that I think was pretty successful is,
+
+um, let's tell you the the history. So,
+
+when we founded the company, we were in
+
+LA and for about the first year, we were
+
+15 people and we started getting some
+
+traction. We did about a million dollars
+
+of enterprise sales in our first year.
+
+And at the time I was thinking, you
+
+know, gee, this is like really cool. We
+
+could be profitable in just a few
+
+months. And then we moved the company to
+
+Silicon Valley and I became much more
+
+aware of the competitive landscape. I
+
+got the sense that Salesforce was going
+
+to launch a competitor and I started
+
+thinking, wait, why do we want to be
+
+profitable? We need to grow. We need to
+
+win this market. And so we then engaged
+
+in a process of raising big financing
+
+rounds about once a year for the next
+
+three years. And um in fact one year we
+
+did two financing rounds and we scaled
+
+up the company um by the time we sold
+
+the company to to um Microsoft just
+
+three years later we had um over 400
+
+employees and when by the time
+
+Salesforce launched its product we were
+
+at 200 employees. So if we had remained
+
+that lean 15 person team I think a big
+
+company like Salesforce would have
+
+stopped us. But because we were able to
+
+go fat once we saw that we had traction,
+
+we built up some muscle, we had 200
+
+people, half of those people were doing
+
+sales, half were doing development, we
+
+were able to withstand the assault. So I
+
+think the lean store methodology is good
+
+sort of in that experimental stage but
+
+once you have something that works you
+
+can't be afraid to pour gasoline on the
+
+fire because I think the risk is not
+
+typically
+
+um that you're going to like somehow um
+
+spin out of control that you're somehow
+
+going to grow too fast or like raise too
+
+much money but that rather that you're
+
+not going to grow fast enough to seize
+
+the opportunity you've created and that
+
+Somehow everyone else in the market will
+
+figure out that you figured something
+
+out and they will rush to to copy
+
+that. Um, first of all, thank
+
+you. Um, I'm curious, you talked about
+
+the secret sauce of PayPal and your
+
+ability to innovate on product and
+
+distribution. Can you talk a little bit
+
+more
+
+um about what that meant in terms of
+
+your talent, your resources, um whatever
+
+tools you use? Like what what was it
+
+actually about your your team mix and
+
+the skills that people brought to the
+
+table in particular when it came to um
+
+ability to um innovate on distribution?
+
+Um, I I think it really came down to the
+
+fact that we devoted the same sort of um
+
+um time and thoughtfulness to
+
+distribution as we did with a product
+
+and that I think sometimes founders just
+
+again they just assume that if they
+
+build a good product the world will come
+
+knocking at their door. I mean you know
+
+the old line that if you build a better
+
+mousetrap the world will you know come
+
+you know knocking or whatever. I
+
+actually don't think it's true. like I
+
+don't think people can find the better
+
+mouse trap. Um it's not sufficient just
+
+to create one. You've got to figure out
+
+how to bring it to market in a scalable
+
+way. Um so you know I think we had
+
+clearly there was something special
+
+about the PayPal team. I think one of
+
+the reasons for that is we never used
+
+recruiters or head hunters in the early
+
+days. The whole team was really um
+
+recruited through friendship networks.
+
+So, you know, Peter Teal who was a CEO,
+
+I gone to college with him, he recruited
+
+me, I recruited my friends and so on
+
+down the line. Max love was a CTO, he
+
+gone to U of I, he recruited his friends
+
+from U of I. So because there were the
+
+whole company was born out of these um
+
+friend networks the people tended to be
+
+cut from the same cloth was which was
+
+again it was sort of this scrainess and
+
+we kind of applied that um that sort of
+
+scrainess to it's sort of this non
+
+dogmatic approach just to figuring out
+
+what works and this willingness to try
+
+anything and that seems like a good
+
+idea. Um and um that that just that
+
+worked pretty well.
+
+Um, but just I guess as a quick
+
+followup, did you notice that there was
+
+like anything particularly at the
+
+tactical level that people knew about or
+
+had backgrounds in that made them like
+
+particularly good at growth?
+
+Um, so back then I would say no because
+
+none of us had a background in anything.
+
+I mean, none of us done payments before.
+
+No one had really done a startup before.
+
+Um in fact um it was probably helpful we
+
+didn't know anything about payments
+
+because all the payments experts said
+
+that what we did couldn't be done that
+
+Visa Mastercard laws were rules would
+
+prohibit it and so on. So sometimes it's
+
+good to not be to be kind of ignorant of
+
+you know conventional wisdom or because
+
+it imposes constraints on what you think
+
+you can do. Um but today what I would
+
+say is you know all this thinking has
+
+become much more um sort of um
+
+institutionalized somehow. Now we have
+
+these like growth hacker roles and so
+
+on. Um I think those types of people can
+
+be a useful um tool or sort of weapon in
+
+your arsenal. So, it's very helpful to
+
+be able to like again do these AB tests
+
+where you know you can launch a feature
+
+and see if it affects one day retention
+
+or virality or something like that. But
+
+I I feel like um and I think most people
+
+realize that, but I think it's almost
+
+gotten to the point now where people are
+
+using this like math as a substitute for
+
+really creative thinking about this
+
+stuff and it's almost become like this
+
+religion of testing and that I'm very
+
+much against. Um, I really I like the
+
+use of testing to sanity check uh what
+
+the sort of the product founders um uh
+
+believe. So you're not just running off
+
+in some direction that is wrong and you
+
+never correct. But I think that you
+
+can't just leave it to the math people
+
+or the analyst people to tell you what
+
+to do because all they are doing really
+
+is validating or refuting hypotheses.
+
+they typically don't they're not the
+
+ones typically that generate the
+
+hypothesis. Sometimes you'll get like a
+
+rare one who is like both um art and
+
+science. Um but I think we've gotten to
+
+the point now where we're like we
+
+somehow think that this growth hacking
+
+stuff is all about science and I think
+
+it's much more about art. It's much more
+
+about creatively generating a technique
+
+that no one's thought of before. Thank
+
+you.
+
+Hey, I have two questions from the
+
+online students. Um the first one is um
+
+first student wants to know whether or
+
+not you have any plans to make any
+
+future or any future films produce any
+
+future films and then the second um
+
+wants to know um what were the benefits
+
+and downfalls of being a consultant in
+
+your early year early years versus
+
+joining a startup. Okay. So, on the
+
+movies, um, no plans right now. Um, but
+
+I'll I'll keep you posted if, um, if I
+
+change my mind. Um, on the, uh,
+
+consulting thing. Um, so basically, um,
+
+you guys are living in a great time in
+
+in history. Um, because I graduated
+
+from, uh, I graduated from college in
+
+1994, was the year before the Netscape
+
+IPO, which kind of launched the whole
+
+internet as a commercial uh, force. And
+
+by that point, I was in law school. I
+
+graduated 98. I kind of thought I had
+
+missed the whole web thing. And then um
+
+and I and I I joined um a consulting
+
+firm because I kind of had this vague
+
+intuition that I wanted to do business,
+
+not law, but um but I didn't know
+
+exactly what I wanted to do. And um and
+
+um and like the whole path to being an
+
+entrepreneur back then was so much
+
+harder. I mean, they didn't have
+
+programs like this, you know, they
+
+didn't have um all the resources that
+
+are online to kind of um like the whole
+
+lean startup movement, all that like
+
+didn't exist. Blogging didn't even exist
+
+really. I mean, that didn't start until
+
+like the mid-200s. So, all the knowledge
+
+sharing that's available now to help you
+
+on your path to being an entrepreneur
+
+wasn't there. And I really had no clue
+
+how to get into it.
+
+Uh, and being a consultant wasn't like
+
+bad or anything, but then um Peter Teal
+
+called me up and um convinced me to join
+
+him um at PayPal and um so I quit my job
+
+after about 10 months and and uh went to
+
+go uh I never never kind of looked back
+
+from from there.
+
+So, I' I've been working really hard,
+
+really long, on a bunch of great ideas.
+
+I'm really excited about them, but now
+
+I'm looking at uh Mark Andre in the New
+
+York Times and everything that's been
+
+happening the last year or so. Should I
+
+throw out everything and just work on a
+
+Bitcoin startup? How important is
+
+Bitcoin?
+
+Um, so,
+
+um, so yeah, I mean, I Bitcoin is pretty
+
+interesting. Um, I think the
+
+technology is pretty amazing. Meaning
+
+there's a real breakthrough around it
+
+that I'm not sure like the people who
+
+criticize it understand. And uh and and
+
+the the um the innovation is that
+
+Bitcoin is able to create centralized
+
+authority without there being a central
+
+authority in this completely bottomup
+
+sort of crowdsource way. It's through
+
+the blockchain, the open ledger of
+
+transactions.
+
+um that is new. So there have been
+
+movements to create cryptocurrency
+
+before. You know, PayPal is kind of it's
+
+certainly a way to instantaneously
+
+transfer money online, but you have to
+
+rely on PayPal. And in all previous
+
+attempts, there was some central
+
+authority that you had to trust. Bitcoin
+
+is completely decentralized and it's
+
+been around long enough now that we can
+
+say with pretty high confidence that um
+
+that the Bitcoin protocol itself can't
+
+be hacked. So the wallets, you know,
+
+wallets can be hacked. Coins have been
+
+stolen out of wallets, but no one's been
+
+able to create a fake Bitcoin.
+
+So, Bitcoin is the first way to um I
+
+would say transfer a digital asset as
+
+opposed to merely copying it. And that's
+
+fundamentally new. Now, should you
+
+create a a Bitcoin startup? I mean, I
+
+think a couple issues there. Um the
+
+first one is um I I actually bought
+
+Bitcoin last year because I thought the
+
+potential was great. um that doesn't
+
+mean it's likely, but if it does work, I
+
+think it's going to be really
+
+transformative. So, you should just
+
+understand that if you start a Bitcoin
+
+startup, you not only have the risk of
+
+your own startup whether that works, but
+
+obviously you're dependent on Bitcoin
+
+itself working and it's hard to assess
+
+the probabilities.
+
+Um, the second thing is, and this is
+
+probably the bigger issue, is that by
+
+the time a space is hot, it's frequently
+
+too late. Like, you really want to um
+
+get into a space before everyone thinks
+
+it's like cool and and sexy. So, when
+
+Yammer got to enterprise software in
+
+2008, like nobody was doing it. I mean
+
+one of the main reasons why we got it
+
+why Yammer pursued enterprise social
+
+networking is because nobody was doing
+
+enterprise startups anymore and
+
+certainly and because of that we thought
+
+applying consumer DNA and viral
+
+techniques and so on to the enterprise
+
+could be really interesting. So I think
+
+you can't just say I'm going to do a
+
+Bitcoin startup. You've got to figure
+
+out an idea that nobody else is doing
+
+that you can really execute better. And
+
+that might be hard now because frankly
+
+there's people who got into it last
+
+year. So I wouldn't want to discourage
+
+you from doing a Bitcoin startup. I
+
+would just be aware that it's a hot
+
+space. So you better have some really
+
+really interesting take.
+
+If you had to start a startup today,
+
+what would it
+
+be? If I was going to do a startup
+
+today, what would it Well, because you
+
+mentioned already that we have to look
+
+in like pretty much into the future. So,
+
+think of something that it's going to
+
+happen in the next like few years,
+
+right?
+
+Um it's really hard for me to say. Um I
+
+guess I would choose a space that um I
+
+feel has been overlooked in some way. Um
+
+I would choose a space that is again is
+
+kind of unsexy. no one's really talking
+
+about it and yet it's kind of mystifying
+
+why not given how big it is and um and
+
+it could be a thing in a few years. I
+
+try and be like two or three years ahead
+
+of the curve. I think it's too hard to
+
+see beyond that and in any event you
+
+probably you know you don't want to be
+
+too early. So I don't know that's not
+
+like a great answer but um you know one
+
+one thing you might want to consider is
+
+I think this is the extent you're doing
+
+business software is um is I think a lot
+
+of the big horizontal plays have kind of
+
+been done already. So meaning Salesforce
+
+created a CRM layer for all types of
+
+businesses. Yammer sort of social for
+
+all business types there's marketing and
+
+so on. I think those tools might be
+
+tapped out. what's not tapped out are
+
+vertical plays sort of industry specific
+
+software. Um so you know for instance um
+
+there's this company um Viva that IPOed
+
+um in the last year one of the Yammer
+
+investors was their first investor and
+
+um they do CRM just for um health
+
+sciences companies and it's got like a
+
+multi-billion dollar valuation. So I
+
+think it's still possible to do industry
+
+specific things um that are interesting.
+
+Uh but also but I wouldn't even
+
+necessarily consider that idea terribly
+
+original like emergence which is the
+
+investor I'm talking about. They've had
+
+that thesis now for a few years but um
+
+but I think it's probably better than
+
+doing something purely horizontal just
+
+you know so that might help winnow down
+
+the ideas.
+
+I was just curious what kind of
+
+industries get you really excited.
+
+Um, you know, I don't have sort of rules
+
+about this necessarily. Like, so for
+
+instance, I would not have thought the
+
+yellow cab industry would be exciting,
+
+you know, but Uber gets me excited. I
+
+use it like every day, you know, and
+
+um you know, so I think really any
+
+industry can be exciting if you've got
+
+the right innovation to disrupt it. I I
+
+don't think it's helpful for
+
+entrepreneurs to have too many rules
+
+about what industries they're willing to
+
+do because I think that just closes off
+
+your mind to possibilities. Um, and like
+
+I said, I think given a choice between
+
+doing something that nobody else is
+
+thinking about and something that's like
+
+the latest trend, I would always rather
+
+do the thing that no one's really
+
+thinking about because you're just going
+
+to have less competition and it's less
+
+kind of picked over. I mean, there's uh
+
+the hot spaces are going to already have
+
+lots of ideas being funded. So, um, I
+
+try not to apply rules like that. One
+
+thing I will say is that I do get
+
+especially excited about products I
+
+actually use.
+
+So, one of the things I try to do is any
+
+product that I actually use and love, I
+
+will try to invest in. That's probably
+
+like my main criteria for investing is
+
+if I myself am a user and if somehow it
+
+can get on page one of my like iPhone
+
+apps, then it's like, you know, back up
+
+the truck, you know, can I put all my
+
+money in this company? Because, you
+
+know,
+
+um, you know, I'm willing to believe
+
+that if if I'm if I love the product
+
+that other people will, too. And that's
+
+probably like the main thing I look at
+
+these days.
+
+All right. Thanks for having me.
+
+Appreciate
+
+[Applause]
+
+it. up. Stretch. If you need to use the
+
+bathroom, use the bathroom. We're going
+
+to be back here at 11:05. Okay. For our
+
+next presentation.
+
+Yes.
+
+The bathroom is right through that back
+
+door over there. The women's is on the
+
+left and then the men's is walk two
+
+clicks and it's on your left as well.
