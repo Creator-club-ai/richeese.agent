@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Richesse Index Style Slides (HD)</title>
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="stylesheet" href="https://use.typekit.net/vmy1rwd.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #240008;
+            /* Fallback */
+            --text-color: #FFFFFF;
+            /* Native Resolution 1080x1350 */
+            --slide-width: 1080px;
+            --slide-height: 1350px;
+        }
+
+        body {
+            background-color: #111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Font Stack: Neue Haas (Latin) -> Pretendard (Korean) */
+            font-family: 'neue-haas-grotesk-display', 'Neue Haas Grotesk Display Pro', 'Pretendard Variable', Pretendard, sans-serif;
+            margin: 0;
+            padding: 40px;
+            color: white;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+
+        p.info {
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+
+
+        /* Container scales down for preview but contains full-size elements */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+            transform: scale(0.4);
+            transform-origin: top center;
+            width: 100%;
+            height: 6000px;
+        }
+
+        .container {
+            width: auto;
+            height: auto;
+            max-width: 3400px;
+        }
+
+        .slide {
+            width: var(--slide-width);
+            height: var(--slide-height);
+
+            /* Background: #480111 at 50% opacity overlaid on Black */
+            background-color: #000000;
+            background-image: linear-gradient(0deg, rgba(72, 1, 17, 0.5), rgba(72, 1, 17, 0.5));
+
+            color: var(--text-color);
+            position: relative;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #333;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
+            flex-shrink: 0;
+            /* Default text style for slide */
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        /* [ index® ] Tag - Exact Coordinates & Aesthetic */
+        .index-tag {
+            position: absolute;
+            left: 56.29px;
+            top: 157.73px;
+
+            font-family: 'neue-haas-grotesk-display', sans-serif;
+            font-weight: 300;
+            font-style: normal;
+            font-size: 24px;
+            letter-spacing: 0.02em;
+            color: #FFFFFF;
+            z-index: 10;
+        }
+
+        /* [ Name ] Tag */
+        .name-tag {
+            position: absolute;
+            right: 56.29px;
+            top: 157.73px;
+            text-align: right;
+
+            font-family: 'neue-haas-grotesk-display', sans-serif;
+            font-weight: 300;
+            font-style: normal;
+            font-size: 24px;
+            letter-spacing: 0.02em;
+            color: #FFFFFF;
+            z-index: 10;
+        }
+
+        /* Cover Slide Specifics */
+        .slide.cover {
+            background: linear-gradient(rgba(72, 1, 17, 0.3), rgba(0, 0, 0, 0.9)), url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1600&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            justify-content: flex-end;
+            padding-bottom: 120px;
+            padding-left: 80px;
+        }
+
+        .cover-title {
+            font-family: 'neue-haas-grotesk-display', 'Pretendard Variable', Pretendard, sans-serif;
+            font-size: 96px;
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            margin-bottom: 60px;
+            word-break: keep-all;
+        }
+
+        .cover-subtitle {
+            font-family: 'neue-haas-grotesk-display', 'Pretendard Variable', Pretendard, sans-serif;
+            font-size: 36px;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+        }
+
+        /* Content Slide Layout */
+        .slide.content-slide {
+            padding: 300px 100px 100px 100px;
+            justify-content: flex-start;
+        }
+
+        .slide-number {
+            font-family: 'Pretendard Variable', Pretendard, sans-serif;
+            font-size: 96px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1;
+            color: #FFF;
+            letter-spacing: -0.025em;
+        }
+
+        .slide-title {
+            position: absolute;
+            top: 350px;
+            left: 64px;
+            text-align: left;
+
+            font-family: 'Pretendard Variable', Pretendard, sans-serif;
+            font-size: 76px;
+            font-weight: 700;
+            line-height: 1.33;
+            letter-spacing: -0.025em;
+            word-break: keep-all;
+            z-index: 5;
+        }
+
+        .slide-body {
+            /* Absolute Position: Left 64px, Top 690px */
+            position: absolute;
+            top: 690px;
+            left: 64px;
+            text-align: left;
+            width: 952px;
+            max-width: 950px;
+
+            font-family: 'Pretendard Variable', Pretendard, sans-serif;
+            font-size: 34px;
+            /* Scaled 8pt */
+            line-height: 1.5;
+            /* 12pt Leading */
+            font-weight: 300;
+            color: #E0E0E0;
+            letter-spacing: -0.01em;
+            word-break: keep-all;
+        }
+
+        .arrow-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .arrow-item {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .arrow {
+            margin-right: 16px;
+            font-weight: 300;
+        }
+
+        .bold {
+            font-weight: 500;
+            /* Medium Emphasis */
+            color: #FFFFFF;
+        }
+
+        .dim {
+            opacity: 0.6;
+            font-weight: 300;
+        }
+
+        /* Footer Quote */
+        .footer-quote {
+            margin-top: auto;
+            font-size: 28px;
+            font-weight: 300;
+            opacity: 0.6;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.01em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Richesse [ Index Style ] Generator (HD)</h1>
+    <p class="info">화면에는 축소되어 보이지만, 다운로드 시 1080 x 1350px 원본 해상도로 저장됩니다.</p>
+
+    <div class="container">
+
+        <!-- 1. Cover -->
+        <div class="slide cover">
+            <div class="index-tag">[ index® ]</div>
+            <div class="name-tag">[ David Sacks ]</div>
+            <div class="content">
+                <div class="cover-title">
+                    유니콘 기업의<br>
+                    4가지 필수 조건
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Market Need -->
+        <div class="slide content-slide">
+            <div class="index-tag">[ index® ]</div>
+            <div class="name-tag">[ 01/08 ]</div>
+            <div class="slide-title">시장 니즈<br>(Market Need)</div>
+            <div class="slide-body">
+                시장은 너무 작아도 안 되고,<br>
+                너무 커도 안 됩니다.<br><br>
+                <div class="arrow-list">
+                    <div class="arrow-item">
+                        <span class="dim">너무 작으면</span><br>
+                        → <span class="bold">아무리 잘해도 커지지 않고</span>
+                    </div>
+                    <div class="arrow-item">
+                        <span class="dim">너무 크면</span><br>
+                        → <span class="bold">경쟁·변수·자본에 눌립니다.</span>
+                    </div>
+                </div>
+                <br>
+                이상적인 시장은<br>
+                <span class="bold">초기에 빠르게 장악 가능하며,<br>
+                    지속적으로 확장 가능한 곳</span>입니다.
+            </div>
+        </div>
+
+        <!-- 3. Facebook -->
+        <div class="slide content-slide">
+            <div class="index-tag">[ Case Study ]</div>
+            <div class="name-tag">[ 02/08 ]</div>
+            <div class="slide-title">작은 독점에서<br>시작하라</div>
+            <div class="slide-body">
+                Facebook은 처음부터<br>
+                "전 세계 SNS"를 노리지 않았습니다.<br><br>
+                Harvard(작은 시장) 장악<br>
+                ↓<br>
+                Ivy League<br>
+                ↓<br>
+                전 세계 확장<br><br>
+                <span class="bold">유니콘의 시작은 '작은 독점'입니다.</span>
+            </div>
+        </div>
+
+        <!-- 4. Product Hook -->
+        <div class="slide content-slide">
+            <div class="index-tag">[ index® ]</div>
+            <div class="name-tag">[ 03/08 ]</div>
+            <div class="slide-title">프로덕트 훅<br>(Product Hook)</div>
+            <div class="slide-body">
+                유니콘은 기능이 아니라<br>
+                <span class="bold">행동을 만듭니다.</span><br><br>
+                질문은 이것입니다:<br>
+                <span class="bold">"설명 없이도 사용자가 반복할<br>단순한 행동이 있는가?"</span>
+            </div>
+            <div class="footer-quote">
+                "단순한 행동도 안 하는데 복잡한 기능은 무의미하다"
+            </div>
+        </div>
+
+        <!-- 5. Hook Examples -->
+        <div class="slide content-slide">
+            <div class="index-tag">[ index® ]</div>
+            <div class="name-tag">[ 04/08 ]</div>
+            <div class="slide-title">기능이 아닌 행동</div>
+            <div class="slide-body">
+                <div class="arrow-list">
+                    <div class="arrow-item">
+                        <span class="bold">Twitter</span><br>
+                        → 글을 쓰게 만듦
+                    </div>
+                    <div class="arrow-item">
+                        <span class="bold">Uber</span><br>
+                        → 버튼을 누르게 만듦
+                    </div>
+                    <div class="arrow-item">
+                        <span class="bold">PayPal</span><br>
+                        → 돈을 보내게 만듦
+                    </div>
+                </div>
+                <br>
+                행동이 단순했기 때문에<br>
+                사람들이 남았습니다.
+            </div>
+        </div>
+
+        <!-- 6. Distribution -->
+        <div class="slide content-slide">
+            <div class="index-tag">[ index® ]</div>
+            <div class="name-tag">[ 05/08 ]</div>
+            <div class="slide-title">유통 전략<br>(Distribution)</div>
+            <div class="slide-body">
+                "좋은 제품이면 사람들이<br>
+                알아서 쓴다"는 말은<br>
+                거의 항상 틀립니다.<br><br>
+                제품만 좋다고<br>
+                사용자가 저절로 찾아오지 않습니다.<br><br>
+                <span class="bold">유통은 마케팅이 아니라<br>제품 설계의 일부입니다.</span>
+            </div>
+        </div>
+
+        <!-- 7. Moat -->
+        <div class="slide content-slide">
+            <div class="index-tag">[ index® ]</div>
+            <div class="name-tag">[ 06/08 ]</div>
+            <div class="slide-title">방어기제<br>(Moat)</div>
+            <div class="slide-body">
+                소프트웨어는 쉽게 복제됩니다.<br>
+                UI도, 기능도 금방 따라옵니다.<br><br>
+                그래서 방어력이 필요합니다:<br>
+                • 네트워크 효과<br>
+                • 데이터<br>
+                • 커뮤니티<br><br>
+                <span class="bold">제품은 복사할 수 있지만,<br>네트워크는 복사할 수 없습니다.</span>
+            </div>
+        </div>
+
+        <!-- 8. Advice -->
+        <div class="slide content-slide">
+            <div class="index-tag">[ index® ]</div>
+            <div class="name-tag">[ 07/08 ]</div>
+            <div class="slide-title">실용적 조언</div>
+            <div class="slide-body">
+                4가지를 모두 미리 알 필요는 없습니다.<br><br>
+                <span class="bold">1. 프로덕트 훅<br>2. 유통 전략</span><br><br>
+                이 두 가지만 확실하다면<br>
+                나머지(시장, 방어기제)는<br>
+                성장하면서 찾을 수 있습니다.
+            </div>
+        </div>
+
+        <!-- 9. CTA -->
+        <div class="slide content-slide">
+            <div class="index-tag">[ index® ]</div>
+            <div class="name-tag">[ 08/08 ]</div>
+            <div class="slide-title">유니콘은<br>설계의 결과입니다</div>
+            <div class="slide-body">
+                • 어떤 시장에서 시작했고<br>
+                • 어떤 행동을 만들었으며<br>
+                • 어떻게 퍼지게 했고<br>
+                • 무엇으로 지켰는가<br><br>
+                <span class="bold">이 구조를 설계한 팀만<br>끝까지 살아남습니다.</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Image Download Script -->
+    <div style="position: fixed; bottom: 30px; right: 30px; z-index: 1000;">
+        <button onclick="downloadAllSlides()" style="
+            background-color: #EEE; 
+            color: #111; 
+            border: 1px solid #CCC; 
+            padding: 15px 30px; 
+            font-size: 16px; 
+            font-weight: 600; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            font-family: 'Pretendard Variable';
+            transition: all 0.2s;
+        " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            📥 이미지 전체 다운로드 (HD)
+        </button>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        async function downloadAllSlides() {
+            const slides = document.querySelectorAll('.slide');
+            const button = document.querySelector('button');
+            const originalText = button.innerText;
+
+            button.innerText = "⏳ 고화질 변환 중... (1080x1350)";
+            button.disabled = true;
+
+            alert("고화질 다운로드가 시작됩니다. 잠시만 기다려주세요.");
+
+            // Create a temporary container for clean capturing (Off-screen)
+            const captureContainer = document.createElement('div');
+            captureContainer.id = 'capture-container';
+            captureContainer.style.position = 'fixed';
+            captureContainer.style.left = '-10000px';
+            captureContainer.style.top = '0';
+            captureContainer.style.width = '1080px';
+            captureContainer.style.height = '1350px';
+            captureContainer.style.zIndex = '-1';
+            // Ensure no scaling inheritance
+            captureContainer.style.transform = 'none';
+            document.body.appendChild(captureContainer);
+
+            for (let i = 0; i < slides.length; i++) {
+                try {
+                    // Clone the slide to the clean environment
+                    const clone = slides[i].cloneNode(true);
+
+                    // Explicitly enforce dimensions on the clone
+                    clone.style.width = '1080px';
+                    clone.style.height = '1350px';
+                    clone.style.transform = 'none';
+                    clone.style.margin = '0';
+                    clone.style.boxShadow = 'none'; // Optional: remove shadow for cleaner export
+
+                    captureContainer.appendChild(clone);
+
+                    // Wait for layout to settle (safer for fonts)
+                    await new Promise(resolve => setTimeout(resolve, 200));
+
+                    const canvas = await html2canvas(clone, {
+                        scale: 1,
+                        backgroundColor: "#1A0F0F",
+                        logging: false,
+                        useCORS: true,
+                        allowTaint: true,
+                        width: 1080,
+                        height: 1350,
+                        windowWidth: 1080,
+                        windowHeight: 1350
+                    });
+
+                    const image = canvas.toDataURL("image/png");
+                    const link = document.createElement('a');
+                    link.href = image;
+                    const num = (i + 1).toString().padStart(2, '0');
+                    link.download = `Richesse_Index_HD_${num}.png`;
+
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    // Clear container
+                    captureContainer.innerHTML = '';
+
+                } catch (err) {
+                    console.error("Slide " + (i + 1) + " error:", err);
+                }
+            }
+
+            // Cleanup
+            document.body.removeChild(captureContainer);
+
+            button.innerText = "✅ 완료";
+            setTimeout(() => {
+                button.innerText = originalText;
+                button.disabled = false;
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>
