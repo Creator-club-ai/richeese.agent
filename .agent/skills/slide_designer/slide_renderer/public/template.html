@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YFC Slide Template</title>
+    link(rel="stylesheet", href="./style.css")
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css")
+</head>
+
+<body>
+    <div id="slide-container" class="slide-shell slide-cover density-medium theme-news preset-editorial">
+        <div class="chrome-top">
+            <div class="logo"><img src="./youthfounderclublogo웹용검정.webp" alt="YouthFounderClub"></div>
+            <div class="eyebrow" id="eyebrow">Weekly Startup News</div>
+        </div>
+
+        <div id="content-area">
+            <div class="content-tag">Weekly Insight</div>
+            <div class="title">데이터 로딩중...</div>
+            <div class="subtitle">잠시만 기다려 주세요.</div>
+        </div>
+
+        <div class="chrome-bottom">
+            <div class="progress-track">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="page-num" id="page-indicator">1 / 10</div>
+        </div>
+    </div>
+
+    <script>
+        function normalize(value) {
+            return value === null || value === undefined ? '' : String(value);
+        }
+
+        function escapeHtml(text) {
+            return normalize(text)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function sanitizeSrc(src) {
+            const candidate = normalize(src).trim();
+            if (!candidate) return '';
+            if (/^https?:\/\//i.test(candidate)) return candidate;
+            if (/^data:image\//i.test(candidate)) return candidate;
+            if (/^file:\/\//i.test(candidate)) return candidate;
+            if (candidate.startsWith('./') || candidate.startsWith('../')) return candidate;
+            return '';
+        }
+
+        function parseContent(text) {
+            const escaped = escapeHtml(text);
+            const withBreak = escaped.replace(/\n/g, '<br>');
+            return withBreak.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+
+        function iconSvg(name) {
+            const key = normalize(name).toLowerCase();
+            const icons = {
+                trend: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16l6-6 4 4 6-6"/><path d="M14 8h6v6"/></svg>',
+                rocket: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19l4-1 10-10a5.5 5.5 0 0 0-6-2l-8 8-1 4z"/><path d="M10 14l-2 2"/><path d="M14 10l2-2"/></svg>',
+                lightbulb: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 13v2h8v-2a7 7 0 0 0-4-13z"/></svg>',
+                chart: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V6"/><path d="M9 20v-8"/><path d="M14 20V9"/><path d="M19 20V4"/></svg>',
+                target: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.2"/></svg>',
+                spark: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 4.6L19 9.5l-4.6 1.9L12 16l-1.9-4.6L5 9.5l4.6-1.9L12 3z"/></svg>'
+            };
+            return icons[key] || icons.spark;
+        }
+
+        function renderSwissComponent(component) {
+            const type = normalize(component.type).toLowerCase();
+            const label = normalize(component.label).trim();
+            const value = normalize(component.value).trim();
+            const body = normalize(component.body).trim();
+
+            if (type === 'metric') {
+                if (!label && !value && !body) return '';
+                return `
+                    <div class="swiss-component swiss-component-metric">
+                        ${label ? `<div class="swiss-component-label">${parseContent(label)}</div>` : ''}
+                        ${value ? `<div class="swiss-component-value">${parseContent(value)}</div>` : ''}
+                        ${body ? `<div class="swiss-component-body">${parseContent(body)}</div>` : ''}
+                    </div>
+                `;
+            }
+
+            if (type === 'progress') {
+                const parsed = parseInt(value, 10);
+                const progress = Number.isNaN(parsed) ? 0 : Math.max(0, Math.min(100, parsed));
+                return `
+                    <div class="swiss-component swiss-component-progress">
+                        ${label ? `<div class="swiss-component-label">${parseContent(label)}</div>` : ''}
+                        <div class="swiss-progress-track"><div class="swiss-progress-fill" style="width:${progress}%"></div></div>
+                        ${body ? `<div class="swiss-component-body">${parseContent(body)}</div>` : ''}
+                    </div>
+                `;
+            }
+
+            if (type === 'signal') {
+                const iconName = normalize(component.icon).toLowerCase() || 'trend';
+                return `
+                    <div class="swiss-component swiss-component-signal">
+                        <div class="swiss-signal-head">
+                            <span class="swiss-signal-icon">${iconSvg(iconName)}</span>
+                            ${label ? `<div class="swiss-component-label">${parseContent(label)}</div>` : ''}
+                        </div>
+                        ${body ? `<div class="swiss-component-body">${parseContent(body)}</div>` : ''}
+                    </div>
+                `;
+            }
+
+            if (type === 'timeline') {
+                const items = Array.isArray(component.items) ? component.items : [];
+                const timelineMarkup = items
+                    .map((entry) => normalize(entry).trim())
+                    .filter((entry) => entry.length > 0)
+                    .slice(0, 4)
+                    .map((entry) => `<li class="swiss-timeline-item"><span class="swiss-timeline-dot"></span><span>${parseContent(entry)}</span></li>`)
+                    .join('');
+
+                if (!timelineMarkup) return '';
+
+                return `
+                    <div class="swiss-component swiss-component-timeline">
+                        ${label ? `<div class="swiss-component-label">${parseContent(label)}</div>` : ''}
+                        <ul class="swiss-timeline">${timelineMarkup}</ul>
+                    </div>
+                `;
+            }
+
+            return '';
+        }
+
+        function renderSwissComponents(slideData) {
+            const components = Array.isArray(slideData.components) ? slideData.components : [];
+            if (!components.length) return '';
+
+            const blocks = components
+                .slice(0, 3)
+                .map((component) => renderSwissComponent(component || {}))
+                .filter((markup) => markup);
+
+            if (!blocks.length) return '';
+
+            return `<div class="swiss-components component-count-${Math.min(blocks.length, 3)}">${blocks.join('')}</div>`;
+        }
+
+        function extractListItems(contentText) {
+            return normalize(contentText)
+                .split('\n')
+                .map((line) => line.trim())
+                .filter((line) => line.startsWith('- ') || line.startsWith('• '))
+                .map((line) => line.replace(/^(-|•)\s*/, ''));
+        }
+
+        function detectDensity(slideData) {
+            const source = [
+                normalize(slideData.title),
+                normalize(slideData.subtitle),
+                normalize(slideData.content),
+                normalize(slideData.quote),
+                normalize(slideData.value),
+                normalize(slideData.metric),
+                normalize(slideData.callout && slideData.callout.body),
+                normalize(slideData.image && slideData.image.caption)
+            ].join(' ');
+
+            const textLength = source.replace(/\s+/g, '').length;
+
+            if (textLength >= 140) return 'density-tight';
+            if (textLength >= 90) return 'density-medium';
+            return 'density-wide';
+        }
+
+        function detectTheme(slideData) {
+            if (slideData.theme === 'insight') return 'theme-insight';
+            if (slideData.theme === 'news') return 'theme-news';
+            return slideData.type === 'cover' ? 'theme-news' : 'theme-insight';
+        }
+
+        function detectPreset(slideData) {
+            const preset = normalize(slideData.preset).toLowerCase();
+            if (preset === 'minimal' || preset === 'editorial' || preset === 'impact') {
+                return `preset-${preset}`;
+            }
+            return 'preset-editorial';
+        }
+
+        function detectLayout(slideData) {
+            if (slideData.type === 'cover') return 'cover';
+            if (slideData.layout) return slideData.layout;
+            if (slideData.image && slideData.image.src) return 'image';
+            if (slideData.callout && (slideData.callout.title || slideData.callout.body)) return 'callout';
+            if (slideData.value || slideData.metric) return 'stat';
+            if (slideData.quote) return 'quote';
+            if (extractListItems(slideData.content).length >= 3) return 'list';
+            return 'content';
+        }
+
+        function getIconNames(slideData) {
+            const iconValues = [];
+            if (slideData.icon) iconValues.push(slideData.icon);
+            if (Array.isArray(slideData.icons)) {
+                slideData.icons.forEach((entry) => {
+                    if (entry) iconValues.push(entry);
+                });
+            }
+            return iconValues;
+        }
+
+        function getVisualMode(slideData) {
+            const mode = normalize(slideData.visualMode).toLowerCase();
+            if (mode === 'minimal' || mode === 'balanced' || mode === 'rich') return mode;
+            return 'balanced';
+        }
+
+        function normalizeToggle(value, fallback = 'auto') {
+            const normalized = normalize(value).toLowerCase();
+            if (normalized === 'on' || normalized === 'off' || normalized === 'auto') return normalized;
+            return fallback;
+        }
+
+        function normalizeOrder(value) {
+            if (!Array.isArray(value)) return [];
+            return value
+                .map((entry) => normalize(entry).toLowerCase().trim())
+                .filter((entry) => entry.length > 0);
+        }
+
+        function getComposition(slideData) {
+            const composition = slideData.composition || {};
+
+            const align = normalize(composition.align).toLowerCase();
+            const width = normalize(composition.width).toLowerCase();
+            const tag = normalize(composition.tag).toLowerCase();
+            const footer = normalize(composition.footer).toLowerCase();
+            const layout = normalize(composition.layout).toLowerCase();
+            const chrome = normalize(composition.chrome).toLowerCase();
+
+            return {
+                alignClass: align === 'center' ? 'align-center' : 'align-left',
+                widthClass: width === 'narrow' ? 'width-narrow' : width === 'wide' ? 'width-wide' : 'width-normal',
+                tagClass: tag === 'pill' ? 'tag-pill' : tag === 'none' ? 'tag-none' : 'tag-text',
+                footerClass: footer === 'progress' ? 'footer-progress' : 'footer-minimal',
+                layoutClass: layout === 'split' ? 'compose-split' : 'compose-stack',
+                chromeClass: chrome === 'none' ? 'chrome-none' : chrome === 'minimal' ? 'chrome-minimal' : 'chrome-full',
+                showIcons: normalizeToggle(composition.showIcons),
+                showCallout: normalizeToggle(composition.showCallout),
+                showImage: normalizeToggle(composition.showImage),
+                order: normalizeOrder(composition.order),
+                mainOrder: normalizeOrder(composition.mainOrder),
+                sideOrder: normalizeOrder(composition.sideOrder)
+            };
+        }
+
+        function applyOverride(currentValue, toggleValue) {
+            if (toggleValue === 'on') return true;
+            if (toggleValue === 'off') return false;
+            return currentValue;
+        }
+
+        function finalizeUsage(usage, composition) {
+            usage.showIcons = applyOverride(usage.showIcons, composition.showIcons);
+            usage.showCallout = applyOverride(usage.showCallout, composition.showCallout);
+            usage.showImage = applyOverride(usage.showImage, composition.showImage);
+            return usage;
+        }
+
+        function sanitizeOrder(order, allowed, fallback) {
+            const seen = new Set();
+            const normalized = (Array.isArray(order) ? order : [])
+                .filter((entry) => allowed.includes(entry))
+                .filter((entry) => {
+                    if (seen.has(entry)) return false;
+                    seen.add(entry);
+                    return true;
+                });
+
+            if (normalized.length > 0) return normalized;
+
+            return fallback.filter((entry) => allowed.includes(entry));
+        }
+
+        function buildBlockMarkup(order, blocks) {
+            return order.map((key) => blocks[key] || '').join('');
+        }
+
+        function renderWithComposition(blocks, composition, defaults) {
+            const keys = Object.keys(blocks);
+
+            const stackOrder = sanitizeOrder(
+                composition.order,
+                keys,
+                defaults.stack
+            );
+
+            if (composition.layoutClass !== 'compose-split') {
+                return `<div class="section-stack">${buildBlockMarkup(stackOrder, blocks)}</div>`;
+            }
+
+            const mainOrder = sanitizeOrder(
+                composition.mainOrder,
+                keys,
+                defaults.main
+            );
+
+            const sideOrder = sanitizeOrder(
+                composition.sideOrder,
+                keys,
+                defaults.side
+            );
+
+            const mainMarkup = buildBlockMarkup(mainOrder, blocks);
+            const sideMarkup = buildBlockMarkup(sideOrder, blocks);
+
+            if (!sideMarkup.trim()) {
+                return `<div class="section-stack">${mainMarkup}</div>`;
+            }
+
+            return `
+                <div class="section-flex">
+                    <div class="section-main">${mainMarkup}</div>
+                    <div class="section-side">${sideMarkup}</div>
+                </div>
+            `;
+        }
+
+        function selectVisualUsage(slideData, layout, density, composition) {
+            const mode = getVisualMode(slideData);
+            const hasCallout = !!(slideData.callout && (slideData.callout.title || slideData.callout.body));
+            const hasImage = !!sanitizeSrc(slideData.image && slideData.image.src);
+            const hasIcons = getIconNames(slideData).length > 0;
+
+            const usage = {
+                showCallout: false,
+                showIcons: false,
+                showImage: false,
+                showVisualAccent: false
+            };
+
+            if (!hasImage && density === 'density-wide') {
+                usage.showVisualAccent = true;
+            }
+
+            if (mode === 'rich') {
+                usage.showCallout = hasCallout;
+                usage.showIcons = hasIcons;
+                usage.showImage = hasImage;
+                usage.showVisualAccent = true;
+                return finalizeUsage(usage, composition);
+            }
+
+            if (mode === 'minimal') {
+                usage.showCallout = layout === 'callout' && hasCallout;
+                usage.showImage = layout === 'image' && hasImage;
+                usage.showVisualAccent = false;
+                return finalizeUsage(usage, composition);
+            }
+
+            if (layout === 'image') {
+                usage.showImage = hasImage;
+                usage.showIcons = hasIcons && !hasImage && density !== 'density-tight';
+                return finalizeUsage(usage, composition);
+            }
+
+            if (layout === 'callout') {
+                usage.showCallout = hasCallout;
+                return finalizeUsage(usage, composition);
+            }
+
+            if (layout === 'list') {
+                const listCount = extractListItems(slideData.content).length;
+                if (listCount >= 4) {
+                    return finalizeUsage(usage, composition);
+                }
+                if (hasCallout) {
+                    usage.showCallout = true;
+                    return finalizeUsage(usage, composition);
+                }
+                usage.showIcons = hasIcons && density !== 'density-tight';
+                return finalizeUsage(usage, composition);
+            }
+
+            if (hasCallout && density !== 'density-tight') {
+                usage.showCallout = true;
+                return finalizeUsage(usage, composition);
+            }
+
+            if (hasImage && density === 'density-wide') {
+                usage.showImage = true;
+                return finalizeUsage(usage, composition);
+            }
+
+            usage.showIcons = hasIcons && density !== 'density-tight';
+            return finalizeUsage(usage, composition);
+        }
+
+        function renderIconRow(slideData) {
+            const iconValues = getIconNames(slideData);
+            if (!iconValues.length) return '';
+
+            const iconMarkup = iconValues
+                .slice(0, 6)
+                .map((iconName) => `<div class="icon-badge">${iconSvg(iconName)}</div>`)
+                .join('');
+
+            return `<div class="icon-row">${iconMarkup}</div>`;
+        }
+
+        function renderCallout(slideData) {
+            const callout = slideData.callout || {};
+            const title = callout.title || '';
+            const body = callout.body || '';
+            if (!title && !body) return '';
+
+            return `
+                <div class="callout-box">
+                    <div class="callout-title">${parseContent(title || '핵심 메모')}</div>
+                    <div class="callout-body">${parseContent(body)}</div>
+                </div>
+            `;
+        }
+
+        function renderImageCard(slideData) {
+            const image = slideData.image || {};
+            const src = sanitizeSrc(image.src);
+            if (!src) return '';
+
+            const alt = escapeHtml(image.alt || 'slide image');
+            const caption = image.caption ? `<div class="media-caption">${parseContent(image.caption)}</div>` : '';
+
+            return `
+                <div class="media-card">
+                    <img src="${src}" alt="${alt}" loading="eager" />
+                    ${caption}
+                </div>
+            `;
+        }
+
+        function renderCover(slideData) {
+            const coverImage = slideData.coverImage || slideData.image || {};
+            const coverSrc = sanitizeSrc(coverImage.src);
+            const requestedMode = normalize(slideData.coverMode).toLowerCase();
+            const forceText = requestedMode === 'text';
+            const forceMedia = requestedMode === 'media';
+            const hasMedia = forceText ? false : forceMedia ? !!coverSrc : !!coverSrc;
+            const mediaSide = normalize(slideData.coverImageSide).toLowerCase() === 'left' ? 'cover-media-left' : '';
+            const sideNoteText = slideData.sideNote || '';
+            const subtitleMarkup = slideData.subtitle
+                ? `<div class="subtitle">${parseContent(slideData.subtitle)}</div>`
+                : '';
+            const deckMarkup = slideData.deck
+                ? `<div class="cover-deck">${parseContent(slideData.deck)}</div>`
+                : '';
+            const dividerMarkup = (slideData.subtitle || slideData.deck)
+                ? `<div class="cover-rule"></div>`
+                : '';
+            const mediaCaption = coverImage.caption
+                ? `<div class="cover-media-caption">${parseContent(coverImage.caption)}</div>`
+                : '';
+            const mediaMarkup = hasMedia
+                ? `
+                    <div class="cover-media-wrap">
+                        <img class="cover-media" src="${coverSrc}" alt="${escapeHtml(coverImage.alt || 'cover image')}" loading="eager" />
+                        ${mediaCaption}
+                    </div>
+                `
+                : '';
+            const sideNoteMarkup = !hasMedia && sideNoteText
+                ? `<div class="cover-side-note">${parseContent(sideNoteText)}</div>`
+                : '';
+
+            const visualAccent = !hasMedia ? `<div class="visual-accent-mesh"></div>` : '';
+
+            return `
+                <div class="cover-layout ${hasMedia ? 'cover-with-media ' + mediaSide : 'cover-text-only'}">
+                    <div class="cover-copy">
+                        <div class="content-tag">${parseContent(slideData.category || 'Founder Insight')}</div>
+                        <div class="title">${parseContent(slideData.title || '제목을 입력하세요')}</div>
+                        ${subtitleMarkup}
+                        ${dividerMarkup}
+                        ${deckMarkup}
+                    </div>
+                    ${hasMedia ? mediaMarkup : sideNoteMarkup}
+                    ${visualAccent}
+                </div>
+            `;
+        }
+
+        function renderContent(slideData, usage, composition) {
+            const visualAccent = usage.showVisualAccent && !usage.showImage && !usage.showCallout ? `<div class="visual-accent-mesh"></div>` : '';
+            const swissComponents = renderSwissComponents(slideData);
+            const blocks = {
+                title: `<div class="content-title">${parseContent(slideData.title || '')}</div>`,
+                body: `<div class="content-body">${parseContent(slideData.content || '')}</div>`,
+                image: usage.showImage ? renderImageCard(slideData) : '',
+                callout: usage.showCallout ? renderCallout(slideData) : '',
+                components: swissComponents,
+                icons: usage.showIcons ? renderIconRow(slideData) : '',
+                visual: visualAccent
+            };
+
+            return renderWithComposition(blocks, composition, {
+                stack: ['title', 'body', 'image', 'callout', 'components', 'icons', 'visual'],
+                main: ['title', 'body'],
+                side: ['image', 'callout', 'components', 'icons', 'visual']
+            });
+        }
+
+        function renderList(slideData, usage, composition) {
+            const items = extractListItems(slideData.content);
+            const fallbackTitle = slideData.title || '핵심 포인트';
+            const listMarkup = items.length
+                ? `<ul class="content-list">${items.map((item) => `<li>${parseContent(item)}</li>`).join('')}</ul>`
+                : `<div class="content-body">${parseContent(slideData.content || '')}</div>`;
+
+            const visualAccent = usage.showVisualAccent && !usage.showCallout ? `<div class="visual-accent-mesh"></div>` : '';
+            const swissComponents = renderSwissComponents(slideData);
+
+            const blocks = {
+                title: `<div class="content-title">${parseContent(fallbackTitle)}</div>`,
+                list: listMarkup,
+                callout: usage.showCallout ? renderCallout(slideData) : '',
+                components: swissComponents,
+                icons: usage.showIcons ? renderIconRow(slideData) : '',
+                visual: visualAccent
+            };
+
+            return renderWithComposition(blocks, composition, {
+                stack: ['title', 'list', 'callout', 'components', 'icons', 'visual'],
+                main: ['title', 'list'],
+                side: ['callout', 'components', 'icons', 'visual']
+            });
+        }
+
+        function renderQuote(slideData, usage, composition) {
+            const quote = slideData.quote || slideData.content || '';
+            const author = slideData.author ? `- ${slideData.author}` : '';
+            const visualAccent = usage.showVisualAccent ? `<div class="visual-accent-mesh"></div>` : '';
+            const swissComponents = renderSwissComponents(slideData);
+            const quoteMarkup = `
+                <div class="quote-box">
+                    <div class="quote-text">${parseContent(quote)}</div>
+                    <div class="quote-author">${parseContent(author)}</div>
+                </div>
+            `;
+
+            const blocks = {
+                title: `<div class="content-title">${parseContent(slideData.title || 'Founder Quote')}</div>`,
+                quote: quoteMarkup,
+                callout: usage.showCallout ? renderCallout(slideData) : '',
+                components: swissComponents,
+                icons: usage.showIcons ? renderIconRow(slideData) : '',
+                visual: visualAccent
+            };
+
+            return renderWithComposition(blocks, composition, {
+                stack: ['title', 'quote', 'callout', 'components', 'icons', 'visual'],
+                main: ['title', 'quote'],
+                side: ['callout', 'components', 'icons', 'visual']
+            });
+        }
+
+        function renderStat(slideData, usage, composition) {
+            const statValue = normalize(slideData.value || slideData.metric || '').trim() || '0%';
+            const caption = slideData.content || slideData.subtitle || '';
+
+            const numMatch = statValue.match(/(\d+)/);
+            const fillPercentage = numMatch ? Math.min(100, Math.max(5, parseInt(numMatch[1], 10))) : 80;
+            const visualAccent = usage.showVisualAccent ? `<div class="visual-accent-mesh"></div>` : '';
+            const swissComponents = renderSwissComponents(slideData);
+
+            const blocks = {
+                title: `<div class="content-title">${parseContent(slideData.title || '핵심 지표')}</div>`,
+                value: `<div class="stat-value">${parseContent(statValue)}</div>`,
+                statbar: `<div class="stat-visual"><div class="stat-visual-fill" style="width: ${fillPercentage}%;"></div></div>`,
+                caption: `<div class="stat-caption">${parseContent(caption)}</div>`,
+                callout: usage.showCallout ? renderCallout(slideData) : '',
+                components: swissComponents,
+                icons: usage.showIcons ? renderIconRow(slideData) : '',
+                visual: visualAccent
+            };
+
+            return renderWithComposition(blocks, composition, {
+                stack: ['title', 'value', 'statbar', 'caption', 'callout', 'components', 'icons', 'visual'],
+                main: ['title', 'value', 'statbar', 'caption'],
+                side: ['callout', 'components', 'icons', 'visual']
+            });
+        }
+
+        function renderImageLayout(slideData, usage, composition) {
+            const swissComponents = renderSwissComponents(slideData);
+
+            const blocks = {
+                title: `<div class="content-title">${parseContent(slideData.title || '')}</div>`,
+                body: `<div class="content-body">${parseContent(slideData.content || '')}</div>`,
+                image: usage.showImage ? renderImageCard(slideData) : '',
+                components: swissComponents,
+                icons: usage.showIcons ? renderIconRow(slideData) : ''
+            };
+
+            return renderWithComposition(blocks, composition, {
+                stack: ['title', 'body', 'image', 'components', 'icons'],
+                main: ['title', 'body'],
+                side: ['image', 'components', 'icons']
+            });
+        }
+
+        function renderCalloutLayout(slideData, usage, composition) {
+            const swissComponents = renderSwissComponents(slideData);
+
+            const blocks = {
+                title: `<div class="content-title">${parseContent(slideData.title || '')}</div>`,
+                body: `<div class="content-body">${parseContent(slideData.content || '')}</div>`,
+                callout: usage.showCallout ? renderCallout(slideData) : '',
+                components: swissComponents,
+                icons: usage.showIcons ? renderIconRow(slideData) : ''
+            };
+
+            return renderWithComposition(blocks, composition, {
+                stack: ['title', 'body', 'callout', 'components', 'icons'],
+                main: ['title', 'body'],
+                side: ['callout', 'components', 'icons']
+            });
+        }
+
+        function renderSlide(slideData, currentIdx, totalSlides) {
+            const container = document.getElementById('slide-container');
+            const contentArea = document.getElementById('content-area');
+            const pageNum = document.getElementById('page-indicator');
+            const progressBar = document.getElementById('progress-bar');
+            const eyebrow = document.getElementById('eyebrow');
+
+            const layout = detectLayout(slideData);
+            const density = detectDensity(slideData);
+            const themeClass = detectTheme(slideData);
+            const presetClass = detectPreset(slideData);
+            const composition = getComposition(slideData);
+            const visualUsage = selectVisualUsage(slideData, layout, density, composition);
+
+            container.className = `slide-shell slide-${layout} ${density} ${themeClass} ${presetClass} ${composition.alignClass} ${composition.widthClass} ${composition.tagClass} ${composition.footerClass} ${composition.layoutClass} ${composition.chromeClass}`;
+            pageNum.innerText = `${currentIdx + 1} / ${totalSlides}`;
+
+            setTimeout(() => {
+                progressBar.style.width = `${((currentIdx + 1) / totalSlides) * 100}%`;
+            }, 50);
+
+            eyebrow.innerText = slideData.kicker || slideData.category || (themeClass === 'theme-news' ? 'Weekly Startup News' : 'Founder Insight');
+
+            if (layout === 'cover') {
+                contentArea.innerHTML = renderCover(slideData);
+                return;
+            }
+
+            if (layout === 'list') {
+                contentArea.innerHTML = renderList(slideData, visualUsage, composition);
+                return;
+            }
+
+            if (layout === 'quote') {
+                contentArea.innerHTML = renderQuote(slideData, visualUsage, composition);
+                return;
+            }
+
+            if (layout === 'stat') {
+                contentArea.innerHTML = renderStat(slideData, visualUsage, composition);
+                return;
+            }
+
+            if (layout === 'image') {
+                contentArea.innerHTML = renderImageLayout(slideData, visualUsage, composition);
+                return;
+            }
+
+            if (layout === 'callout') {
+                contentArea.innerHTML = renderCalloutLayout(slideData, visualUsage, composition);
+                return;
+            }
+
+            contentArea.innerHTML = renderContent(slideData, visualUsage, composition);
+        }
+    </script>
+</body>
+
+</html>

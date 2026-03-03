@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+
+@theme {
+    --color-bg-light: #F4F4F0;
+    --color-bg-dark: #1A1A1A;
+
+    --color-text-primary: #1A1A1A;
+    --color-text-primary-dark: #FFFFFF;
+    --color-text-secondary: #666666;
+    --color-text-secondary-dark: #AAAAAA;
+
+    --color-accent: #FF5100;
+
+    --color-border-light: #DADADA;
+    --color-border-dark: #333333;
+
+    --color-box-bg-light: #EFEFEB;
+    --color-box-bg-dark: #2A2A2A;
+
+    --font-sans: "Pretendard", sans-serif;
+}
+
+@layer base {
+    body {
+        @apply bg-[#DDDDDD] flex justify-center items-center min-h-screen font-sans;
+    }
+}
