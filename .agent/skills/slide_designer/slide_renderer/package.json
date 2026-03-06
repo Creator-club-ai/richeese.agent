@@ -5,6 +5,7 @@
   "main": "scripts/render.js",
   "scripts": {
     "render": "node scripts/render.js",
+    "render:raw": "node scripts/render.js",
     "build": "npx @tailwindcss/cli -i src/input.css -o public/style.css",
     "dev": "npx @tailwindcss/cli -i src/input.css -o public/style.css --watch"
   },
