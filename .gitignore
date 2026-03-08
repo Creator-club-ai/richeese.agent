@@ -19,3 +19,7 @@ Thumbs.db
 # Temp
 *.tmp
 *.log
+
+apps/desktop/node_modules/
+apps/desktop/dist/
+apps/desktop/dist-electron/
