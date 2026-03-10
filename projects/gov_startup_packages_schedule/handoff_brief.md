@@ -83,7 +83,7 @@
   - `OneDrive/바탕 화면/콘텐츠/projects/gov_startup_packages_schedule/carousel_draft.md`
   - `OneDrive/바탕 화면/콘텐츠/projects/gov_startup_packages_schedule/research_brief.md`
 - 렌더용 JSON 초안(참고 시안): `OneDrive/바탕 화면/콘텐츠/projects/gov_startup_packages_schedule/carousel.json`
-- 브랜드 가드레일: `OneDrive/바탕 화면/콘텐츠/BRAND_GUIDE.md`
+- 브랜드 가드레일: `brands/yfc/BRAND_GUIDE.md`
 
 ## 6) 최종 QA 기준
 - [ ] 날짜가 가장 먼저 읽히는가(저장용)

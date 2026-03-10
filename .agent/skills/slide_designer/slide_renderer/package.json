@@ -1,7 +1,7 @@
 {
-  "name": "yfc-slide-renderer",
+  "name": "content-slide-renderer",
   "version": "1.0.0",
-  "description": "Puppeteer based slide generator for YouthFounderClub",
+  "description": "Puppeteer based slide generator for brand-guided card news",
   "main": "scripts/render.js",
   "scripts": {
     "render": "node scripts/render.js",

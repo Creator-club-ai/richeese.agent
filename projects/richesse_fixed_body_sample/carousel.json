@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "eyebrow": "richesse.club"
+  },
+  "slides": [
+    {
+      "theme": "light",
+      "chrome": "none",
+      "footer": "none",
+      "html": "<section class='ed' style='--ed-image-position:50% 34%;--ed-image-scale:1.03'><div class='ed__media'><img src='https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1600&q=80' alt='people collaborating at a table' /></div><div class='ed__content'><div class='ed__meta'><span class='ed__index'>[08]</span><span class='ed__rule'></span></div><h2 class='ed__title'>신뢰는 반복된 판단에서<br />천천히 만들어진다.</h2><p class='ed__body'>사람들은 대개 친절한 사람을 오래 기억한다고 생각하지만, 실제로 다시 찾게 되는 사람은 기준이 분명한 사람이다. 무엇을 먼저 보고 무엇은 미뤄야 하는지 설명할 수 있고, 그 판단이 여러 번의 결과로 증명될 때 존재감은 호감이 아니라 신뢰가 된다. 결국 가장 강한 레버리지는 사람을 많이 아는 데서가 아니라, 반복해서 믿을 수 있는 판단을 보여주는 데서 나온다.</p></div></section>",
+      "css": ".ed{--ed-bg:#ebe7df;--ed-text:#141311;--ed-body:#48433d;--ed-edge:72px;--ed-top:60px;--ed-bottom:74px;--ed-media-height:510px;--ed-image-position:50% 36%;--ed-image-scale:1.04;height:100%;background:var(--ed-bg);color:var(--ed-text);padding:var(--ed-top) var(--ed-edge) var(--ed-bottom);font-family:'Pretendard','Malgun Gothic',sans-serif;box-sizing:border-box;display:grid;grid-template-rows:var(--ed-media-height) 1fr;gap:32px}.ed__media{position:relative;width:100%;height:100%;overflow:hidden;background:#d4cfc7}.ed__media::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.08));pointer-events:none}.ed__media img{width:100%;height:100%;display:block;object-fit:cover;object-position:var(--ed-image-position);transform:scale(var(--ed-image-scale));transform-origin:center;filter:saturate(.74) contrast(.95) brightness(.93)}.ed__content{display:flex;flex-direction:column;min-height:0}.ed__meta{display:flex;align-items:center;gap:18px}.ed__index{font-size:28px;line-height:1;font-weight:800;letter-spacing:-.035em;color:rgba(20,19,17,.96)}.ed__rule{height:2px;flex:1;background:rgba(20,19,17,.9);transform:translateY(1px)}.ed__title{margin:28px 0 0;max-width:920px;font-size:60px;line-height:1.1;letter-spacing:-.055em;font-weight:700;word-break:keep-all;text-wrap:balance}.ed__body{margin:24px 0 0;max-width:956px;font-size:28px;line-height:1.66;letter-spacing:-.022em;color:var(--ed-body);font-weight:500;word-break:keep-all}"
+    }
+  ]
+}

@@ -1,164 +1,104 @@
 ---
 name: slide_designer
-description: 에디터 원고를 기반으로 디자이너가 레이아웃/타이포/비주얼을 주도적으로 완성하고, slide_renderer로 최종 이미지를 생성합니다.
+description: This skill should be used when the user asks to "카드뉴스 디자인해줘", "carousel.json 만들어줘", "원고 기반으로 슬라이드 렌더용 JSON 짜줘", or "디자이너 단계 진행해줘". It turns approved card-news inputs into `carousel.json` while preserving 1080x1350 rendering rules.
 ---
 
-# YouthFounderClub - 슬라이드 디자이너 (Slide Designer) 행동 지침
+# Card-News Slide Designer Skill
 
-당신은 YouthFounderClub 인스타그램의 시각적 퀄리티를 책임지는 **수석 디자이너**입니다.
-핵심 역할은 원고의 메시지를 가장 잘 전달하는 레이아웃/타이포/비주얼을 **직접 설계**하는 것입니다.
+## 목적
 
-## 호출명
-- 콜사인: `카드`
+승인된 카드뉴스 기획과 원고를 시각 설계로 변환한다.
+기본 산출물은 `carousel.json` 이며, 렌더는 명시적으로 요청될 때만 이어서 수행한다.
 
-## 핵심 원칙
-1. **디자인 결정권은 디자이너에게 있습니다.** 고정 템플릿에 맞추는 것이 아니라, 슬라이드마다 최적의 레이아웃을 직접 설계합니다.
-2. **HTML/CSS로 디자인합니다.** 슬라이드 콘텐츠 영역의 HTML과 CSS를 직접 작성하고, `slide_renderer`로 이미지를 생성하는 것이 기본 작업입니다.
-3. **감각 기준을 지킵니다.** 구체적인 패턴은 자유롭게 결정하되, 아래 "감각 기준"의 수준을 항상 유지합니다.
-4. 결과 평가는 **전달력/가독성/브랜드 일관성**으로 합니다.
+## 먼저 확인할 문서
 
----
+- 워크스페이스 루트의 `CARD_NEWS_TEAM.md`
+- 워크스페이스 루트의 `brands/README.md`
+- active brand 가 정해져 있다면 `brands/<active-brand>/BRAND_GUIDE.md`
+- active brand 가 정해져 있다면 `brands/<active-brand>/DESIGNER_HANDOFF_BRIEF.md`
+- 프로젝트 폴더의 `approvals.json`
+- 프로젝트 폴더의 `carousel_draft.md`
+- 프로젝트 폴더의 `handoff_brief.md`
 
-## ⭐ 감각 기준 (Quality Bar)
+## 역할 경계
 
-패턴을 고정하지 않습니다. 단, 모든 슬라이드가 아래 기준을 충족해야 합니다.
+- 여기서 책임지는 결과는 `carousel.json` 이다.
+- 리서치 재작성이나 기획 재정의는 하지 않는다.
+- 승인되지 않은 문서를 억지로 디자인으로 밀어 넣지 않는다.
+- 특정 브랜드의 시각 패턴을 스킬 안에 고정하지 않는다.
+- active brand 가이드가 있으면 그 문서를 먼저 해석하고 따른다.
 
-### 이런 느낌이어야 합니다
-- 정보가 **구조화**되어 있습니다. 텍스트를 그냥 나열하지 않습니다.
-- **SVG 아이콘, 텍스트 박스, 번호 인덱스, 구분선** 등 시각적 요소들이 정보 전달을 돕습니다.
-- 여백이 충분하고, 각 요소 사이의 간격이 규칙적입니다.
-- 색상은 최소화 — 배경/텍스트/accent 3역할 이내로 제어합니다.
-- 폰트 굵기 대비(예: weight 500 + weight 800 조합)로 정보 계층을 만듭니다.
-- 한 슬라이드에서 시선이 자연스럽게 한 방향으로 흐릅니다.
+## 시작 조건
 
-### 핵심 수치/숫자 앵커 룰
-핵심 숫자(예: 3.4조, 최대 1억, 3년 이내)가 있는 슬라이드에서는 해당 숫자를 **다른 요소보다 2~3배 크게** 표현하여 시각적 앵커로 사용합니다. 모든 항목이 같은 시각 무게를 가지면 독자가 무엇이 중요한지 파악하지 못합니다.
+- `approvals.json.slidePlan.status` 가 `approved` 여야 한다.
+- `carousel_draft.md` 와 `handoff_brief.md` 가 모두 있어야 한다.
+- active brand 가 명시되었으면 해당 브랜드 가이드를 읽을 수 있어야 한다.
+- 6~10장 안에서 메시지가 성립해야 한다.
 
-### 텍스트 밀도 경고
-한 슬라이드에 항목이 **4개 이상**이거나, 설명 텍스트가 2줄을 초과하는 항목이 2개 이상이면 슬라이드를 나누는 것을 고려합니다. 정보가 많을수록 각 항목의 임팩트가 줄어듭니다.
+## 디자인 원칙
 
-### 이렇게 하면 안 됩니다
-- 텍스트를 그냥 나열하기 — 시각적 구조 없이 단락만 쌓는 것
-- 텍스트 그라데이션 (`-webkit-background-clip` 등)
-- SVG 배경 장식 (블롭, blur 처리된 비정형 도형 등)
-- 프로그레스 바 (`footer: "progress"`) — 항상 `"minimal"` 사용
-- 모든 슬라이드가 완전히 동일한 레이아웃 구조 반복
-- 핵심 수치가 있는데 다른 텍스트와 같은 크기로 표현하는 것
+- active brand 가이드가 있으면 그 가이드 안에서 레이아웃과 톤을 판단한다.
+- 스킬 안에 고정된 스타일을 강요하지 않고, 메시지 전달력과 브랜드 일관성을 우선한다.
+- 한 슬라이드의 핵심 메시지는 하나만 보이게 만든다.
+- 1080x1350, 즉 4:5 기준을 지킨다.
+- 모바일에서 3초 안에 핵심이 읽혀야 한다.
 
-### 시각화 도구 목록
-아래는 패턴이 아니라 **도구 목록**입니다. 내용과 구조에 맞게 자유롭게 조합합니다.
+## 공통 가드레일
 
-| 도구 | 활용 상황 |
-|------|-----------|
-| SVG 인라인 아이콘 (Feather Icons 스타일) | 항목마다 의미를 시각화할 때 |
-| 번호 인덱스 박스 | 순서가 있는 항목, 단계 설명 |
-| 배경색 카드 (`var(--color-box-bg-light)`) | 정보 단위를 그루핑할 때 |
-| 왼쪽 accent 보더 라인 | 중요도 강조, 변화 포인트 |
-| 구분선 (1px border) | 항목 사이 시각적 분리 |
-| 전체 배경 사진 + 솔리드 오버레이 | Cover, 분위기 전달 |
-| 다크 배경 + 도트 SVG 패턴 | CTA, 강조 마무리 |
-| 두 컬럼 Grid | 병렬 비교, 2개 이상 항목 나열 |
-| 섹션 태그 (accent 컬러, 소문자 레이블) | 슬라이드 카테고리 표시 |
+- 구조 없는 텍스트 나열을 피한다.
+- 승인되지 않은 내용을 디자인으로 확정하지 않는다.
+- 브랜드 가이드와 충돌하는 스타일을 임의로 추가하지 않는다.
 
-### 커버/CTA/Body 설정 기준
+## 작업 순서
 
-| 역할 | chrome | theme | footer |
-|------|--------|-------|--------|
-| **Cover** | 기본값 `none` | 기본값 `dark` | `none` |
-| **CTA** | 기본값 `none` (`source box`가 핵심이면 `full` 허용) | 기본값 `dark` (`light` 예외 허용) | `none` 또는 `minimal` |
-| **Body / Context / Summary** | `full` | `light` | `minimal` |
+1. `approvals.json` 으로 실제 승인 상태를 확인한다.
+2. `carousel_draft.md` 와 `handoff_brief.md` 로 슬라이드 역할과 메시지를 정리한다.
+3. active brand 를 확인하고 해당 브랜드 가이드를 읽는다.
+4. 슬라이드별 HTML/CSS 를 설계한다.
+5. 결과를 `carousel.json` 으로 저장한다.
+6. 렌더 요청이 있으면 현재 렌더러 규칙으로 실행한다.
 
-**Cover 오버레이:** 그라데이션 금지. `rgba(0, 0, 0, 0.6)` 내외의 **솔리드 컬러** 사용.
-**Cover 기본값:** 정책/리스트/체크리스트형 주제는 `Text-first`, 인물/브랜드형만 `Image-first`를 우선 검토합니다.
-**Footer 원칙:** 최종 산출물에서는 `footer: "progress"`를 사용하지 않습니다.
+## 출력 파일 형식
 
----
-
-## 작업 흐름
-
-### 1단계: 브리프 해석
-- `BRAND_GUIDE.md`를 반드시 먼저 읽고 디자인 가드레일을 확인합니다.
-- `slide_renderer` 폴더의 기존 샘플 JSON은 렌더 스키마 참고용일 뿐, 현재 스타일 기준의 소스 오브 트루스가 아닙니다.
-- 슬라이드 역할(Cover / Context / Body / Summary / CTA)을 파악하고, 각 슬라이드에 맞는 시각 표현을 결정합니다.
-- 입력 브리프가 `owner 승인 완료` 상태인지 먼저 확인합니다. 승인 표시가 없으면 디자인 작업을 시작하지 않고 승인 요청 상태를 되돌려줍니다.
-
-### 2단계: 슬라이드별 HTML/CSS 설계
-슬라이드마다 콘텐츠 영역의 HTML과 CSS를 직접 작성합니다.
-
-**렌더러가 관리하는 고정 영역 (수정 금지):**
-- 상단 크롬: 로고(좌) + eyebrow 텍스트(우)
-- 하단 크롬: 페이지 인디케이터
-
-**디자이너가 설계하는 자유 영역:**
-- `#content-area` 내부 전체 (기본 padding: 136px 88px 110px 88px)
-- `chrome: "none"` 시 전체 1080×1350 캔버스를 `position: absolute; inset: 0;`으로 자유 사용
-
-### 3단계: JSON 작성 → 렌더링
+`carousel.json` 은 아래 구조를 유지한다.
 
 ```json
 {
-  "meta": { "eyebrow": "Founder's Insight" },
+  "meta": {
+    "eyebrow": "Card News"
+  },
   "slides": [
     {
       "html": "<콘텐츠 영역 HTML>",
-      "css": "슬라이드별 추가 CSS",
+      "css": "슬라이드별 CSS",
       "theme": "light | dark",
       "chrome": "full | none",
-      "footer": "minimal",
-      "eyebrow": "슬라이드별 오버라이드 (선택)"
+      "footer": "minimal | none",
+      "eyebrow": "선택적 오버라이드"
     }
   ]
 }
 ```
 
-### 4단계: 렌더링 실행
+## 렌더 규칙
 
-출력 폴더는 **항상 `renders/<콘텐츠ID>`** 로 고정합니다. 슬라이드 파일이 여러 폴더에 분산되지 않도록 합니다.
+- 출력 규격은 1080x1350 이다.
+- 출력 폴더는 `renders/<콘텐츠ID>` 를 기본으로 사용한다.
+- 한국어 텍스트는 `word-break: keep-all` 을 우선 적용한다.
 
-```bash
-cd .agent/skills/slide_designer/slide_renderer
-node scripts/render.js --data <JSON파일명>.json --output renders/<콘텐츠ID> --skip-build
-```
+## 품질 기준
 
-**예시:**
-```bash
-node scripts/render.js --data gov2026.json --output renders/gov2026_v1 --skip-build
-```
+- active brand 가이드와 충돌하지 않는다.
+- 핵심 수치나 강조어는 시선이 먼저 가도록 배치한다.
+- 본문 가독성이 떨어지는 경우 슬라이드를 분리한다.
+- CTA 는 행동 문구가 명확해야 한다.
 
-### 5단계: QA
-모바일 가독성, 메시지 전달 속도(3초), CTA 명확성을 체크합니다.
+## 중단 조건
 
----
+아래 경우에는 `carousel.json` 을 만들지 말고 문제를 명시하고 멈춘다.
 
-## 브랜드 CSS 변수
-
-```css
-var(--color-bg-light)       /* #F4F4F0 */
-var(--color-bg-dark)        /* #1A1A1A */
-var(--color-text-primary)   /* #1A1A1A */
-var(--color-text-secondary) /* #666666 */
-var(--color-accent)         /* #FF5100 */
-var(--color-border-light)   /* #DADADA */
-var(--color-box-bg-light)   /* #EFEFEB */
-font-family: var(--font-sans); /* Pretendard */
-```
-
-### 타이포 기준
-- 권장 weight: `500 / 700 / 800`
-- Cover 제목: `96px~104px`, Body 제목: `72px~88px`
-- 본문: `30px~44px`, 레이블/태그: `16px~20px`
-- 줄간격: `1.45~1.6`
-- 한국어 텍스트: 반드시 `word-break: keep-all` 적용
-
----
-
-## 산출물 기준
-- 기본 장수: 6~10장 (최대 12장)
-- 규격: 1080×1350 (4:5)
-- 최종 아웃풋: `.png` 이미지 파일 세트
-
-## 절대 금지
-- 텍스트 그라데이션 (`-webkit-background-clip`)
-- SVG 블롭 / blur 배경 장식
-- 프로그레스 바 (`footer: "progress"`)
-- 시각적 구조 없이 텍스트만 나열한 슬라이드
+- 승인 상태가 아님
+- `carousel_draft.md` 또는 `handoff_brief.md` 가 없음
+- active brand 가 불명확하거나 브랜드 가이드가 없음
+- 필수 숫자/사실이 불명확함
+- 한 슬라이드에 정보가 과밀해서 가독성을 지킬 수 없음

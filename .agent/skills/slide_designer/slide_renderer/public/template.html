@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YFC Slide Template</title>
+    <title>Card News Slide Template</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <style id="slide-custom-css"></style>
@@ -12,16 +12,13 @@
 
 <body>
     <div id="slide-container">
-        <!-- 상단 크롬: 로고 + Eyebrow -->
         <div class="chrome-top" id="chrome-top">
-            <div class="logo"><img src="./youthfounderclublogo웹용검정.webp" alt="YouthFounderClub"></div>
-            <div class="eyebrow" id="eyebrow">Weekly Startup News</div>
+            <div class="logo" id="brand-label" style="font-size: 24px; font-weight: 800; letter-spacing: -0.02em;">Brand</div>
+            <div class="eyebrow" id="eyebrow">Card News</div>
         </div>
 
-        <!-- 콘텐츠 영역: 디자이너가 HTML/CSS로 자유롭게 설계 -->
         <div id="content-area"></div>
 
-        <!-- 하단 크롬: 프로그레스 바 + 페이지 인디케이터 -->
         <div class="chrome-bottom" id="chrome-bottom">
             <div class="progress-track" id="progress-track">
                 <div class="progress-bar" id="progress-bar"></div>
@@ -31,73 +28,55 @@
     </div>
 
     <script>
-        /**
-         * YFC Slide Renderer — Designer-Driven Mode
-         *
-         * 디자이너 에이전트가 작성한 HTML/CSS를 콘텐츠 영역에 주입하고,
-         * 크롬(로고, eyebrow, 페이지 인디케이터)만 렌더러가 관리합니다.
-         *
-         * 슬라이드 JSON 구조:
-         * {
-         *   "html":   "콘텐츠 영역 HTML (필수)",
-         *   "css":    "슬라이드별 추가 CSS (선택)",
-         *   "theme":  "light | dark (선택, 기본 light)",
-         *   "chrome": "full | minimal | none (선택, 기본 full)",
-         *   "footer": "progress | minimal (선택, 기본 minimal)",
-         *   "eyebrow": "상단 우측 텍스트 (선택)"
-         * }
-         */
-
         function renderSlide(slide, currentIdx, totalSlides) {
             const container = document.getElementById('slide-container');
             const contentArea = document.getElementById('content-area');
             const chromeTop = document.getElementById('chrome-top');
             const chromeBottom = document.getElementById('chrome-bottom');
+            const brandLabel = document.getElementById('brand-label');
+            const eyebrow = document.getElementById('eyebrow');
             const pageNum = document.getElementById('page-indicator');
             const progressTrack = document.getElementById('progress-track');
             const progressBar = document.getElementById('progress-bar');
-            const eyebrow = document.getElementById('eyebrow');
             const customCSS = document.getElementById('slide-custom-css');
 
-            // 1. 콘텐츠 영역에 디자이너의 HTML 삽입
-            contentArea.innerHTML = slide.html || '';
+            const theme = (slide.theme || 'light').toLowerCase();
+            const chrome = (slide.chrome || 'full').toLowerCase();
+            const footer = (slide.footer || 'minimal').toLowerCase();
+            const brandText = slide.brandLabel || '';
+            const eyebrowText = slide.eyebrow || '';
+            const showTopChrome = chrome === 'full';
+            const showBottomChrome = chrome !== 'none' && footer !== 'none';
 
-            // 2. 슬라이드별 커스텀 CSS 주입
+            contentArea.innerHTML = slide.html || '';
             customCSS.textContent = slide.css || '';
 
-            // 3. 테마 적용
-            const theme = (slide.theme || 'light').toLowerCase();
             container.classList.remove('theme-light', 'theme-dark');
             container.classList.add(theme === 'dark' ? 'theme-dark' : 'theme-light');
 
-            // 4. 크롬 표시 옵션
-            const chrome = (slide.chrome || 'full').toLowerCase();
-            chromeTop.style.display = (chrome === 'none') ? 'none' : '';
-            chromeBottom.style.display = (chrome === 'none') ? 'none' : '';
+            chromeTop.style.display = showTopChrome ? '' : 'none';
+            chromeBottom.style.display = showBottomChrome ? '' : 'none';
+            contentArea.style.padding = chrome === 'none' ? '0' : '';
 
-            if (chrome === 'none') {
-                contentArea.style.padding = '0';
-            } else {
-                contentArea.style.padding = '';
-            }
+            brandLabel.textContent = brandText;
+            brandLabel.style.display = brandText ? '' : 'none';
 
-            // 5. Eyebrow 텍스트
-            if (slide.eyebrow) {
-                eyebrow.textContent = slide.eyebrow;
-            }
+            eyebrow.textContent = eyebrowText;
+            eyebrow.style.display = eyebrowText ? '' : 'none';
 
-            // 6. 하단 footer 모드
-            const footer = (slide.footer || 'minimal').toLowerCase();
             if (footer === 'progress') {
                 progressTrack.style.display = 'flex';
                 progressBar.style.width = `${((currentIdx + 1) / totalSlides) * 100}%`;
             } else {
                 progressTrack.style.display = 'none';
+                progressBar.style.width = '0';
             }
 
-            // 7. 페이지 인디케이터
             pageNum.textContent = `${currentIdx + 1} / ${totalSlides}`;
+            pageNum.style.display = footer === 'none' ? 'none' : '';
         }
+
+        window.renderSlide = renderSlide;
     </script>
 </body>
 
