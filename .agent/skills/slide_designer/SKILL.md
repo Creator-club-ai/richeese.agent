@@ -36,9 +36,28 @@ Note:
 1. Confirm approval state in `project.json`.
 2. Read `carousel_draft.md` and `handoff_brief.md`.
 3. Read the active brand guide.
-4. Build slide layouts and export `carousel.json`.
-5. Render only when requested.
+4. Freeze local visual assets before final handoff when possible.
+5. Build slide layouts and export `carousel.json`.
+6. Render only when requested.
 
 ## Rule
 
 Slide count is driven by the approved plan. Do not force a fixed number.
+
+When the active brand is `richesse-club`, lock these cover defaults unless the user explicitly overrides them:
+
+- cover title must be exactly `2 lines`
+- cover tags and title must sit inside the `1080x1080` safe area even on a `1080x1440` canvas
+- cover tags use `Neue Haas Grotesk Display Pro`, `35px`, `Extra Light`
+- cover does not use an index marker by default
+
+Do not edit:
+
+- `planning.md`
+- `slide_plan.md`
+- `research_brief.md`
+- `carousel_draft.md`
+- `handoff_brief.md`
+- `qa_report.md`
+
+This skill owns layout and asset execution only. Copy disputes should go back to the editor.

@@ -26,13 +26,20 @@ Turn an approved plan into production-ready copy and a designer brief.
 
 Note:
 
-- Source-approved projects may already include seeded `carousel_draft.md` and `handoff_brief.md`
-- In that case, refine them instead of recreating them blindly
+- Source-approved projects now receive `skeleton-only` versions of `carousel_draft.md` and `handoff_brief.md`
+- Fill them from `slide_plan.md`; do not assume planner copy is already final
 
 ## Output
 
 - `carousel_draft.md`
 - `handoff_brief.md`
+
+Do not edit:
+
+- `planning.md`
+- `slide_plan.md`
+- `carousel.json`
+- `qa_report.md`
 
 ## Rule
 
@@ -44,3 +51,5 @@ Lock these in first:
 - message
 - slide flow
 - closing note
+
+This skill owns copy and handoff only. It must not solve layout problems by editing design output directly.

@@ -86,7 +86,13 @@ Use this when the owner already approved a direction and the team wants to refin
 
 - update `slide_plan.md`
 
-Do not create `carousel.json` in this mode.
+Do not create:
+
+- `research_brief.md`
+- `carousel_draft.md`
+- `handoff_brief.md`
+- `carousel.json`
+- `qa_report.md`
 
 ## Operating Rule
 
@@ -98,3 +104,5 @@ The planner's job is not just to summarize the source. The planner must decide:
 - what should become its own post
 - what should be held or rejected
 - what should be framed as the main card versus what should stay in the standalone queue
+
+This skill owns planning only. It must not prewrite editor or designer outputs.

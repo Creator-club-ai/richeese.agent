@@ -28,7 +28,10 @@ Do not create:
 - `planning.md`
 - `slide_plan.md`
 - `carousel_draft.md`
+- `handoff_brief.md`
 - `carousel.json`
+- `qa_report.md`
+- `project.json`
 
 ## Workflow
 
@@ -42,3 +45,5 @@ Do not create:
 ## Rule
 
 If the source transcript gives the framing but not enough proof, keep the framing and upgrade the evidence.
+
+This skill owns evidence only. Do not rewrite copy, plan structure, or slide layout decisions.

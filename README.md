@@ -4,7 +4,7 @@ This workspace is a source-first operating system for content planning and carou
 
 The core rule is simple:
 
-`raw source -> planning.md review -> owner approval -> spawn project -> editor/designer`
+`raw source -> planning.md review -> owner approval -> spawn project -> researcher(optional) -> editor -> designer -> qa`
 
 ## Structure
 
@@ -31,11 +31,13 @@ The core rule is simple:
 - `projects/<topic>/slide_plan.md`
   - approved planning output for production
 - `projects/<topic>/carousel_draft.md`
-  - copy seed for editorial refinement
+  - editor-owned copy draft
 - `projects/<topic>/handoff_brief.md`
-  - designer-facing brief
+  - editor-owned designer brief
 - `projects/<topic>/carousel.json`
-  - rendered slide payload
+  - designer-owned slide payload
+- `projects/<topic>/qa_report.md`
+  - qa-owned pass/fail record and route-back note
 
 ## Source-First Workflow
 
@@ -60,7 +62,9 @@ Important:
 - `standaloneCandidateIds` is the set of subtopics worth tracking as independent posts.
 - `approvedCandidateIds` is the actual spawn queue for right now.
 - No project is created before the owner reviews `planning.md`.
-- Spawned projects are created in `plan_approved` state, with `slide_plan.md`, `carousel_draft.md`, and `handoff_brief.md` already seeded.
+- Spawned projects are created in `plan_approved` state.
+- `slide_plan.md` is fully seeded at spawn.
+- `carousel_draft.md` and `handoff_brief.md` are skeleton files so editor/designer ownership stays separate.
 
 ## Richesse Insight Filtering
 
@@ -87,7 +91,7 @@ If the filtered list is too weak, do not force a carousel. Either:
 
 ## Project Workflow
 
-`project.json -> slide_plan.md -> carousel_draft.md + handoff_brief.md -> carousel.json -> renders/`
+`project.json -> slide_plan.md -> research_brief.md(optional) -> carousel_draft.md + handoff_brief.md -> carousel.json -> renders/ -> qa_report.md`
 
 Typical state progression:
 
@@ -97,6 +101,22 @@ Source-approved projects skip the extra planning gate and are spawned directly a
 
 - `workflow.stage = plan_approved`
 - `workflow.approvals.slidePlan.status = approved`
+- `workflow.quality.qaStatus = not_started`
+
+## Agent Ownership
+
+- `content_researcher`
+  - owns evidence only
+- `content_planner`
+  - owns source planning and `slide_plan.md` refinement only
+- `content_editor`
+  - owns copy and designer brief only
+- `slide_designer`
+  - owns `carousel.json`, renders, and local visual asset freeze only
+- `content_qa`
+  - owns `qa_report.md` and QA status only
+
+Do not let one shared agent overwrite another shared agent's stage output.
 
 ## Commands
 
@@ -109,7 +129,7 @@ Source-approved projects skip the extra planning gate and are spawned directly a
 - `npm run sync:approvals`
   - mirror `project.json.workflow.approvals` into `approvals.json`
 - `npm run spawn:approved -- <source-id>`
-  - create designer-ready child projects from approved candidates
+  - create plan-approved child projects from approved candidates
 - `npm run render -- --data <carousel.json> --output <dir>`
   - render final images
 - `npm run render:preview -- --data <carousel.json> --output <dir>`
@@ -120,6 +140,7 @@ Source-approved projects skip the extra planning gate and are spawned directly a
 - `templates/SOURCE_TEMPLATE.json`
 - `templates/PLANNING_TEMPLATE.md`
 - `templates/PROJECT_TEMPLATE.json`
+- `templates/QA_REPORT_TEMPLATE.md`
 
 ## Validation Rules
 
@@ -129,7 +150,9 @@ Source-approved projects skip the extra planning gate and are spawned directly a
 - `mainCandidateId`, `standaloneCandidateIds`, and `approvedCandidateIds` must point to candidate IDs that exist in `planning.md`.
 - Any project with `derivedFrom` must point to an approved source candidate.
 - `approvals.json` must match `project.json.workflow.approvals`.
+- strict projects in `qa` or `done` must have `qa_report.md` and `workflow.quality.qaStatus`
+- strict projects in `done` must have `workflow.quality.qaStatus = passed`
 
 ## Current Operating Intent
 
-This repo is optimized for a small team where the owner wants to review planning first, then immediately hand the chosen direction to the designer. Keep the workflow minimal. Do not add extra report layers unless the owner explicitly asks for them.
+This repo is optimized for a small team where the owner wants to review planning once, then let specialized agents move the project forward without role overlap. Keep the workflow minimal, but keep ownership boundaries explicit.

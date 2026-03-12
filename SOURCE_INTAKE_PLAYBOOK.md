@@ -47,6 +47,8 @@ Do not create a project until:
 - `approvedCandidateIds` is the source of truth for what gets spawned now
 - `status: approved` is required before spawn
 - `status: spawned` means child projects were already created
+- owner review on `planning.md` is the only default human approval gate
+- after spawn, downstream movement should happen through specialized agents, not another planning round
 
 ## Source Quality Rules
 
@@ -76,3 +78,9 @@ Include:
 
 - `npm run validate:sources`
 - `npm run spawn:approved -- <source-id>`
+
+## Spawn Output Rule
+
+- spawn should fully seed `slide_plan.md`
+- spawn should create `carousel_draft.md` and `handoff_brief.md` as skeletons only
+- spawn should not prewrite editor/designer deliverables in full, because that collapses role boundaries

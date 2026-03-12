@@ -55,6 +55,7 @@ const ALLOWED_SOURCE_STATUS = new Set(['ingested', 'analyzed', 'approved', 'spaw
 const ALLOWED_PACKAGING = new Set(['umbrella', 'standalone', 'series-only', 'reject']);
 const ALLOWED_REVIEW_STATUS = new Set(['ready', 'hold', 'reject']);
 const ALLOWED_PRIORITY = new Set(['P1', 'P2', 'P3']);
+const ALLOWED_QA_STATUS = new Set(['not_started', 'in_review', 'passed', 'failed']);
 const STAGE_ORDER = {
   draft: 0,
   researching: 1,
@@ -400,8 +401,22 @@ function validateProjectContext(context, sourceLookup) {
     errors.push(`[project:${context.id}] Missing brand`);
   }
 
+  const profile = project.validation && project.validation.profile;
+  const quality = project.workflow && project.workflow.quality
+    ? project.workflow.quality
+    : null;
+
+  if (quality && quality.qaStatus && !ALLOWED_QA_STATUS.has(quality.qaStatus)) {
+    errors.push(`[project:${context.id}] Invalid workflow.quality.qaStatus: ${quality.qaStatus}`);
+  }
+
+  if (quality && quality.lastQaAt != null && typeof quality.lastQaAt !== 'string') {
+    errors.push(`[project:${context.id}] workflow.quality.lastQaAt must be a string or null`);
+  }
+
   const stage = project.workflow && project.workflow.stage;
   const stageIndex = STAGE_ORDER[stage];
+  const stageValue = stageIndex === undefined ? 0 : stageIndex;
   if (stage && stageIndex === undefined) {
     errors.push(`[project:${context.id}] Invalid workflow.stage: ${stage}`);
   }
@@ -424,6 +439,16 @@ function validateProjectContext(context, sourceLookup) {
       errors.push(`[project:${context.id}] approvals.json does not match project.json.workflow.approvals`);
     }
   }
+
+  validateProjectQuality({
+    context,
+    project,
+    profile,
+    stageValue,
+    quality,
+    errors,
+    warnings,
+  });
 
   const derivedFrom = project.derivedFrom;
   if (derivedFrom && derivedFrom.sourceId && derivedFrom.candidateId) {
@@ -488,7 +513,54 @@ function collectRequiredProjectFiles(project, stageIndex) {
     requiredFiles.add(paths.carouselJson);
   }
 
+  if (stageValue >= STAGE_ORDER.qa && paths.qaReport) {
+    requiredFiles.add(paths.qaReport);
+  }
+
   return Array.from(requiredFiles);
+}
+
+function validateProjectQuality({ context, project, profile, stageValue, quality, errors, warnings }) {
+  if (profile !== 'strict') {
+    return;
+  }
+
+  const paths = project.paths || {};
+
+  if (stageValue >= STAGE_ORDER.qa) {
+    if (!paths.qaReport) {
+      errors.push(`[project:${context.id}] Missing paths.qaReport for qa/done workflow`);
+    }
+
+    if (!quality || !quality.qaStatus) {
+      errors.push(`[project:${context.id}] Missing workflow.quality.qaStatus for qa/done workflow`);
+    } else if (quality.qaStatus === 'not_started') {
+      errors.push(`[project:${context.id}] workflow.quality.qaStatus must move beyond not_started before qa`);
+    }
+  }
+
+  if (stageValue >= STAGE_ORDER.done) {
+    if (!quality || quality.qaStatus !== 'passed') {
+      errors.push(`[project:${context.id}] done projects must have workflow.quality.qaStatus = passed`);
+    }
+  }
+
+  if (quality && quality.qaStatus === 'passed' && !quality.lastQaAt) {
+    warnings.push(`[project:${context.id}] qaStatus is passed but workflow.quality.lastQaAt is empty`);
+  }
+
+  const carouselPath = paths.carouselJson
+    ? path.join(context.dir, paths.carouselJson)
+    : null;
+
+  if (stageValue >= STAGE_ORDER.qa && carouselPath && fileExists(carouselPath)) {
+    const remoteAssets = collectRemoteAssetsFromText(fs.readFileSync(carouselPath, 'utf8'));
+    if (remoteAssets.length > 0) {
+      warnings.push(
+        `[project:${context.id}] carousel.json contains remote asset URLs (${remoteAssets.length}). Freeze local assets before publishing.`
+      );
+    }
+  }
 }
 
 function syncApprovals() {
@@ -615,6 +687,10 @@ function spawnApprovedCandidateProject(sourceContext, candidate, approvedAt) {
           approvedAt,
         },
       },
+      quality: {
+        qaStatus: 'not_started',
+        lastQaAt: null,
+      },
     },
     paths: {
       slidePlan: 'slide_plan.md',
@@ -622,6 +698,7 @@ function spawnApprovedCandidateProject(sourceContext, candidate, approvedAt) {
       carouselDraft: 'carousel_draft.md',
       handoffBrief: 'handoff_brief.md',
       carouselJson: 'carousel.json',
+      qaReport: 'qa_report.md',
       renderDir: 'renders/current',
     },
     validation: {
@@ -693,29 +770,34 @@ function buildSlidePlanMarkdown(sourceContext, candidate, approvedAt) {
 
 function buildCarouselDraftMarkdown(sourceContext, candidate) {
   return [
-    `# Carousel Draft Seed - ${candidate.workingTitle}`,
+    `# Carousel Draft - ${candidate.workingTitle}`,
     '',
-    '## Positioning',
+    '## Meta',
     `- brand: ${sourceContext.source.brand}`,
+    `- sourceId: ${sourceContext.id}`,
     `- candidateId: ${candidate.candidateId}`,
     `- slideCount: ${candidate.slideCount}`,
     `- packaging: ${candidate.packaging}`,
     '',
-    '## Core Message',
-    candidateSection(candidate, 'Core Message'),
+    '## Status',
+    '- seedMode: skeleton-only',
+    '- owner: content_editor',
+    '- sourceOfTruth: slide_plan.md',
     '',
-    '## Hook',
-    candidateSection(candidate, 'Hook'),
+    '## Locked Inputs',
+    `- hook: ${candidateSection(candidate, 'Hook')}`,
+    `- closingNote: ${candidateSection(candidate, 'Closing Note')}`,
     '',
-    '## Closing Note',
-    candidateSection(candidate, 'Closing Note'),
-    '',
-    '## Slide Flow',
+    '## Approved Slide Flow',
     candidateSection(candidate, 'Slide Flow'),
     '',
-    '## Notes',
-    '- Seeded automatically from the approved source planning document.',
-    '- Expand slide-by-slide copy here if the editor wants to refine before design.',
+    '## Copy Worksheet',
+    buildSlideCopyWorksheet(candidateSection(candidate, 'Slide Flow')),
+    '',
+    '## Editor Checklist',
+    '- turn each approved slide into final production copy',
+    '- keep slide count and message hierarchy aligned with slide_plan.md',
+    '- finalize this file before design begins',
     '',
   ].join('\n');
 }
@@ -730,28 +812,65 @@ function buildHandoffBriefMarkdown(sourceContext, candidate) {
     `- candidateId: ${candidate.candidateId}`,
     `- slideCount: ${candidate.slideCount}`,
     '',
-    '## Content Angle',
-    candidate.contentAngle,
+    '## Status',
+    '- seedMode: skeleton-only',
+    '- owner: content_editor',
+    '- designer should wait for finalized carousel_draft.md before layout lock',
     '',
-    '## Audience',
-    candidateSection(candidate, 'Audience'),
+    '## Required Inputs',
+    '- read `slide_plan.md` first',
+    '- read finalized `carousel_draft.md` second',
+    '- use `research_brief.md` only when it exists',
     '',
-    '## Core Message',
-    candidateSection(candidate, 'Core Message'),
-    '',
-    '## Hook',
-    candidateSection(candidate, 'Hook'),
-    '',
-    '## Slide Flow',
-    candidateSection(candidate, 'Slide Flow'),
-    '',
-    '## Visual Direction',
+    '## Locked Visual Direction',
     candidateSection(candidate, 'Visual Direction'),
     '',
-    '## Closing Note',
-    candidateSection(candidate, 'Closing Note'),
+    '## Asset Checklist',
+    '- replace remote references with local assets before final handoff',
+    '- confirm crop / focal point slide by slide',
+    '- keep brand guide constraints tighter than layout novelty',
+    '',
+    '## Designer Notes',
+    '- editor fills slide-specific emphasis and copy notes before design starts',
+    '- add asset paths, crop notes, and layout risks here during handoff',
     '',
   ].join('\n');
+}
+
+function buildSlideCopyWorksheet(slideFlow) {
+  const entries = parseSlideFlowEntries(slideFlow);
+
+  if (entries.length === 0) {
+    return '- Expand the approved slide flow into final slide copy.';
+  }
+
+  return entries.map((entry) => [
+    `### ${entry.label}`,
+    `- approvedDirection: ${entry.summary || 'TBD'}`,
+    '- headline:',
+    '- body:',
+    '- note:',
+    '',
+  ].join('\n')).join('\n').trim();
+}
+
+function parseSlideFlowEntries(slideFlow) {
+  return slideFlow
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const match = line.match(/^-\s*([^:]+):\s*(.*)$/);
+      if (!match) {
+        return null;
+      }
+
+      return {
+        label: match[1].trim(),
+        summary: match[2].trim(),
+      };
+    })
+    .filter(Boolean);
 }
 
 function parsePlanningBlocks(markdown) {
@@ -978,4 +1097,9 @@ function fileExists(filePath) {
 
 function escapeRegex(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function collectRemoteAssetsFromText(text) {
+  const matches = text.match(/https?:\/\/[^\s"'()<>]+/g) || [];
+  return Array.from(new Set(matches));
 }

@@ -19,6 +19,10 @@
         "status": "approved",
         "approvedAt": "2026-03-12T07:26:07.022Z"
       }
+    },
+    "quality": {
+      "qaStatus": "in_review",
+      "lastQaAt": "2026-03-13T00:00:00Z"
     }
   },
   "paths": {
@@ -27,6 +31,7 @@
     "carouselDraft": "carousel_draft.md",
     "handoffBrief": "handoff_brief.md",
     "carouselJson": "carousel.json",
+    "qaReport": "qa_report.md",
     "renderDir": "renders/current"
   },
   "validation": {

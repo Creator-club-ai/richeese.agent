@@ -16,6 +16,10 @@
         "status": "pending",
         "approvedAt": null
       }
+    },
+    "quality": {
+      "qaStatus": "not_started",
+      "lastQaAt": null
     }
   },
   "paths": {
@@ -25,6 +29,7 @@
     "carouselDraft": "carousel_draft.md",
     "handoffBrief": "handoff_brief.md",
     "carouselJson": "carousel.json",
+    "qaReport": "qa_report.md",
     "renderDir": "renders/current"
   },
   "validation": {
