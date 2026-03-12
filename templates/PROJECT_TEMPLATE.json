@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "new_project_slug",
+  "title": "New Project Title",
+  "brand": "startbase",
+  "projectType": "campaign",
+  "contentType": "carousel",
+  "sourceType": "researched",
+  "derivedFrom": null,
+  "owner": "dasarom4",
+  "workflow": {
+    "stage": "draft",
+    "requiresResearchBrief": true,
+    "approvals": {
+      "slidePlan": {
+        "status": "pending",
+        "approvedAt": null
+      }
+    }
+  },
+  "paths": {
+    "researchBrief": "research_brief.md",
+    "slidePlan": "slide_plan.md",
+    "approvals": "approvals.json",
+    "carouselDraft": "carousel_draft.md",
+    "handoffBrief": "handoff_brief.md",
+    "carouselJson": "carousel.json",
+    "renderDir": "renders/current"
+  },
+  "validation": {
+    "profile": "strict"
+  },
+  "distribution": {
+    "trackRendersInGit": false
+  }
+}

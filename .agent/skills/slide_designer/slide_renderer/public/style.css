@@ -210,8 +210,8 @@
 }
 @layer components {
   #slide-container {
-    width: 1080px;
-    height: 1350px;
+    width: var(--slide-width, 1080px);
+    height: var(--slide-height, 1440px);
     position: relative;
     overflow: hidden;
     background: var(--color-bg-light);

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "work-less-better-results",
+  "title": "더 적게 일해야 더 큰 결과가 난다",
+  "brand": "richesse-club",
+  "projectType": "campaign",
+  "contentType": "carousel",
+  "sourceType": "provided",
+  "derivedFrom": {
+    "sourceId": "bill-roche-power-of-entrepreneurial-mindset",
+    "candidateId": "work-less-better-results"
+  },
+  "owner": "dasarom4",
+  "workflow": {
+    "stage": "qa",
+    "requiresResearchBrief": false,
+    "approvals": {
+      "slidePlan": {
+        "status": "approved",
+        "approvedAt": "2026-03-11T04:23:48.890Z"
+      }
+    }
+  },
+  "paths": {
+    "slidePlan": "slide_plan.md",
+    "approvals": "approvals.json",
+    "carouselDraft": "carousel_draft.md",
+    "handoffBrief": "handoff_brief.md",
+    "carouselJson": "carousel.json",
+    "renderDir": "renders/current"
+  },
+  "validation": {
+    "profile": "strict"
+  },
+  "distribution": {
+    "trackRendersInGit": false
+  }
+}

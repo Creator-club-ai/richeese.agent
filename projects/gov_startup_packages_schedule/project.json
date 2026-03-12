@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "gov_startup_packages_schedule",
+  "title": "2026 창업패키지 일정표",
+  "brand": "yfc",
+  "projectType": "legacy",
+  "contentType": "carousel",
+  "sourceType": "researched",
+  "owner": "dasarom4",
+  "workflow": {
+    "stage": "done",
+    "requiresResearchBrief": true,
+    "approvals": {}
+  },
+  "paths": {
+    "researchBrief": "research_brief.md",
+    "carouselDraft": "carousel_draft.md",
+    "handoffBrief": "handoff_brief.md",
+    "carouselJson": "carousel.json",
+    "renderDir": "renders/gov_startup_packages_schedule_v1"
+  },
+  "validation": {
+    "profile": "legacy",
+    "requiredFiles": [
+      "research_brief.md",
+      "carousel_draft.md",
+      "handoff_brief.md",
+      "carousel.json"
+    ]
+  },
+  "distribution": {
+    "trackRendersInGit": false
+  },
+  "notes": "Imported before project.json became mandatory. Keep as legacy until the missing planning files are backfilled."
+}

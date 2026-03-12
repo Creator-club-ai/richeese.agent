@@ -11,7 +11,7 @@
 ```markdown
 - 콘텐츠 ID:
 - 브랜드: startbase
-- 포맷: Instagram Carousel (1080x1350)
+- 포맷: Instagram Carousel (1080x1440)
 - 콘텐츠 유형: news | curation | explainer | checklist | insight
 - 마감:
 ```

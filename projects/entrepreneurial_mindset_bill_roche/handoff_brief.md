@@ -2,7 +2,7 @@
 
 ## 프로젝트 정보
 - 콘텐츠 ID: richesse-entrepreneurial-mindset-bill-roche-v1
-- 규격: 1080x1350
+- 규격: 1080x1440
 - 브랜드: richesse.club
 - 브랜드 가이드 경로: brands/richesse-club/BRAND_GUIDE.md
 - 주제 클래스: insight

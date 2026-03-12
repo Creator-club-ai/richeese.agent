@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "timing-beats-idea",
+  "title": "스타트업의 승패는 아이디어보다 타이밍이 먼저 가른다",
+  "brand": "richesse-club",
+  "projectType": "campaign",
+  "contentType": "carousel",
+  "sourceType": "provided",
+  "derivedFrom": {
+    "sourceId": "bill-gross-startup-success-timing",
+    "candidateId": "timing-beats-idea"
+  },
+  "owner": "dasarom4",
+  "workflow": {
+    "stage": "qa",
+    "requiresResearchBrief": false,
+    "approvals": {
+      "slidePlan": {
+        "status": "approved",
+        "approvedAt": "2026-03-12T07:26:07.022Z"
+      }
+    }
+  },
+  "paths": {
+    "slidePlan": "slide_plan.md",
+    "approvals": "approvals.json",
+    "carouselDraft": "carousel_draft.md",
+    "handoffBrief": "handoff_brief.md",
+    "carouselJson": "carousel.json",
+    "renderDir": "renders/current"
+  },
+  "validation": {
+    "profile": "strict"
+  },
+  "distribution": {
+    "trackRendersInGit": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "richesse_fixed_body_sample",
+  "title": "richesse fixed body sample",
+  "brand": "richesse-club",
+  "projectType": "sample",
+  "contentType": "carousel",
+  "sourceType": "provided",
+  "owner": "dasarom4",
+  "workflow": {
+    "stage": "sample",
+    "requiresResearchBrief": false,
+    "approvals": {}
+  },
+  "paths": {
+    "carouselJson": "carousel.json",
+    "renderDir": "renders/current"
+  },
+  "validation": {
+    "profile": "sample",
+    "requiredFiles": [
+      "carousel.json",
+      "sample_slide.html"
+    ]
+  },
+  "distribution": {
+    "trackRendersInGit": false
+  }
+}

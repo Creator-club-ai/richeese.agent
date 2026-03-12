@@ -5,7 +5,7 @@
 - 콘텐츠 포맷: insight
 - 주제 클래스: insight
 - sourceType: provided
-- 승인 상태: Pending owner approval
+- 승인 상태: Approved in project.json (2026-03-10T09:35:00Z)
 
 ## 대상 독자
 창업 여부와 상관없이, 청년의 태도와 일하는 감각을 다시 정의하고 싶은 대학생·초기 커리어 독자

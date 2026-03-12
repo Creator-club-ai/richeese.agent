@@ -1,7 +1,7 @@
 # 디자이너 핸드오프 브리프 — 2026 창업패키지 일정표
 
 콘텐츠 ID: 2026-gov-startup-packages-schedule-v1
-포맷: Instagram Carousel (1080x1350)
+포맷: Instagram Carousel (1080x1440)
 작성일: 2026-03-06 (KST)
 
 ## 1) 콘텐츠 목표
@@ -85,9 +85,4 @@
 - 렌더용 JSON 초안(참고 시안): `OneDrive/바탕 화면/콘텐츠/projects/gov_startup_packages_schedule/carousel.json`
 - 브랜드 가드레일: `brands/yfc/BRAND_GUIDE.md`
 
-## 6) 최종 QA 기준
-- [ ] 날짜가 가장 먼저 읽히는가(저장용)
-- [ ] 오렌지 강조가 과하지 않고 포인트에만 쓰였는가
-- [ ] 모바일에서 본문 가독성이 충분한가(최소 36px 수준)
-- [ ] 통합공고/개별공고 구분이 오해 없이 전달되는가
-- [ ] 출처 표기(또는 ID)가 신뢰를 보강하는가
+

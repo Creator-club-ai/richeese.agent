@@ -1,10 +1,11 @@
 {
   "name": "content-slide-renderer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Puppeteer based slide generator for brand-guided card news",
   "main": "scripts/render.js",
   "scripts": {
     "render": "node scripts/render.js",
+    "render:preview": "node scripts/render.js --preview",
     "render:raw": "node scripts/render.js",
     "build": "npx @tailwindcss/cli -i src/input.css -o public/style.css",
     "dev": "npx @tailwindcss/cli -i src/input.css -o public/style.css --watch"

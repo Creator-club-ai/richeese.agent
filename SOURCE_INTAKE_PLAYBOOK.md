@@ -1,153 +1,78 @@
-# 소스 운영 플레이북 (슬라이드/릴스 우선)
+# Source Intake Playbook
 
-이 문서는 슬라이드 게시물과 릴스를 빠르게 완성하기 위한 소스 운영 규칙입니다.
+This document defines how a raw source becomes a reviewed content plan.
 
-## 1) 트랙 정의
-- `제공형`: 오너가 소스를 직접 전달
-- `탐색형`: 오너가 주제만 전달, `Researcher`가 소스를 탐색
+## Intake Types
 
-## 2) 공통 완료 조건
-- 콘텐츠 유형에 맞는 최소 출처 수 충족
-- 핵심 주장별 근거 매핑 완료
-- 출처 신뢰도 티어 기준 충족
+- `youtube`
+- `web`
+- `document`
+- `bundle`
 
-## 3) 출처 신뢰도 티어 (운영 기준)
-- `Tier 1 (우선)`: 정부/공공기관, 공식 통계, 원문 보고서, 공식 문서
-- `Tier 2 (보완)`: 업계 전문 미디어, 신뢰 가능한 기관 블로그, 전문가 아티클
-- `Tier 3 (아이디어)`: 커뮤니티 포스트, 개인 블로그, 큐레이션 글
+## Rule
 
-운영 원칙:
-- 사실/수치/정책 주장에는 Tier 1 또는 Tier 2 근거를 우선 사용
-- Tier 3는 아이디어 확장용으로만 사용하고, 단독 근거로 쓰지 않음
-- 최종 원고에는 핵심 주장별 출처를 1:1로 매핑
+If one raw source can branch into multiple content directions, start in `sources/`.
 
-## 4) 제공형 SOP
-1. 오너가 소스 전달 (기사 링크, PDF, 영상 파일, 인터뷰 스크립트)
-2. Researcher가 소스 정리 및 신뢰도 티어 태깅
-3. Planner가 핵심 메시지/구조화
-4. Editor가 슬라이드/릴스 원고 작성
-5. Designer가 비주얼 방향/레이아웃을 선검토
-6. Designer/PD가 최종 렌더링
-7. QA Pass 후 오너에게 산출물 전달
+Do not create a project until:
 
-### 제공형 입력 템플릿
-```markdown
-[소스 패키지]
-- 콘텐츠 ID: W10-XX
-- 포맷: 카드뉴스 | 릴스
-- 소스 타입: 링크 | 문서 | 영상
-- 소스 목록:
-  1) URL 또는 파일경로
-  2) URL 또는 파일경로
-- 금지 메시지/주의사항:
-```
+- `planning.md` exists
+- the owner has reviewed it
+- the source has a selected `mainCandidateId` and any relevant `standaloneCandidateIds`
+- the actual spawn queue is written into `approvedCandidateIds`
 
-## 5) 탐색형 SOP
-1. 오너가 주제/타겟/KPI 전달
-2. Researcher가 탐색 키워드 세트 작성
-3. Researcher가 콘텐츠 유형 기준으로 소스 수집 (정보형 4~6, 인사이트형 6~10, 흥미형 3~5)
-4. Researcher가 신뢰도 티어 기준으로 출처 고정
-5. Researcher가 `Research Brief` 작성 및 Planner에게 핸드오프
-6. Planner가 메시지 구조/슬라이드 흐름 기획
-7. Designer 주도로 Editor/PD와 제작 진행
-8. QA Pass 후 오너에게 산출물 전달
+## Done Criteria For `planning.md`
 
-### Research Brief (핸드오프 산출물)
-- 핵심 주장 3~5개
-- 주장별 근거 출처 (Tier 태그 포함)
-- 반대 관점/주의 포인트 1~2개
-- 바로 쓸 수 있는 인용/숫자 스니펫 5~10개
-- 아직 확정되지 않은 쟁점 (`Unknowns`)
+- the core thesis is clear
+- the main card angle is clear
+- slide-level subtopics are separated from standalone-worthy subtopics
+- every viable candidate has a slide count and slide flow
+- ready / hold / reject status is visible
+- the owner can approve without asking for another planning pass
 
-### 탐색형 입력 템플릿
-```markdown
-[탐색 브리프]
-- 콘텐츠 ID: W10-XX
-- 주제:
-- 타겟:
-- 목표 KPI:
-- 반드시 포함할 관점 2개:
-- 제외할 관점 2개:
-```
+## Required Sections
 
-### Research Brief 템플릿
-```markdown
-[Research Brief]
-- 콘텐츠 ID:
-- 콘텐츠 유형: 정보형 | 인사이트형 | 흥미형
-- 핵심 주장:
-  1)
-  2)
-  3)
-- 주장별 근거:
-  - 주장 1 -> [출처명/링크] (Tier 1|2|3)
-  - 주장 2 -> [출처명/링크] (Tier 1|2|3)
-- 숫자/인용 스니펫(5~10개):
-  -
-- 반대 관점/주의 포인트:
-  -
-- Unknowns (추가 확인 필요):
-  -
-```
+- `Source Snapshot`
+- `Core Theme`
+- `Main Topic`
+- `Packaging Map`
+- `Candidate Scoreboard`
+- `Candidate Plans`
+- `Recommended Route`
+- `Approval Guide`
 
-## 6) 콘텐츠 유형별 탐색 강도 기준
-- `정보형` (정책/수치/방법론): 4~6개 소스, 최소 Tier1 2개 + Tier2 1개 이상
-- `인사이트형` (해석/관점): 6~10개 소스, 최소 Tier1 1개 + Tier2 3개 이상
-- `흥미형` (트렌드/스토리): 3~5개 소스, Tier2 2개 이상 + Tier3 보조 가능
+## Approval Behavior
 
-권장 탐색 시간:
-- 정보형: 45~75분
-- 인사이트형: 75~120분
-- 흥미형: 30~60분
+- `mainCandidateId` is the main card decision
+- `standaloneCandidateIds` is the follow-up idea set
+- `approvedCandidateIds` is the source of truth for what gets spawned now
+- `status: approved` is required before spawn
+- `status: spawned` means child projects were already created
 
-## 6-1) Researcher 필수 투입 조건
-- 인사이트형 콘텐츠 전체
-- 반대 관점이 큰 주제(논쟁형, 해석 충돌 주제)
-- Planner 단독 리서치 예상 시간이 60분 이상인 주제
+## Source Quality Rules
 
-## 6-2) Research SLA (소규모 팀 기준)
-- Tier A (심층): Research Brief 1~2영업일
-- Tier B (표준): Research Brief 2~4시간
-- Tier C (경량): Planner 자율 리서치 허용 (동일 템플릿 사용)
-- 원칙: Researcher는 승인 단계가 아니라 서비스 단계(핸드오프 역할)로 운영
+- Facts, numbers, and policy claims should rely on strong sources where possible.
+- If a YouTube or audio source does not have a usable transcript, mark confidence low and block downstream spawning.
+- If the transcript angle and the raw title disagree, follow the transcript, not the thumbnail/title packaging.
+- If the active brand is `richesse-club`, do not treat transcript extraction as the final plan. Use transcript -> raw insights -> filtered insights -> candidate recommendation.
+- For `richesse-club`, raw transcript points should be filtered by `Brand Fit`, `Content Value`, `Novelty`, `Evidence Strength`, and `Slide-worthiness` before they become slide candidates.
+- For `richesse-club`, a summary-style carousel should only move forward if at least `5` usable body insights remain after filtering.
+- If `richesse-club` usable insights drop below that threshold, either:
+  - hold the source
+  - convert it into one deeper insight-led card
+  - reject the source angle
 
-## 7) 포맷별 최소 소스 기준
-- 카드뉴스: 텍스트 출처 2개 이상 (인사이트형은 3개 이상 권장)
-- 릴스: 핵심 주장 근거 2개 이상 + 훅 보강용 레퍼런스 1개 이상
+## Richesse Output Expectation
 
-## 7-1) 슬라이드 장수 기준
-- 기본: Cover + 본문 + CTA 포함 `6~10장`
-- 확장: 정보 밀도/논점이 많을 때 `11~12장` 허용
-- 제한: 12장을 넘기지 않음
+When the active brand is `richesse-club`, `planning.md` should make the filtering step visible.
 
-장수 확장 허용 조건:
-- 인사이트형에서 핵심 주장 4개 이상을 분리해야 할 때
-- 반대 관점/주의 포인트를 별도 슬라이드로 분리해야 할 때
-- 수치/근거 슬라이드를 생략하면 메시지 신뢰도가 떨어질 때
+Include:
 
-## 7-2) 커버 이미지 사용 기준 (선택)
-- 기본값: 커버는 텍스트 중심(이미지 없음)
-- 이미지 사용: 인물/브랜드/주제를 상징하는 적합한 비주얼이 있을 때만 사용
+- raw insight volume
+- filtered insight volume
+- which insights were cut or merged
+- whether the source supports a summary-style carousel or only a single deep angle
 
-유연성 메모:
-- 도구 옵션보다 디자이너 판단을 우선합니다.
-- 주제 적합성이 낮으면 커버 이미지를 넣지 않는 선택을 기본으로 합니다.
-- 옵션 필드는 제작 보조용이며, 최종 결정 기준은 메시지 전달력입니다.
+## Commands
 
-권장 사용:
-- 인물 중심 콘텐츠 (예: 나발 라비칸트, 샘 알트만)
-- 특정 기업/서비스를 다루는 케이스 스터디
-
-비권장 사용:
-- 정부지원사업 목록, 체크리스트형 정보 요약처럼 대표 이미지가 애매한 주제
-- 메시지보다 이미지가 더 강하게 보이는 경우
-
-## 8) 실패 방지 규칙
-- 소스 검증 전 원고 작성 금지
-- 근거 없는 수치/주장 금지
-- 출처 누락 시 무조건 Hold
-
-## 9) 주간 운영 체크
-- 월/수: 소스 확보 및 검증
-- 화/목/토: 제작 및 QA
-- 금/일: 게시 및 성과 기록
+- `npm run validate:sources`
+- `npm run spawn:approved -- <source-id>`

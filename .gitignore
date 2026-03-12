@@ -7,6 +7,8 @@ __pycache__/
 # Output files (can be regenerated)
 output/
 shorts_final/
+projects/**/renders/
+.agent/skills/slide_designer/slide_renderer/renders/
 
 # OS files
 .DS_Store

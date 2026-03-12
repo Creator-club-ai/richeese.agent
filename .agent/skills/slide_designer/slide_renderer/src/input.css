@@ -47,10 +47,10 @@
    ============================================ */
 @layer components {
 
-    /* 메인 컨테이너: 1080x1350 (인스타그램 4:5) */
+    /* 메인 컨테이너: 기본 1080x1440, 필요 시 render.js가 CSS 변수로 오버라이드 */
     #slide-container {
-        width: 1080px;
-        height: 1350px;
+        width: var(--slide-width, 1080px);
+        height: var(--slide-height, 1440px);
         position: relative;
         overflow: hidden;
         background: var(--color-bg-light);
