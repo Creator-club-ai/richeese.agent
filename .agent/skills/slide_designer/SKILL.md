@@ -51,6 +51,19 @@ When the active brand is `richesse-club`, lock these cover defaults unless the u
 - cover tags use `Neue Haas Grotesk Display Pro`, `35px`, `Extra Light`
 - cover does not use an index marker by default
 
+When the active brand is `richesse-club`, lock these body defaults unless the user explicitly overrides them:
+
+- use `brands/richesse-club/body.template.json` as the canonical body template reference
+- if `project.paths.templateData` exists, treat that file as the body copy source of truth and regenerate `carousel.json` from it before rendering
+- preserve the first slide from the existing `carousel.json` as slide 1 when available, then append generated body slides after it
+- for body/final slides, reuse the same fixed dark editorial template and only swap approved copy into the slots
+- body slide numbering should be generated from slide order, starting after the preserved cover
+- keep `theme: dark`, `chrome: none`, `footer: none`, `meta.width: 1080`, `meta.height: 1440`
+- keep the slot order `index + rule -> 2-line headline -> lead body -> secondary body/quote -> bullet -> left/right source tags`
+- use `Pretendard Medium` for index/body, `Pretendard ExtraBold` for headline, and `Neue Haas Grotesk Display Pro 45 Light` for bottom source tags
+- do not introduce cards, data tables, icons, image blocks, or alternate body layouts for richesse unless the user explicitly asks
+- if Korean final copy still contains untranslated source keywords, mixed-language label phrases, or adjacent slides that repeat the same takeaway, flag it back to the editor instead of silently preserving the weak draft
+
 Do not edit:
 
 - `planning.md`

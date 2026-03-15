@@ -98,6 +98,12 @@ flowchart TD
 - Slide 4:
 - Final:
 
+#### Slide Differentiation Check
+- slide roles by order:
+- overlap risk between adjacent slides:
+- merge/cut decision before approval:
+- why each remaining body slide deserves its own slot:
+
 #### Visual Direction
 
 ## Recommended Route

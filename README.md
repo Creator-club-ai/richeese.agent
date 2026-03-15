@@ -83,6 +83,11 @@ Use this sequence instead:
 4. remove weak, duplicate, or non-editorial points
 5. confirm that at least `5` usable body insights remain before proposing a summary-style carousel
 
+Planner rule:
+
+- if two body slides would land on the same takeaway, merge or cut them before approval
+- each approved body slide should play a distinct role in the argument, not a paraphrase of the previous slide
+
 If the filtered list is too weak, do not force a carousel. Either:
 
 - hold the source
@@ -111,6 +116,7 @@ Source-approved projects skip the extra planning gate and are spawned directly a
   - owns source planning and `slide_plan.md` refinement only
 - `content_editor`
   - owns copy and designer brief only
+- `content_editor` must rewrite planning language into final reader-facing Korean copy and remove repeated adjacent slide claims before design
 - `slide_designer`
   - owns `carousel.json`, renders, and local visual asset freeze only
 - `content_qa`

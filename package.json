@@ -2,6 +2,7 @@
   "name": "content-marketing-hub",
   "private": true,
   "scripts": {
+    "build:richesse": "node scripts/build-richesse-carousel.js",
     "validate:projects": "node scripts/project-ops.js validate-projects",
     "validate:sources": "node scripts/project-ops.js validate-sources",
     "validate:all": "node scripts/project-ops.js validate",

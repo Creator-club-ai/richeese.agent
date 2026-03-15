@@ -13,14 +13,15 @@
     "approvals": {}
   },
   "paths": {
+    "templateData": "slides.data.json",
     "carouselJson": "carousel.json",
     "renderDir": "renders/current"
   },
   "validation": {
     "profile": "sample",
     "requiredFiles": [
-      "carousel.json",
-      "sample_slide.html"
+      "slides.data.json",
+      "carousel.json"
     ]
   },
   "distribution": {

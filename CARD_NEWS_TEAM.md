@@ -38,6 +38,16 @@ Do not create a project before owner review.
 - After source approval, agent handoff and QA should carry the project forward.
 - Final visual review is optional, not part of the default pipeline.
 
+## Editor Copy Rules
+
+- `content_editor` owns the final reader-facing slide copy in `carousel_draft.md` and the designer-facing wording in `handoff_brief.md`.
+- For Korean-brand outputs, source keywords are reference material only. Final slide copy should be written as natural Korean for the reader, not as leftover source vocabulary.
+- Do not leave untranslated source keywords, mixed Korean-English label phrases, or half-translated abstract terms in final slide copy unless they are unavoidable proper nouns or quoted source language.
+- Rewrite the idea, not the keyword. The final line should read like finished Korean editorial copy, not like a memo copied from the source.
+- Do not treat planner labels, transcript phrasing, or source-side concept tags as publishable slide copy. The editor must rewrite them into reader-facing Korean sentences.
+- Adjacent slides must not make the same point with slightly different wording. If two slides land on the same conclusion, merge them or split their roles clearly into `claim / reason / evidence / implication`.
+- Before handoff to design, the editor should check whether each body slide introduces a distinct takeaway, not just a repeated restatement of the previous slide.
+
 ## `planning.md` Contract
 
 Each source planning file must include these sections:
@@ -131,6 +141,14 @@ Recommended keep / cut rule:
 - keep insights only when they are strong enough to stand as a slide in their own right
 - cut any insight that is mostly program description, logistics, repetition, or weak motivation language
 - merge insights that are conceptually overlapping before counting final usable slides
+
+## Planner Slide De-duplication Rule
+
+- `content_planner` must remove overlap before owner approval, not after design starts.
+- If two candidate body slides would produce the same one-sentence takeaway, they are not two slides. Merge them or cut one.
+- In `Slide Flow`, each body slide should have a distinct job such as `claim`, `reason`, `evidence`, `example`, `implication`, or `closing insight`.
+- Adjacent slides must advance the argument, not restate the previous slide with different wording.
+- The planner should explicitly check whether Slide 2~N each adds new information, not just a new phrasing of the same point.
 
 ## Richesse Slide Feasibility Gate
 
