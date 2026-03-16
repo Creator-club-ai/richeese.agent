@@ -1,4 +1,4 @@
-# Planning Review - [Source Title]
+# Planning Review - [Intake Title]
 
 Use this single file for owner review before any project is created.
 
@@ -6,18 +6,21 @@ Use this single file for owner review before any project is created.
 - sourceId:
 - brand:
 - sourceType:
+- intakeMode: source-backed | topic-backed
 - input:
+- topic statement:
 - transcript status:
 - estimated length:
-- planning note:
+- scout research note:
 
 ## Core Theme
 - main thesis:
-- why this source matters:
+- why this intake matters:
 - editorial opportunity:
 
 ## Insight Extraction
 - raw insight count:
+- scout source count:
 - filtered usable insight count:
 - summary-style carousel viability:
 
@@ -37,6 +40,14 @@ Use when the active brand is `richesse-club`.
 | --- | --- | --- | --- | --- | --- | --- |
 | insight 1 |  |  |  |  |  |  |
 
+## Research Plan
+- research needed:
+- why:
+- primary unknowns:
+- must-verify claims:
+- target source types:
+- expected output: denser angle | stronger facts | examples | comparisons | quotes
+
 ## Main Topic
 ### Umbrella Slide Subtopics
 - subtopic 1:
@@ -53,7 +64,7 @@ Use when the active brand is `richesse-club`.
 
 ```mermaid
 flowchart TD
-  A["Source"] --> B["Main card"]
+  A["Intake"] --> B["Main card"]
   A --> C["Standalone candidate 1"]
   A --> D["Standalone candidate 2"]
 ```
@@ -74,6 +85,9 @@ flowchart TD
 - contentAngle:
 - whyItDeservesAPost:
 - recommendedPriority: P1 | P2 | P3
+- evidenceLevel: strong | medium | weak | unknown
+- researchNeeded: yes | no
+- sourcePlan:
 
 #### Audience
 
@@ -109,6 +123,7 @@ flowchart TD
 ## Recommended Route
 - main card recommendation:
 - why:
+- spawnMode recommendation: plan_approved | research_first
 - standalone expansion candidates:
 - hold:
 - reject:
@@ -117,6 +132,7 @@ flowchart TD
 - main card:
 - standalone candidates:
 - spawn now:
+- spawn route:
 - hold:
 - reject:
 - next step after approval:

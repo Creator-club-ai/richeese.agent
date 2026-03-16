@@ -13,9 +13,6 @@
 ```text
 brands/
   README.md
-  startbase/
-    BRAND_GUIDE.md
-    DESIGNER_HANDOFF_BRIEF.md
   yfc/
     BRAND_GUIDE.md
     DESIGNER_HANDOFF_BRIEF.md
@@ -29,7 +26,7 @@ brands/
 아래 우선순위로 active brand 를 고정합니다.
 
 1. 현재 사용자 요청이나 프로젝트 브리프가 명시한 브랜드
-2. `sources/<source-id>/source.json.brand`
+2. `sources/<intake-id>/source.json.brand`
 3. `projects/<topic>/project.json.brand`
 4. 프로젝트 폴더 또는 핸드오프 문서가 명시한 브랜드 가이드 경로
 5. 기존 샘플 프로젝트가 이미 연결한 브랜드 폴더
@@ -46,6 +43,12 @@ brands/
 
 ## 현재 브랜드
 
-- `startbase`: 국내 창업 정보 플랫폼용 작업 브랜드
-- `yfc`: 기존 YouthFounderClub 브랜드 레이어
-- `richesse-club`: 절제된 에디토리얼 캐러셀 레이어
+- `yfc`: 청년 창업가 커뮤니티 브랜드. 네트워킹, 실행, 팀, 이벤트, 초기 창업가의 현실적인 문제를 다룹니다.
+- `richesse-club`: builder culture 에서 출발해 wealth 를 해석하고 taste 로 결을 만드는 에디토리얼 미디어 브랜드입니다.
+
+## 현재 운영 원칙
+
+- 브랜드 구조는 `YFC + Richesse` 2축으로 유지합니다.
+- `yfc` 는 커뮤니티와 실행의 브랜드입니다.
+- `richesse-club` 은 builders 를 바탕으로 wealth 와 기준을 해석하고, taste 로 결을 만드는 상위 미디어 브랜드입니다.
+- 새 source/project 를 만들 때는 두 브랜드 중 하나를 명시적으로 고릅니다.

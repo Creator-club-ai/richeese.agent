@@ -1,10 +1,10 @@
 # Content Marketing Hub
 
-This workspace is a source-first operating system for content planning and carousel production.
+This workspace is an intake-first operating system for content planning and carousel production.
 
 The core rule is simple:
 
-`raw source -> planning.md review -> owner approval -> spawn project -> researcher(optional) -> editor -> designer -> qa`
+`intake(source-backed | topic-backed) -> scout research + planning.md review -> owner approval -> spawn project(plan_approved | researching) -> researcher(if needed) -> editor -> designer -> qa`
 
 ## Structure
 
@@ -21,11 +21,11 @@ The core rule is simple:
 
 ## What Lives Where
 
-- `sources/<source-id>/source.json`
-  - raw source metadata and approval state
-- `sources/<source-id>/planning.md`
-  - the single owner-facing planning document
-  - includes source summary, packaging map, candidate scoreboard, and slide plans
+- `sources/<intake-id>/source.json`
+  - intake metadata, source/topic mode, and approval state
+- `sources/<intake-id>/planning.md`
+  - the single owner-facing intake review document
+  - includes scout research, packaging map, candidate scoreboard, and either slide plans or research routes
 - `projects/<topic>/project.json`
   - project metadata and workflow state
 - `projects/<topic>/slide_plan.md`
@@ -39,19 +39,21 @@ The core rule is simple:
 - `projects/<topic>/qa_report.md`
   - qa-owned pass/fail record and route-back note
 
-## Source-First Workflow
+## Intake Workflow
 
-1. Create `source.json`.
-2. Analyze the source into one `planning.md`.
-3. Show `planning.md` to the owner.
-4. The owner selects one main card and any standalone-worthy follow-ups.
-5. Write those choices into:
+1. Create `source.json` for a source-backed or topic-backed intake.
+2. Run `scout research` until the angle is strong enough to judge.
+3. Analyze the intake into one `planning.md`.
+4. Show `planning.md` to the owner.
+5. The owner selects one main card, any standalone-worthy follow-ups, and the spawn route.
+6. Write those choices into:
    - `source.json.analysis.mainCandidateId`
    - `source.json.analysis.standaloneCandidateIds`
    - `source.json.analysis.approvedCandidateIds`
-6. Set `status` to `approved`.
-7. Run `npm run spawn:approved -- <source-id>`.
-8. Only approved candidates become child projects.
+   - `source.json.generation.spawnMode`
+7. Set `status` to `approved`.
+8. Run `npm run spawn:approved -- <intake-id>`.
+9. Only approved candidates become child projects.
 
 Important:
 
@@ -61,10 +63,11 @@ Important:
 - `mainCandidateId` is the selected main card.
 - `standaloneCandidateIds` is the set of subtopics worth tracking as independent posts.
 - `approvedCandidateIds` is the actual spawn queue for right now.
+- `generation.spawnMode` decides whether approved candidates become `plan_approved` or `researching` projects.
 - No project is created before the owner reviews `planning.md`.
-- Spawned projects are created in `plan_approved` state.
-- `slide_plan.md` is fully seeded at spawn.
-- `carousel_draft.md` and `handoff_brief.md` are skeleton files so editor/designer ownership stays separate.
+- `plan_approved` spawns are created with an approved `slide_plan.md`.
+- `research_first` spawns are created in `researching` state with `research_brief.md` seeded first.
+- `carousel_draft.md` and `handoff_brief.md` are created only after the project has an approved slide plan.
 
 ## Richesse Insight Filtering
 
@@ -96,24 +99,30 @@ If the filtered list is too weak, do not force a carousel. Either:
 
 ## Project Workflow
 
-`project.json -> slide_plan.md -> research_brief.md(optional) -> carousel_draft.md + handoff_brief.md -> carousel.json -> renders/ -> qa_report.md`
+`project.json -> research_brief.md(optional or required) -> slide_plan.md -> carousel_draft.md + handoff_brief.md -> carousel.json -> renders/ -> qa_report.md`
 
 Typical state progression:
 
-`draft -> planning -> awaiting_plan_approval -> plan_approved -> writing -> designing -> qa -> done`
+`draft -> researching -> planning -> awaiting_plan_approval -> plan_approved -> writing -> designing -> qa -> done`
 
-Source-approved projects skip the extra planning gate and are spawned directly as:
+`plan_approved` projects are spawned directly with:
 
 - `workflow.stage = plan_approved`
 - `workflow.approvals.slidePlan.status = approved`
 - `workflow.quality.qaStatus = not_started`
+
+`research_first` projects are spawned directly with:
+
+- `workflow.stage = researching`
+- `workflow.requiresResearchBrief = true`
+- `workflow.approvals.slidePlan.status = pending`
 
 ## Agent Ownership
 
 - `content_researcher`
   - owns evidence only
 - `content_planner`
-  - owns source planning and `slide_plan.md` refinement only
+  - owns intake planning and `slide_plan.md` refinement only
 - `content_editor`
   - owns copy and designer brief only
 - `content_editor` must rewrite planning language into final reader-facing Korean copy and remove repeated adjacent slide claims before design
@@ -134,7 +143,7 @@ Do not let one shared agent overwrite another shared agent's stage output.
   - validate both source and project layers
 - `npm run sync:approvals`
   - mirror `project.json.workflow.approvals` into `approvals.json`
-- `npm run spawn:approved -- <source-id>`
+- `npm run spawn:approved -- <intake-id>`
   - create plan-approved child projects from approved candidates
 - `npm run render -- --data <carousel.json> --output <dir>`
   - render final images
@@ -150,11 +159,11 @@ Do not let one shared agent overwrite another shared agent's stage output.
 
 ## Validation Rules
 
-- Every source folder must have `source.json`.
-- Any analyzed source must also have `planning.md`.
+- Every intake folder under `sources/` must have `source.json`.
+- Any analyzed intake must also have `planning.md`.
 - `planning.md` must contain the required sections and candidate plans.
 - `mainCandidateId`, `standaloneCandidateIds`, and `approvedCandidateIds` must point to candidate IDs that exist in `planning.md`.
-- Any project with `derivedFrom` must point to an approved source candidate.
+- Any project with `derivedFrom` must point to an approved intake candidate.
 - `approvals.json` must match `project.json.workflow.approvals`.
 - strict projects in `qa` or `done` must have `qa_report.md` and `workflow.quality.qaStatus`
 - strict projects in `done` must have `workflow.quality.qaStatus = passed`

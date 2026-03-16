@@ -50,8 +50,9 @@ const REQUIRED_NON_REJECT_PLAN_SECTIONS = [
 ];
 
 const KNOWN_PLANNING_FIELDS = new Set(REQUIRED_PLANNING_FIELDS);
-const ALLOWED_SOURCE_TYPES = new Set(['youtube', 'web', 'document', 'bundle']);
+const ALLOWED_SOURCE_TYPES = new Set(['youtube', 'web', 'document', 'bundle', 'topic']);
 const ALLOWED_SOURCE_STATUS = new Set(['ingested', 'analyzed', 'approved', 'spawned']);
+const ALLOWED_SPAWN_MODES = new Set(['plan_approved', 'research_first']);
 const ALLOWED_PACKAGING = new Set(['umbrella', 'standalone', 'series-only', 'reject']);
 const ALLOWED_REVIEW_STATUS = new Set(['ready', 'hold', 'reject']);
 const ALLOWED_PRIORITY = new Set(['P1', 'P2', 'P3']);
@@ -245,6 +246,11 @@ function validateSourceContext(context) {
 
   if (!source.brand) {
     errors.push(`[source:${context.id}] Missing brand`);
+  }
+
+  const configuredSpawnMode = readOptionalString(source, ['generation', 'spawnMode']);
+  if (configuredSpawnMode && !ALLOWED_SPAWN_MODES.has(configuredSpawnMode)) {
+    errors.push(`[source:${context.id}] Invalid generation.spawnMode: ${configuredSpawnMode}`);
   }
 
   const candidateIds = readStringArray(source, ['analysis', 'candidateIds']);
@@ -665,6 +671,10 @@ function spawnApprovedCandidateProject(sourceContext, candidate, approvedAt) {
 
   ensureDir(projectDir);
 
+  const spawnMode = readOptionalString(sourceContext.source, ['generation', 'spawnMode']) || 'plan_approved';
+  const isResearchFirst = spawnMode === 'research_first';
+  const projectSourceType = sourceContext.source.sourceType === 'topic' ? 'researched' : 'provided';
+
   const project = {
     schemaVersion: 1,
     id: projectId,
@@ -672,19 +682,19 @@ function spawnApprovedCandidateProject(sourceContext, candidate, approvedAt) {
     brand: sourceContext.source.brand,
     projectType: 'campaign',
     contentType: 'carousel',
-    sourceType: 'provided',
+    sourceType: projectSourceType,
     derivedFrom: {
       sourceId: sourceContext.id,
       candidateId: candidate.candidateId,
     },
     owner: DEFAULT_OWNER,
     workflow: {
-      stage: 'plan_approved',
-      requiresResearchBrief: false,
+      stage: isResearchFirst ? 'researching' : 'plan_approved',
+      requiresResearchBrief: isResearchFirst,
       approvals: {
         slidePlan: {
-          status: 'approved',
-          approvedAt,
+          status: isResearchFirst ? 'pending' : 'approved',
+          approvedAt: isResearchFirst ? null : approvedAt,
         },
       },
       quality: {
@@ -693,6 +703,7 @@ function spawnApprovedCandidateProject(sourceContext, candidate, approvedAt) {
       },
     },
     paths: {
+      ...(isResearchFirst ? { researchBrief: 'research_brief.md' } : {}),
       slidePlan: 'slide_plan.md',
       approvals: 'approvals.json',
       carouselDraft: 'carousel_draft.md',
@@ -711,11 +722,71 @@ function spawnApprovedCandidateProject(sourceContext, candidate, approvedAt) {
 
   writeJson(projectPath, project);
   writeJson(path.join(projectDir, 'approvals.json'), project.workflow.approvals);
+
+  if (isResearchFirst) {
+    writeText(path.join(projectDir, 'research_brief.md'), buildResearchBriefMarkdown(sourceContext, candidate));
+    console.log(`[project:${projectId}] Created as research-first project from approved candidate ${candidate.candidateId}`);
+    return true;
+  }
+
   writeText(path.join(projectDir, 'slide_plan.md'), buildSlidePlanMarkdown(sourceContext, candidate, approvedAt));
   writeText(path.join(projectDir, 'carousel_draft.md'), buildCarouselDraftMarkdown(sourceContext, candidate));
   writeText(path.join(projectDir, 'handoff_brief.md'), buildHandoffBriefMarkdown(sourceContext, candidate));
-  console.log(`[project:${projectId}] Created from approved candidate ${candidate.candidateId}`);
+  console.log(`[project:${projectId}] Created as plan-approved project from approved candidate ${candidate.candidateId}`);
   return true;
+}
+
+function buildResearchBriefMarkdown(sourceContext, candidate) {
+  return [
+    `# Research Brief - ${candidate.workingTitle}`,
+    '',
+    '## 프로젝트 메타',
+    `- sourceId: ${sourceContext.id}`,
+    `- candidateId: ${candidate.candidateId}`,
+    `- 브랜드: ${sourceContext.source.brand}`,
+    `- intakeType: ${sourceContext.source.sourceType}`,
+    `- sourceType: ${sourceContext.source.sourceType === 'topic' ? 'researched' : 'provided'}`,
+    `- 한 줄 주제 정의: ${candidate.contentAngle || candidate.workingTitle}`,
+    '',
+    '## 왜 리서치가 필요한가',
+    '- 현재 각도는 유효하지만, 바로 슬라이드 계획을 확정하기엔 근거 또는 밀도가 더 필요하다.',
+    '- 아래 항목을 채워 slide plan 승인 전까지 논지, 사례, 반대 관점, 근거 수준을 보강한다.',
+    '',
+    '## 후보 앵글',
+    `1. ${candidateSection(candidate, 'Core Message')}`,
+    `2. ${candidateSection(candidate, 'Why Now')}`,
+    `3. ${candidateSection(candidate, 'Hook')}`,
+    '',
+    '## 핵심 주장',
+    `1. ${candidateSection(candidate, 'Key Point 1')}`,
+    `2. ${candidateSection(candidate, 'Key Point 2')}`,
+    `3. ${candidateSection(candidate, 'Key Point 3')}`,
+    '',
+    '## 리서치 목표',
+    '- 이 각도를 지탱하는 1차 근거를 찾는다.',
+    '- 주장별로 예시, 비교 포인트, 숫자, 반대 관점을 채운다.',
+    '- slide plan으로 넘어갈 만큼 밀도가 충분한지 판정한다.',
+    '',
+    '## 주장별 근거',
+    '- 주장 1 ->',
+    '- 주장 2 ->',
+    '- 주장 3 ->',
+    '',
+    '## 출처 목록',
+    '- Tier 1:',
+    '- Tier 2:',
+    '',
+    '## 바로 쓸 수 있는 사실/수치/인용',
+    '- fact 1:',
+    '- fact 2:',
+    '',
+    '## 반대 관점 / 주의 포인트',
+    '- point 1:',
+    '',
+    '## Unknowns',
+    '- unknown 1:',
+    '',
+  ].join('\n');
 }
 
 function buildSlidePlanMarkdown(sourceContext, candidate, approvedAt) {

@@ -5,20 +5,20 @@ This is the active operating standard for the carousel pipeline.
 ## Priority
 
 - Follow this file first if older docs conflict.
-- Source state lives in `sources/<source-id>/source.json`.
+- Intake state lives in `sources/<intake-id>/source.json`.
 - Project state lives in `projects/<topic>/project.json`.
 - `approvals.json` is a mirror of `project.json.workflow.approvals`.
 
 ## Goal
 
-- Turn raw sources into strong Instagram carousels in the current team size standard: `1080x1440`.
+- Turn approved intakes into strong Instagram carousels in the current team size standard: `1080x1440`.
 - Show planning to the owner before design starts.
 - Keep the workflow minimal and fast.
 - Use single-responsibility agents. One agent owns one stage output.
 
 ## Required Flow
 
-`source.json -> planning.md -> owner review -> mainCandidateId / standaloneCandidateIds -> approvedCandidateIds -> spawn approved project -> researcher(optional) -> editor -> designer -> qa`
+`source.json -> scout research + planning.md -> owner review -> mainCandidateId / standaloneCandidateIds / approvedCandidateIds / spawnMode -> spawn approved project -> researcher(if needed) -> editor -> designer -> qa`
 
 Do not create a project before owner review.
 
@@ -26,8 +26,8 @@ Do not create a project before owner review.
 
 | Agent | Responsibility | Reads | Owns | Must Not Edit |
 | --- | --- | --- | --- | --- |
-| `content_researcher` | evidence strengthening only | source/project + approved plan | `research_brief.md` | `planning.md`, `slide_plan.md`, `carousel_draft.md`, `handoff_brief.md`, `carousel.json` |
-| `content_planner` | source planning or approved plan refinement | `source.json`, `planning.md`, `project.json`, brand guide | `sources/*/planning.md`, refined `slide_plan.md` | `research_brief.md`, `carousel_draft.md`, `handoff_brief.md`, `carousel.json`, `qa_report.md` |
+| `content_researcher` | scout fill or evidence strengthening only | source/project + approved plan | `research_brief.md` | `planning.md`, `slide_plan.md`, `carousel_draft.md`, `handoff_brief.md`, `carousel.json` |
+| `content_planner` | intake planning or approved plan refinement | `source.json`, `planning.md`, `project.json`, brand guide | `sources/*/planning.md`, refined `slide_plan.md` | `research_brief.md`, `carousel_draft.md`, `handoff_brief.md`, `carousel.json`, `qa_report.md` |
 | `content_editor` | copy and designer-facing brief only | `slide_plan.md`, optional `research_brief.md`, brand docs | `carousel_draft.md`, `handoff_brief.md` | `planning.md`, `slide_plan.md`, `carousel.json`, `qa_report.md` |
 | `slide_designer` | slide system and render output only | `carousel_draft.md`, `handoff_brief.md`, brand docs | `carousel.json`, renders, local visual assets | `planning.md`, `slide_plan.md`, `research_brief.md`, `qa_report.md` |
 | `content_qa` | quality judgment only | approved project files + renders | `qa_report.md`, `project.json.workflow.quality` | planning, copy, and design files |
@@ -35,7 +35,7 @@ Do not create a project before owner review.
 ## Human Gate
 
 - The owner approval on `planning.md` is the only required human approval gate.
-- After source approval, agent handoff and QA should carry the project forward.
+- After intake approval, agent handoff and QA should carry the project forward.
 - Final visual review is optional, not part of the default pipeline.
 
 ## Editor Copy Rules
@@ -50,7 +50,7 @@ Do not create a project before owner review.
 
 ## `planning.md` Contract
 
-Each source planning file must include these sections:
+Each intake planning file must include these sections:
 
 - `## Source Snapshot`
 - `## Core Theme`
@@ -101,7 +101,7 @@ When the active brand is `richesse-club`, the planner should act as a `Richesse 
 This role is not a generic video summarizer. It must:
 
 - extract more raw insights than will actually be used
-- filter those insights through the brand's startup / entrepreneurial / ownership lens
+- filter those insights through the brand's builders / wealth / standards / taste lens
 - rewrite educational or descriptive source material into sharper editorial claims
 - remove weak, duplicate, or non-slide-worthy points before recommending a card
 
@@ -109,7 +109,7 @@ This role is not a generic video summarizer. It must:
 
 For `richesse-club`, the planning pass should follow this order before candidate selection:
 
-1. Pull `raw insight` candidates from the transcript.
+1. Pull `raw insight` candidates from the provided source or scout research notes.
 2. Rewrite them into brand-fit editorial statements.
 3. Score each insight.
 4. Keep only usable insights.
@@ -170,21 +170,28 @@ Add the filtered result to `planning.md` so the owner can see:
 - `source.json.analysis.mainCandidateId` records the selected main card.
 - `source.json.analysis.standaloneCandidateIds` records standalone-worthy follow-ups.
 - `source.json.analysis.approvedCandidateIds` records what should be spawned right now.
+- `source.json.generation.spawnMode` records whether approved candidates start as `plan_approved` or `researching`.
 - `source.json.status` must be `approved` before spawning.
-- `npm run spawn:approved -- <source-id>` creates only the approved child projects.
+- `npm run spawn:approved -- <intake-id>` creates only the approved child projects.
 
 ## Spawn Rule
 
-Spawned projects must be created as production-ready but role-safe:
+Spawned projects must follow one of two routes:
 
-- `workflow.stage = plan_approved`
-- `workflow.approvals.slidePlan.status = approved`
-- `workflow.quality.qaStatus = not_started`
-- `slide_plan.md` exists
-- `carousel_draft.md` exists
-- `handoff_brief.md` exists
-- `carousel_draft.md` and `handoff_brief.md` are `skeleton-only` at spawn time
-- planner content should not fully prewrite editor/designer files during spawn
+- `plan_approved`
+  - `workflow.stage = plan_approved`
+  - `workflow.approvals.slidePlan.status = approved`
+  - `workflow.quality.qaStatus = not_started`
+  - `slide_plan.md` exists
+  - `carousel_draft.md` exists
+  - `handoff_brief.md` exists
+- `research_first`
+  - `workflow.stage = researching`
+  - `workflow.requiresResearchBrief = true`
+  - `workflow.approvals.slidePlan.status = pending`
+  - `research_brief.md` exists
+- `carousel_draft.md` and `handoff_brief.md` are `skeleton-only` only after plan approval
+- planner content should not fully prewrite editor/designer files before plan approval
 
 This allows the owner to review planning once and then move straight into production without role overlap.
 
@@ -192,8 +199,8 @@ This allows the owner to review planning once and then move straight into produc
 
 | Stage | Owner | Exit Condition |
 | --- | --- | --- |
-| `analyzed` source | `content_planner` | `planning.md` complete |
-| `approved` source | owner | candidate selection written to `source.json` |
+| `analyzed` intake | `content_planner` | `planning.md` complete |
+| `approved` intake | owner | candidate selection written to `source.json` |
 | `plan_approved` project | system | spawn complete |
 | `researching` | `content_researcher` | `research_brief.md` ready or skipped |
 | `writing` | `content_editor` | final `carousel_draft.md` + `handoff_brief.md` ready |

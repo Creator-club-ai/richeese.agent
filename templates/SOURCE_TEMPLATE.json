@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "id": "new_source_slug",
-  "brand": "startbase",
-  "sourceType": "youtube",
+  "brand": "richesse-club",
+  "sourceType": "topic",
   "input": {
-    "value": "https://example.com/source",
-    "title": "Optional source title"
+    "value": "Topic statement or source URL",
+    "title": "Optional intake title"
   },
   "status": "ingested",
   "assets": {
@@ -20,6 +20,7 @@
     "approvedCandidateIds": []
   },
   "generation": {
-    "autoCreateProjectsOnApproval": true
+    "autoCreateProjectsOnApproval": true,
+    "spawnMode": "plan_approved"
   }
 }
