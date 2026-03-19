@@ -2,6 +2,9 @@
   "name": "content-marketing-hub",
   "private": true,
   "scripts": {
+    "desktop:dev": "npm --prefix apps/desktop run dev",
+    "desktop:build": "npm --prefix apps/desktop run build",
+    "desktop:test": "npm --prefix apps/desktop run test",
     "build:richesse": "node scripts/build-richesse-carousel.js",
     "validate:projects": "node scripts/project-ops.js validate-projects",
     "validate:sources": "node scripts/project-ops.js validate-sources",
