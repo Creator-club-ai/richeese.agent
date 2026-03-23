@@ -1,0 +1,4 @@
+interface:
+  display_name: "Richesse Content Planner"
+  short_description: "Plan richesse.club carousel structure and flow."
+  default_prompt: "Use $richesse-content-planner to turn this approved richesse.club topic into a clear carousel plan."
