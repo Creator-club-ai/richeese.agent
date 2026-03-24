@@ -1,6 +1,6 @@
 ---
 name: richesse-content-planner
-description: Use this skill when the user asks to plan a richesse.club Instagram carousel after the topic is already chosen. Trigger on requests such as 콘텐츠 기획, 카드뉴스 기획, slide flow, carousel structure, outline, planning, or when Codex needs to turn an approved richesse.club topic, angle, source packet, or curated route into a clear 4-7 slide content plan before copywriting.
+description: Use this skill when the user asks to plan a richesse.club Instagram carousel after the topic is already chosen. Trigger on requests such as 콘텐츠 기획, 카드뉴스 기획, slide flow, carousel structure, outline, planning, or when Codex needs to turn an approved richesse.club topic, angle, source material, or curated route into a clear 4-7 slide content plan before copywriting.
 ---
 
 # Richesse Content Planner
@@ -54,10 +54,16 @@ description: Use this skill when the user asks to plan a richesse.club Instagram
    - 근거가 약한 슬라이드가 있는지
 9. 기획안만 만든다.
    - 전체 원고를 먼저 쓰지 않는다.
+10. 기본적으로 chat에만 남긴다.
+   - 저장이 필요하면 design 직전에 `final_report.md` 섹션으로만 정리한다.
 
 ## Output Format
 
 기본 출력은 아래 순서를 따른다.
+
+기본 출력 위치는 chat이다.
+
+중간 planning 파일은 기본적으로 만들지 않는다. 저장은 최종 pre-design handoff 시점의 `final_report.md`만 사용한다.
 
 ### Plan Snapshot
 
@@ -124,3 +130,4 @@ description: Use this skill when the user asks to plan a richesse.club Instagram
 - depth가 Light면 과하게 무겁게 쓰지 않는다.
 - timing이 Seasonal이면 시즌성을 살리는 장치를 넣는다.
 - source가 약하면 그 사실을 숨기지 말고 `Risks or Gaps`에 적는다.
+- 기본 산출물은 chat plan이다. 저장이 필요하면 `final_report.md`에만 붙인다.

@@ -50,10 +50,16 @@ description: Use this skill when the user asks to write richesse.club Instagram 
    - 너무 어려운 문장 단순화
 7. 최종 원고만 낸다.
    - 기획안을 다시 뒤집지 않는다.
+8. 기본적으로 chat에만 낸다.
+   - 저장이 필요하면 design 직전 `final_report.md` 안에 포함한다.
 
 ## Output Format
 
 기본 출력은 아래 순서를 따른다.
+
+기본 출력 위치는 chat이다.
+
+별도 copy 파일은 기본적으로 만들지 않는다. pre-design handoff가 필요할 때만 `final_report.md`에 합친다.
 
 ### Copy Snapshot
 
@@ -129,3 +135,4 @@ description: Use this skill when the user asks to write richesse.club Instagram 
 - 한 슬라이드가 너무 비면 억지로 멋부리지 말고 정보 밀도를 다시 맞춘다.
 - 과장된 성공담, 허세, 자기계발 클리셰를 피한다.
 - 이 스킬은 원고 작성까지 담당한다. 디자인 문제를 원고로 해결하려 들지 않는다.
+- 기본 산출물은 chat copy다. 저장은 `final_report.md` 하나만 기본값으로 본다.

@@ -7,7 +7,7 @@ description: Use this skill when the user provides a source such as a YouTube UR
 
 ## Overview
 
-raw source를 richesse.club에서 쓸 수 있는 intake packet으로 바꾼다. 단순 요약이 아니라, source에서 카드뉴스로 발전시킬 수 있는 주장, 장면, 문장, 포인트, 후보 각도를 추출한다.
+raw source를 richesse.club에서 쓸 수 있는 chat-first intake brief로 바꾼다. 단순 요약이 아니라, source에서 카드뉴스로 발전시킬 수 있는 주장, 장면, 문장, 포인트, 후보 각도를 추출한다.
 
 ## Read First
 
@@ -24,7 +24,7 @@ raw source를 richesse.club에서 쓸 수 있는 intake packet으로 바꾼다. 
 
 - 아직 주제가 정해지지 않았거나, source 기반으로 어떤 주제를 뽑을지 정해야 할 때 쓴다.
 - source에서 바로 topic을 확정하지 않는다.
-- intake 결과물은 다음 단계에서 `richesse-topic-curator`가 읽는다.
+- intake 결과물은 기본적으로 chat에 남기고, 다음 단계에서 `richesse-topic-curator`가 읽는다.
 
 ## Workflow
 
@@ -62,6 +62,10 @@ raw source를 richesse.club에서 쓸 수 있는 intake packet으로 바꾼다. 
 ## Output Format
 
 기본 출력은 아래 순서를 따른다.
+
+기본 출력 위치는 chat이다.
+
+중간 파일은 만들지 않는다. 저장이 필요하면 최종 pre-design handoff 시점에만 `final_report.md`로 합친다.
 
 ### Source Snapshot
 
@@ -118,3 +122,4 @@ raw source를 richesse.club에서 쓸 수 있는 intake packet으로 바꾼다. 
 - source 요약으로 끝내지 않는다.
 - 쓸 만한 포인트와 버릴 포인트를 구분한다.
 - richesse.club과 맞지 않는 source면 그 사실을 분명하게 적는다.
+- 기본 산출물은 chat brief다. 별도 intake 문서를 새로 만들지 않는다.
