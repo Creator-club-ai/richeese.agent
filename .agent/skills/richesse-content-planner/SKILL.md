@@ -49,12 +49,17 @@ description: Use this skill when the user asks to plan a richesse.club Instagram
    - 주장 / 정리 / 비교 / 예시 / 해설 / 마무리의 리듬을 조절한다.
 7. closing을 정한다.
    - 억지 CTA보다, 저장 이유나 시선이 남는 마무리를 우선한다.
-8. source gap을 점검한다.
+8. design direction을 짧게 정리한다.
+   - 이 주제가 어떤 톤과 리듬의 슬라이드로 보여야 하는지 적는다.
+   - `richesse.club스럽다`는 말을 반복하지 말고 디자이너가 바로 쓸 수 있게 구체화한다.
+   - 표지의 인상, 정보 밀도, 여백감, 이미지/그래픽 결, 피해야 할 흔한 표현을 남긴다.
+   - 필요한 경우 이미지 서치 키워드까지 남긴다.
+9. source gap을 점검한다.
    - 추가 자료가 필요한지
    - 근거가 약한 슬라이드가 있는지
-9. 기획안만 만든다.
+10. 기획안만 만든다.
    - 전체 원고를 먼저 쓰지 않는다.
-10. 기본적으로 chat에만 남긴다.
+11. 기본적으로 chat에만 남긴다.
    - 저장이 필요하면 design 직전에 `final_report.md` 섹션으로만 정리한다.
 
 ## Output Format
@@ -105,6 +110,32 @@ description: Use this skill when the user asks to plan a richesse.club Instagram
 - 저장형이면 무엇을 남길지
 - 브랜딩형이면 어떤 시선을 남길지
 
+### Design Direction
+
+- `canvas`
+- `visual mood`
+- `cover direction`
+- `layout rhythm`
+- `type or graphic cues`
+- `image mode`
+- `production workflow`
+- `reference search keywords`
+- `what to avoid`
+
+Design Direction should read like handoff instructions for a designer.
+
+Example:
+
+- `canvas`: `1080 x 1440`
+- `visual mood`: restrained editorial, dark and polished, not flashy, should feel selective rather than loud
+- `cover direction`: large `BookkMyungjo` headline over a tight editorial image crop; if image is weak, switch to a type-led cover with generous empty space
+- `layout rhythm`: cover opens wide, slides 2-4 tighten for clarity and saving value, final slide breathes again with a cleaner close
+- `type or graphic cues`: serif only for the main headline or short emphasis; use `Pretendard` for body, labels, numbers, and explanatory text
+- `image mode`: photo-led
+- `production workflow`: build and refine in Figma, then export from Figma; if image cleanup is needed, treat it as separate prep work
+- `reference search keywords`: `luxury hospitality aesthetic`, `editorial founder portrait aesthetic`, `quiet business lounge aesthetic`
+- `what to avoid`: shiny luxury clichés, template-looking card grids, heavy icon use, overly SaaS-looking information blocks
+
 ### Risks or Gaps
 
 - 자료가 더 필요한 부분
@@ -120,6 +151,18 @@ description: Use this skill when the user asks to plan a richesse.club Instagram
 - 소개형은 정보량보다 한 대상의 매력을 선명하게 잡는 것이 먼저다.
 - 비교형은 비교 기준이 명확해야 한다.
 - 입문형은 어렵게 아는 척하지 않는다.
+- 디자인 힌트는 `고급스럽게` 같은 추상어로 끝내지 않는다.
+- 디자인 힌트는 포맷과 user value를 따라가야 한다.
+- richesse.club 톤은 화려함보다 선택의 정확도와 여백의 컨트롤에 가깝다.
+- 기본 폰트 기준은 헤드 `BookkMyungjo`, 본문/유틸 `Pretendard`로 본다.
+- 기본 베이스는 어두운 배경 `#14110f`와 흰 텍스트를 우선값으로 본다.
+- 기본 캔버스는 `1080 x 1440`으로 본다.
+- 다만 매 포스트를 같은 레이아웃으로 반복하지 않는다.
+- 디자인 방향은 `photo-led`, `type-led`, `mixed editorial` 중 무엇이 맞는지도 적는다.
+- 이미지가 필요하면 Pinterest 검색 힌트를 남겨 디자이너가 빠르게 찾을 수 있게 한다.
+- Design Direction은 짧아도 디자이너가 바로 장면을 상상할 수 있어야 한다.
+- 기본 제작 흐름은 `Figma for build / revise / export`다.
+- 통합 도구나 자동화가 있으면 활용할 수 있지만, 그 존재를 기본 전제로 두지는 않는다.
 
 ## Hard Rules
 
@@ -130,4 +173,7 @@ description: Use this skill when the user asks to plan a richesse.club Instagram
 - depth가 Light면 과하게 무겁게 쓰지 않는다.
 - timing이 Seasonal이면 시즌성을 살리는 장치를 넣는다.
 - source가 약하면 그 사실을 숨기지 말고 `Risks or Gaps`에 적는다.
+- 디자인 방향을 막연한 럭셔리 무드보드 수준으로 쓰지 않는다.
+- 디자이너가 최종 슬라이드를 제작한다는 전제로, `Design Direction`은 실제 제작 판단에 도움이 되어야 한다.
+- 디자인 방향을 템플릿 강요로 쓰지 않는다. 대신 반복 가능한 기준과 이번 포스트에 맞는 변주를 함께 적는다.
 - 기본 산출물은 chat plan이다. 저장이 필요하면 `final_report.md`에만 붙인다.
