@@ -1,4 +1,0 @@
-interface:
-  display_name: "Richesse Source Intake"
-  short_description: "Extract usable content angles from richesse sources."
-  default_prompt: "Use $richesse-source-intake to turn this source into a richesse.club content intake packet."
