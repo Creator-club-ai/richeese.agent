@@ -21,3 +21,6 @@ Thumbs.db
 # Temp
 *.tmp
 *.log
+
+# Local credentials (never commit)
+.claude/settings.json

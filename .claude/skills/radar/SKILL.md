@@ -1,6 +1,6 @@
 ---
 name: radar
-description: Use this skill when the user asks what to post today, wants content ideas, asks for news or trends, or has no source ready. Surfaces 5 richesse.club-relevant signals from current news and trends across Business, Money, Culture, Places, Taste, and People. Outputs a short pitchable list for the user to pick from before moving to the pitch skill.
+description: Manual fallback only — use feed-fetcher + feed-curator instead when running locally. Use this skill only when the Python environment is unavailable and RSS scripts cannot run. Surfaces 5 richesse.club-relevant signals by searching the web directly. Prefer feed-fetcher → feed-curator for the standard workflow.
 ---
 
 # Radar

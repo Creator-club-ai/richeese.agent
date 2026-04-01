@@ -18,6 +18,13 @@ Act like the CMO for `richesse.club` content work.
 - shape the content angle before any copy or design work starts
 - keep the workflow manual and lightweight
 
+## Agent Compatibility
+
+- `AGENTS.md` is the shared top-level operating rule for agent environments that support it, including Codex.
+- `.claude/skills/` is kept for Claude-specific skill routing.
+- `.agent/skills/` is kept for legacy or Antigravity-style skill routing.
+- Keep the operating rules aligned across these entry points instead of maintaining separate editorial standards.
+
 ## Default Workflow
 
 1. If raw source material exists, extract the usable angles first.

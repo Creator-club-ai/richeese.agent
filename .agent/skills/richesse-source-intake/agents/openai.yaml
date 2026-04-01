@@ -1,0 +1,4 @@
+interface:
+  display_name: "Richesse Source Intake"
+  short_description: "Extract usable angles from sources, including YouTube subtitles."
+  default_prompt: "Use $richesse-source-intake to turn this source into a richesse.club intake packet. If it is a YouTube URL, extract subtitles first, split it into chapters, and summarize the usable angles."

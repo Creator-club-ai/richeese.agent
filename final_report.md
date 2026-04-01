@@ -1,150 +1,120 @@
-## Topic
+# FREE GAME: 버질 아블로가 공개한 브랜드 창업 12단계
 
-좋은 대표는 왜 가격 결정권을 놓치지 않을까
+**Category:** Business / **Format:** 정리형 / **User Value:** 저장형 / **Depth:** Light / **Timing:** Evergreen
 
-## Category
+---
 
-Business + Money
+### Core Angle
+루이 비통 크리에이티브 디렉터가 브랜드 창업 전 과정을 12단계로 정리해 무료로 공개했다.
 
-## Format
+### Why Now
+버질이 세상을 떠난 지 3년이 넘었지만 FREE GAME은 지금도 무료로 공개되어 있다. 브랜드를 시작하려는 사람에게는 여전히 유효한 로드맵이고, 버질의 이름은 여전히 강한 신호를 만든다.
 
-인사이트형
+---
 
-## User Value
+### Slide Outline
 
-브랜딩형 + 공유형
+1. Cover — FREE GAME / 버질 아블로 / 브랜드 창업 12단계
+2. Step 1 — 브랜드 이름
+3. Step 2 — 상표권 등록
+4. Step 3 — 어도비 툴
+5. Step 4 — 스크린프린팅
+6. Step 5 — 블랭크 소싱
+7. Step 6 — 룩북 촬영
+8. Step 7 — 웹사이트
+9. Step 8 — 쇼피파이
+10. Step 9 — 강의 아카이브
+11. Step 10 — 포트폴리오
+12. Step 11 — 멘토 자료
+13. Step 12 — 추가 영감
 
-## Depth
+---
 
-Medium
+### Slide Copy
 
-## Timing
+**Slide 1 — cover**
+headline: 버질 아블로가 브랜드 창업 매뉴얼을 무료로 공개했다
+body: FREE GAME — 12단계 전문
 
-Evergreen
+**Slide 2**
+headline: Step 1. 브랜드 이름을 정한다
+body: 이름은 장식이 아니에요. 버질은 브랜드명이 "브랜드가 존재하는 이유의 영원한 참고점"이어야 한다고 했어요. Off-White도, 이름 하나에 그의 세계관이 전부 들어 있어요.
 
-## Core Angle
+**Slide 3**
+headline: Step 2. 상표권을 등록한다
+body: 이름을 정했으면 바로 지켜야 해요. 상표권 없는 브랜드명은 언제든 빼앗길 수 있어요.
 
-가격은 숫자 조정이 아니라 브랜드가 누구에게, 어떤 기준으로, 어떤 긴장감 위에서 팔릴지를 정하는 결정이다. 그래서 좋은 대표일수록 가격을 단순 실무 항목으로 넘기지 않고 끝까지 붙든다.
+**Slide 4**
+headline: Step 3. 어도비 툴을 배운다
+body: 내 브랜드의 시각 언어를 남에게 맡길 수 없어요. 포토샵, 일러스트레이터. 도구를 손에 넣는 게 먼저예요.
 
-## Why Now
+**Slide 5**
+headline: Step 4. 스크린프린팅을 익힌다
+body: 제품을 직접 만들 수 있어야 해요. 티셔츠 한 장부터 시작할 수 있는 가장 현실적인 첫 번째 생산 방식이에요.
 
-브랜드가 많아질수록 차이는 제품보다 가격 운영에서 먼저 드러난다. 할인, 번들, 프로모션, 예외 처리까지 가격이 흐트러지는 순간 브랜드의 기준도 같이 흐려지기 때문에 지금 richesse.club이 해설하기 좋은 주제다.
+**Slide 6**
+headline: Step 5. 블랭크를 소싱한다
+body: 원단과 소재를 어디서 가져오는지가 원가를 결정해요. 도매처를 찾고, 직접 거래하는 법을 익혀야 해요.
 
-## Slide Outline
+**Slide 7**
+headline: Step 6. 룩북을 찍는다
+body: 제품 사진이 아니에요. 세계관을 보여주는 첫 번째 기회예요. 잘 찍은 룩북 한 장이 브랜드의 온도를 결정해요.
 
-### Slide 1
+**Slide 8**
+headline: Step 7. 웹사이트를 만든다
+body: 인스타그램은 플랫폼이지 주소가 아니에요. 브랜드의 영구 주소가 필요해요.
 
-- role: cover
-- goal: 첫 장에서 이 포스트의 문제의식을 강하게 연다
-- headline: 좋은 대표는 왜 가격 결정권을 놓치지 않을까
-- body copy: 가격은 매출표의 숫자가 아니라 브랜드가 스스로를 정의하는 방식에 가깝죠.
-- notes: 표지는 질문형으로 짧고 강하게. 본문은 한 줄만 두고 여백을 크게 쓴다.
+**Slide 9**
+headline: Step 8. 쇼피파이를 연동한다
+body: 판매 채널을 개설해요. 온라인 스토어가 없으면 브랜드가 아니라 프로젝트예요.
 
-### Slide 2
+**Slide 10**
+headline: Step 9. 버질의 강의를 본다
+body: FREE GAME에는 버질이 직접 남긴 강의 링크가 있어요. 결과가 아니라 그가 어떻게 생각하고 결정했는지, 그 과정을 볼 수 있어요.
 
-- role: thesis
-- goal: 가격을 숫자가 아니라 기준으로 재정의한다
-- headline: 가격은 숫자보다 기준에 가깝다
-- body copy: 얼마에 팔 것인가보다 더 중요한 건 누구에게 팔 것인가예요. 가격은 고객층, 서비스 밀도, 판매 방식, 심지어 브랜드의 말투까지 같이 정합니다.
-- notes: 저장 가치가 생기도록 문장을 너무 장식하지 말고 선명하게 간다.
+**Slide 11**
+headline: Step 10. 포트폴리오를 기록한다
+body: 만든 것을 쌓아야 해요. 포트폴리오는 실력이 아니라 궤적이에요. 처음부터 잘 할 필요 없어요. 기록을 시작하는 게 먼저예요.
 
-### Slide 3
+**Slide 12**
+headline: Step 11. 버질의 멘토들을 본다
+body: 버질이 영감을 받은 사람들의 목록이에요. 좋은 취향은 좋은 참조에서 나와요.
 
-- role: expansion
-- goal: 가격 결정권을 놓쳤을 때 생기는 변화를 설명한다
-- headline: 가격을 놓치면 운영도 흔들린다
-- body copy: 가격이 실무 편의대로 흔들리기 시작하면 할인은 쉬워지고 예외는 늘어나요. 그러면 브랜드는 기준보다 물량을 먼저 보게 되고, 팀도 결국 같은 방향으로 움직이게 되죠.
-- notes: 이 장은 읽는 맛보다 논리 전개가 중요하다.
+**Slide 13**
+headline: Step 12. 경계 없이 본다
+body: 패션, 건축, 음악, 그래픽. 버질은 장르를 가리지 않았어요. 브랜드의 레퍼런스가 좁으면 브랜드도 좁아져요.
 
-### Slide 4
+---
 
-- role: signal reading
-- goal: 좋은 대표가 실제로 보는 가격 신호를 짚는다
-- headline: 대표가 직접 봐야 하는 건 숫자보다 신호다
-- body copy: 프로모션 없이도 팔리는지, 특정 고객만 유독 깎으려 하는지, 가격을 올렸을 때 이탈보다 만족도가 먼저 흔들리는지. 좋은 대표는 이런 신호로 브랜드의 체력을 읽어요.
-- notes: 리스트처럼 보이게 3개 신호를 시각적으로 나눠도 좋다.
+### Design Notes
 
-### Slide 5
+**Canvas:** 1080 x 1440
+**Visual Mood:** 커버 mixed editorial, 스텝 슬라이드 type-led. 구조의 일관성이 곧 디자인.
+**Cover Direction:** 메인 카피 상단 1/3 배치. 버질 인물 사진 있으면 하단 크롭. 없으면 타입-온-다크.
+**Typography:**
+- headline: BookkMyungjo, 40–48px
+- step number label: Pretendard, 14–16px, rgba(255,255,255,0.45)
+- body: Pretendard Regular, 18–20px, white 80%
+- 커버 메인 카피: BookkMyungjo 최대한 크게
 
-- role: conclusion
-- goal: 가격과 브랜드 권위의 관계를 정리한다
-- headline: 가격은 권위를 지키는 마지막 문장이다
-- body copy: 가격을 끝까지 붙든다는 건 비싸게 팔겠다는 뜻이 아니에요. 브랜드가 어떤 기준 위에 서 있는지 스스로 결정하겠다는 뜻에 더 가깝죠.
-- notes: 이 장에서 richesse.club다운 시선을 가장 선명하게 보여준다.
+**Layout Rhythm:**
+- 커버: 여백 넓게, 좌측 또는 중앙 정렬
+- 스텝 슬라이드: step label 상단 → headline 중간 → body 하단. 모든 슬라이드 구조 동일.
 
-### Slide 6
-
-- role: closing
-- goal: 저장 또는 공유 포인트를 남긴다
-- headline: 결국 가격은 숫자가 아니라 태도다
-- body copy: 잘 만든 브랜드는 가격표에서 먼저 흔들리지 않아요. 좋은 대표가 가격 결정권을 놓치지 않는 이유도 결국 여기에 있죠.
-- notes: 마지막 장은 문장을 닫되 과하게 교훈적으로 가지 않는다.
-
-## Design Notes
-
-### Canvas
-
-- `1080 x 1440`
-
-### Visual Mood
-
-- restrained editorial
-- dark, calm, selective
-- flashy luxury보다 조용한 권위에 가까운 무드
-- image가 약하면 무조건 type-led로 가도 되는 주제
-
-### Cover Direction
-
-- 큰 질문형 헤드라인 1개만 세운다
-- 헤드라인은 `BookkMyungjo`로 크게
-- 서브 카피는 작게 `Pretendard`
-- 표지는 여백이 중요하고, 정보성 표지처럼 보이면 안 된다
-
-### Typography
-
-- headline serif: `BookkMyungjo`
-- body / label / small note: `Pretendard`
-- 세리프는 포인트로만 쓰고, 본문까지 무겁게 끌고 가지 않는다
-
-### Layout Rhythm
-
-- slide 1은 넓고 조용하게
-- slide 2~4는 정보 밀도를 조금 높여 저장성을 만든다
-- slide 5는 결론을 다시 넓게 열고
-- slide 6은 정리감 있게 닫는다
-
-### Color / Material / Image Direction
-
-- base background: `#14110f`
+**Color / Image Direction:**
+- base background: #14110f
 - base text: white
-- 보조 톤은 너무 금색으로 가지 말고, 낮은 채도의 웜 그레이 또는 muted beige 정도만 허용
-- 이미지가 들어가면 boardroom, founder portrait, quiet office, document detail 같은 editorial 컷이 어울린다
-- 이미지가 없어도 성립하는 포스트다
+- step number: rgba(255,255,255,0.45)
+- 보조 색상 없음
 
-### Production Workflow
+**Production Workflow:** build → revise → export in Figma via MCP
 
-- build in `Figma`
-- revise in `Figma`
-- export in `Figma`
-- 이미지 정리가 필요하면 별도 prep으로 처리하고, 슬라이드 시스템 자체는 Figma 기준으로 간다
+**Do Not Use:** 형광 accent, 스텝마다 아이콘, 슬라이드마다 다른 레이아웃, 테두리 박스, 그라디언트
 
-### Do Not Use
+**Reference Search Keywords:** `editorial dark typography layout instagram`, `Virgil Abloh portrait editorial`, `minimalist step guide poster design`
 
-- 번쩍이는 금색 포인트
-- 과한 차트/아이콘
-- 스타트업 SaaS 카드 UI 같은 정보 박스
-- 지나치게 비즈니스 인스타 인포그래픽처럼 보이는 레이아웃
-- motivational quote 계정 같은 톤
+---
 
-### Reference Search Keywords
-
-- `editorial founder portrait aesthetic`
-- `quiet luxury office aesthetic`
-- `boardroom detail aesthetic`
-- `business editorial dark aesthetic`
-
-## Risks or Source Limits
-
-- 이번 포스트는 특정 기사나 데이터 기반이 아니라 richesse.club 관점의 해설형 인사이트에 가깝다
-- 따라서 사례나 통계가 추가되면 더 단단해질 수 있지만, 지금 단계에서는 관찰과 해석의 톤으로 다루는 편이 맞다
-- copy 단계에서 너무 자기계발형 문장으로 흐르지 않도록 한 번 더 걸러야 한다
+### Risks or Source Limits
+- FREE GAME 각 단계 세부 설명은 해석과 재구성 포함
+- 버질 인물 사진 사용 시 저작권 확인 필요

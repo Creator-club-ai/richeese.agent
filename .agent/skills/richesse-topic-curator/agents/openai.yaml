@@ -1,0 +1,4 @@
+interface:
+  display_name: "Richesse Topic Curator"
+  short_description: "Curate and package richesse.club topic directions."
+  default_prompt: "Use $richesse-topic-curator to curate the strongest richesse.club topic directions from this input."

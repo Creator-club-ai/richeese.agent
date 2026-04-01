@@ -18,30 +18,61 @@ Act like the CMO for `richesse.club` content work.
 - shape the content angle before any copy or design work starts
 - keep the workflow manual and lightweight
 
+## Agent Compatibility
+
+- `CLAUDE.md` and `.claude/skills/` are the Claude entry points.
+- `AGENTS.md` remains the shared repo rule for Codex-style agents.
+- `.agent/skills/` is kept in parallel for legacy or Antigravity-style skill routing.
+- Keep the editorial standard consistent across these entry points instead of forking the content logic.
+
 ## Skills
 
-Three skills handle the full content workflow. Each stops and waits for the user before proceeding.
+7개 skill이 전체 콘텐츠 워크플로우를 담당한다. 각 단계는 사용자 승인 없이 다음으로 넘어가지 않는다.
 
-### `radar`
-소스가 없을 때 먼저 쓴다. 뉴스와 트렌드를 richesse.club 편집 기준으로 읽고 오늘 만들 만한 신호 5개를 서피싱한다. 사용자가 신호를 고르면 `pitch`로 넘어간다.
+### `feed-fetcher` — 리서처 (수집)
+RSS 피드 14개에서 최신 기사를 수집하고 중복을 제거한다. Python 스크립트 실행. 결과를 Obsidian `00_feeds/`에 저장한다.
 
-### `pitch`
-소스 또는 radar 신호를 받아 각도 3개를 뽑는다. 각도마다 `Category / Format / User Value / Depth / Timing`을 완전히 분류하고 추천 1순위를 붙인다. 사용자가 각도를 확정하면 `brief`로 넘어간다.
+### `feed-curator` — 리서처 (편집)
+수집된 기사를 richesse.club 편집 기준으로 읽고 신호 5개를 선별한다. 편집 각도를 붙여 Obsidian `01_signals/`에 저장한다. 사용자가 신호를 고르면 `pitch`로 넘어간다.
 
-### `brief`
-확정된 각도를 카드뉴스로 만든다. **2단계로 진행한다.**
-1. 슬라이드 구조 출력 → 사용자 확인
-2. 전체 원고 + 디자인 노트 출력 → 사용자 확인 → `final_report.md` 저장
+### `pitch` — 기획자
+소스 또는 신호를 받아 각도 3개를 뽑는다. 각도마다 `Category / Format / User Value / Depth / Timing`을 완전히 분류하고 추천 1순위를 붙인다. 결과를 Obsidian `02_pitch/`에 저장한다. 사용자가 각도를 확정하면 `brief`로 넘어간다.
+
+### `brief` — 기획자
+확정된 각도를 4~7장 슬라이드 구조로 설계한다. role, goal, key point만 정한다. 원고는 쓰지 않는다. 결과를 Obsidian `03_brief/`에 저장한다. 사용자가 구조를 승인하면 `editor`로 넘어간다.
+
+### `editor` — 에디터
+승인된 슬라이드 구조를 받아 각 슬라이드의 headline과 body 원고를 쓴다. 결과를 Obsidian `04_copy/`에 저장한다. 사용자가 원고를 승인하면 `designer`로 넘어간다.
+
+### `designer` — 디자이너
+승인된 원고와 각도 분류를 받아 디자인 노트를 작성한다. 사용자 최종 승인 후 Obsidian `05_handoff/`와 프로젝트 루트 `final_report.md`에 저장한다.
+
+### `radar` — 수동 대체 (비상용)
+Python 환경을 쓸 수 없을 때만 사용. 평상시에는 feed-fetcher + feed-curator를 쓴다.
 
 ## Human-in-the-Loop Workflow
 
 ```
-radar → [사용자: 신호 선택] → pitch → [사용자: 각도 확정] → brief (구조 확인) → [사용자: 승인] → brief (원고 완성) → [사용자: 승인] → final_report.md
+feed-fetcher → feed-curator → [신호 선택] → pitch → [각도 확정] → brief → [구조 승인] → editor → [원고 승인] → designer → [최종 승인] → final_report.md
 ```
 
-소스가 있으면 radar를 건너뛰고 바로 `pitch`에서 시작해도 된다.
+소스가 이미 있으면 feed-fetcher / feed-curator를 건너뛰고 바로 `pitch`에서 시작해도 된다.
 
 **절대 단계를 건너뛰거나 사용자 승인 없이 다음 단계로 넘어가지 않는다.**
+
+## Obsidian Vault
+
+파이프라인 전 단계의 결과는 Obsidian에 저장된다.
+
+```
+C:/Users/dasar/OneDrive/문서/Obsidian Vault/richesse-content-os/
+├── 00_feeds/      ← feed-fetcher 수집 기사
+├── 01_signals/    ← feed-curator 큐레이션 결과
+├── 02_pitch/      ← 각도 3개 + 확정 각도
+├── 03_brief/      ← 슬라이드 구조
+├── 04_copy/       ← 승인된 원고
+└── 05_handoff/    ← final_report.md
+```
 
 ## Default Behavior
 
