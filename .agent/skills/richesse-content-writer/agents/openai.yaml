@@ -1,4 +1,0 @@
-interface:
-  display_name: "Richesse Content Writer"
-  short_description: "Write richesse.club carousel copy from a plan."
-  default_prompt: "Use $richesse-content-writer to turn this approved richesse.club content plan into polished carousel copy."

@@ -1,6 +1,6 @@
 ---
 name: editor
-description: Use this skill when the user has approved a slide structure from the brief skill and is ready to write carousel copy. Takes the approved slide skeleton and writes headline + body copy for each slide following richesse.club tone rules. Stops for user approval before handing off to the designer skill. Does NOT produce design notes or save files.
+description: Use this skill when the user has approved a slide structure from the brief skill and is ready to write carousel copy. Takes the approved slide skeleton and writes headline + body copy for each slide following richesse.club tone rules. Stops for user approval before handing off to the designer skill. Drafts in chat first, then saves the approved copy to Obsidian.
 ---
 
 # Editor
@@ -31,15 +31,30 @@ description: Use this skill when the user has approved a slide structure from th
 
 ## Tone Rules
 
-- **표지 / 헤드라인 / 리스트**: 짧고 강하게. 문어체(`~한다`, `~하는가`) 가능.
-- **본문 / 캡션 단락**: 딱딱한 문어체 금지. 세련된 대화체 / 반존대체(`~요`, `~죠`).
+**기본값: 격식체 (`~다`, `~한다`)**
+- 표지 / 헤드라인 / 본문 / 클로징 모두 격식체로 쓴다.
+- `~요`, `~죠` 대화체는 사용자가 명시적으로 요청할 때만 사용한다.
+- BRAND_GUIDE.md 3)항 톤 규칙보다 이 스킬 규칙이 우선한다. 포스트별로 오버라이드 가능.
 - 자기계발 클리셰, 허세, 권위적 어조 금지.
 - `있어 보이는 말`보다 `바로 읽히는 말` 우선.
 - 소스 언어를 그대로 쓰지 않는다. richesse.club 언어로 재해석한다.
 
+## Body 길이 기준
+
+- **Default**: 120~150자 (한글 기준)
+- **Expansion / Signal Reading 슬라이드**: 최대 180자 (정보 밀도가 높을 때)
+- **Cover / Closing**: 80자 이내
+- 기준을 초과하면 문장을 줄인다. 억지로 채우지 않는다.
+
+## 소스 충실도
+
+- 소스가 있으면 반드시 원문을 확인하고 richesse.club 언어로 재해석한다.
+- 소스에 없는 내용을 창작하지 않는다.
+- 원문 표현을 그대로 번역하지 않는다. 편집 언어로 다시 쓴다.
+
 ## Output Format
 
-채팅에 출력한다. 파일로 저장하지 않는다.
+초안은 채팅에 출력한다. 승인 후에는 Obsidian에 저장한다.
 
 ---
 
@@ -63,7 +78,7 @@ body:
 > 승인되면 디자이너로 넘어갑니다.
 
 원고 승인 시 Obsidian에 저장한다:
-- 경로: `C:/Users/dasar/OneDrive/문서/Obsidian Vault/richesse-content-os/04_copy/YYYY-MM-DD-[working-title].md`
+- 경로: `C:/Users/HP/OneDrive/문서/Obsidian Vault/richesse-content-os/04_copy/YYYY-MM-DD-[working-title].md`
 
 ## Rules
 
@@ -72,4 +87,4 @@ body:
 - 표지 / 헤드라인 톤과 본문 톤을 섞지 않는다.
 - 한 슬라이드에 메시지 2개를 쑤셔 넣지 않는다.
 - 원고 승인 전까지 다음 단계로 넘어가지 않는다.
-- 파일을 만들지 않는다. 출력은 chat에만.
+- 승인 전까지는 chat draft만 사용한다.
