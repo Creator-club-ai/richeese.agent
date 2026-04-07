@@ -75,7 +75,7 @@ source-intake → [wiki ingest 완료 / source packet 확인] → pitch → [각
 ## Obsidian Vault
 
 ```
-C:/Users/HP/OneDrive/문서/Obsidian Vault/richesse-content-os/
+RICHESSE_VAULT_PATH/
 ├── raw/           ← 원본 소스 + source-intake snapshot note (append-only)
 ├── 00_feeds/      ← feed-fetcher 수집 기사
 ├── 01_signals/    ← feed-curator 큐레이션 결과
@@ -83,8 +83,19 @@ C:/Users/HP/OneDrive/문서/Obsidian Vault/richesse-content-os/
 ├── 03_brief/      ← 슬라이드 구조
 ├── 04_copy/       ← 승인된 원고
 ├── 05_handoff/    ← final_report.md 보관본
-└── 06_wiki/       ← LLM 지식 위키 (인물 / 브랜드 / 개념 / 시그널)
+├── 06_wiki/       ← LLM 지식 위키 (인물 / 브랜드 / 개념 / 시그널)
+└── 07_calendar/   ← 콘텐츠 카드 + `Content OS.md` + `Content OS.base`
 ```
+
+- Vault 경로는 고정 사용자명으로 하드코딩하지 않는다.
+- 1순위: 환경변수 `RICHESSE_VAULT_PATH`
+- 2순위: `%OneDrive%/문서/Obsidian Vault/richesse-content-os`
+- repo는 `git`으로 동기화하고, Obsidian Vault는 `OneDrive`로 동기화한다.
+- 사용자용 운영 화면은 `07_calendar/Content OS.md`에서 본다.
+- `Content OS.base`는 그 뒤의 콘텐츠 데이터베이스다.
+- 원칙은 `한 포스트 = 한 카드`다. 카드만 시각화하고, pitch / brief / copy / handoff는 카드 본문에서 링크로 연결한다.
+- 운영 대시보드는 workflow 단계보다 `Latest News / Planned Content / Publish Date / Priority`를 먼저 본다.
+- `02_pitch/` ~ `05_handoff/`는 stage storage이고, 운영 홈에서는 전면에 노출하지 않는다.
 
 ## Wiki Rules
 
@@ -101,6 +112,8 @@ C:/Users/HP/OneDrive/문서/Obsidian Vault/richesse-content-os/
 - Stage drafts default to chat.
 - System-owned memory artifacts save to Obsidian automatically: append-only `raw/`, `00_feeds/`, `01_signals/`, `06_wiki/`.
 - User-approved stage outputs save to Obsidian: `02_pitch/`, `03_brief/`, `04_copy/`, `05_handoff/`.
+- 운영 대시보드는 `07_calendar/Content OS.md`, `Content OS.base`, `07_calendar/cards/`, `00_feeds/latest.md`에서 본다.
+- stage 폴더는 작업 보관용이고, 대시보드의 기본 시야는 `뉴스 / 기획`이다.
 - `final_report.md` is the only default project-root artifact before Figma production or export.
 
 ## File Rule
