@@ -101,7 +101,7 @@ description: Use this skill when the user has approved carousel copy from the ed
 ```
 
 출력 후 사용자 승인 받고 저장:
-- `C:/Users/HP/OneDrive/문서/Obsidian Vault/richesse-content-os/05_handoff/YYYY-MM-DD-[topic].md`
+- `{vault}/05_handoff/YYYY-MM-DD-[topic].md` (vault = $RICHESSE_VAULT_PATH 또는 %OneDrive%/문서/Obsidian Vault/richesse-content-os)
 - 프로젝트 루트 `final_report.md`
 
 ---

@@ -21,7 +21,7 @@ description: Use this skill first whenever the user provides a source or an idea
 - X 포스트 / 스레드
 - transcript / interview text
 - 메모 / 아이디어
-- feed-curator에서 사용자가 고른 signal
+- feed-fetcher에서 사용자가 고른 signal
 
 위 입력은 모두 `source-intake`를 먼저 거친다.
 
@@ -40,7 +40,7 @@ description: Use this skill first whenever the user provides a source or an idea
 2. 가능한 경우 원문을 읽는다.
    - YouTube는 자막 추출
    - 기사 / X / 인터뷰는 제공된 원문 또는 링크를 기준으로 읽기
-   - feed-curator signal이면 원본 URL과 signal 설명을 함께 읽기
+   - feed-fetcher signal이면 원본 URL과 signal 설명을 함께 읽기
 
 3. source packet을 만든다.
    - source snapshot
@@ -88,8 +88,10 @@ YouTube가 아니면 스크립트 없이 바로 소스를 읽고 intake brief를
 
 ## Obsidian 저장 경로
 
-- source snapshot note: `C:/Users/HP/OneDrive/문서/Obsidian Vault/richesse-content-os/raw/YYYY-MM-DD-[slug]-intake.md`
-- wiki: `C:/Users/HP/OneDrive/문서/Obsidian Vault/richesse-content-os/06_wiki/`
+Vault 경로 (1순위: `$RICHESSE_VAULT_PATH`, 2순위: `%OneDrive%/문서/Obsidian Vault/richesse-content-os`)
+
+- source snapshot note: `{vault}/raw/YYYY-MM-DD-[slug]-intake.md`
+- wiki: `{vault}/06_wiki/`
 
 ## Output Format
 

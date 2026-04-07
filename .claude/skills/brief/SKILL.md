@@ -61,7 +61,7 @@ key point:
 > 승인되면 에디터로 넘어갑니다.
 
 구조 승인 시 Obsidian에 저장한다:
-- 경로: `C:/Users/HP/OneDrive/문서/Obsidian Vault/richesse-content-os/03_brief/YYYY-MM-DD-[working-title].md`
+- 경로: `{vault}/03_brief/YYYY-MM-DD-[working-title].md` (vault = $RICHESSE_VAULT_PATH 또는 %OneDrive%/문서/Obsidian Vault/richesse-content-os)
 
 ## Rules
 

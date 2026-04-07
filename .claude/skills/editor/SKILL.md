@@ -78,7 +78,7 @@ body:
 > 승인되면 디자이너로 넘어갑니다.
 
 원고 승인 시 Obsidian에 저장한다:
-- 경로: `C:/Users/HP/OneDrive/문서/Obsidian Vault/richesse-content-os/04_copy/YYYY-MM-DD-[working-title].md`
+- 경로: `{vault}/04_copy/YYYY-MM-DD-[working-title].md` (vault = $RICHESSE_VAULT_PATH 또는 %OneDrive%/문서/Obsidian Vault/richesse-content-os)
 
 ## Rules
 

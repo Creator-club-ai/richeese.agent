@@ -1,9 +1,13 @@
 ---
 name: feed-curator
-description: Use this skill after feed-fetcher has run and saved articles to Obsidian. Reads today's fetched articles from the Obsidian vault, evaluates each one against richesse.club editorial standards, and surfaces the strongest signals (usually 5, up to 10 when material is rich, fewer on sparse days). Saves output to 01_signals in Obsidian. Selected signals must go through source-intake before pitch.
+description: DEPRECATED — merged into feed-fetcher. feed-fetcher now runs fetch_and_curate.py which collects AND curates in one step. Do not invoke this skill separately.
 ---
 
 # Feed Curator
+
+> **DEPRECATED**: 이 스킬은 `feed-fetcher`에 통합되었다.
+> `python scripts/fetch_and_curate.py` 한 번으로 수집 + 큐레이션이 함께 실행된다.
+> 이 스킬을 별도로 호출하지 않는다. `feed-fetcher`를 사용할 것.
 
 ## Role
 

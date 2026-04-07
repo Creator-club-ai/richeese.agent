@@ -1,6 +1,6 @@
 ---
 name: radar
-description: Manual fallback only — use feed-fetcher + feed-curator instead when running locally. Use this skill only when the Python environment is unavailable and RSS scripts cannot run. Surfaces 5 richesse.club-relevant signals by searching the web directly. Prefer feed-fetcher → feed-curator for the standard workflow.
+description: Manual fallback only — use feed-fetcher instead when running locally. Use this skill only when the Python environment is unavailable and RSS scripts cannot run. Surfaces 5 richesse.club-relevant signals by searching the web directly. Prefer feed-fetcher for the standard workflow.
 ---
 
 # Radar
@@ -20,7 +20,7 @@ Python 환경 없이 웹 검색으로 오늘의 소재를 직접 찾는다. feed
 - 사용자가 "뭐 만들지?", "오늘 소재 없어?", "뉴스 뭐 있어?" 같은 말을 할 때
 - feed-fetcher 실행이 불가능한 상황
 
-**평상시에는 feed-fetcher → feed-curator를 쓴다.**
+**평상시에는 feed-fetcher를 쓴다.**
 
 ## Search Strategy
 

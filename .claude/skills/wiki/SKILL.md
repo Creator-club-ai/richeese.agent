@@ -11,15 +11,14 @@ description: Use this skill to build and maintain the richesse.club knowledge wi
 
 ## Read First
 
-- `06_wiki/wiki-schema.md` — 구조, 템플릿, 네이밍 규칙
-- `06_wiki/index.md` — 현재 존재하는 페이지 목록
-- `06_wiki/log.md` — 수집 이력
+- `{vault}/06_wiki/wiki-schema.md` — 구조, 템플릿, 네이밍 규칙
+- `{vault}/06_wiki/index.md` — 현재 존재하는 페이지 목록
+- `{vault}/06_wiki/log.md` — 수집 이력
 
 ## Vault 경로
 
-```
-C:/Users/HP/OneDrive/문서/Obsidian Vault/richesse-content-os/06_wiki/
-```
+1순위: `$RICHESSE_VAULT_PATH/06_wiki/`
+2순위: `%OneDrive%/문서/Obsidian Vault/richesse-content-os/06_wiki/`
 
 ---
 
