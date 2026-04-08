@@ -14,10 +14,13 @@ Usage:
 """
 
 import sys
+import io
 import re
 import argparse
 import os
 from datetime import datetime
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 from pathlib import Path
 
 try:
