@@ -262,8 +262,8 @@ SOURCE_TYPE_ICON = {
 
 
 def save_to_obsidian(articles, date_str):
-    """Obsidian 00_feeds 폴더에 MD + JSON 저장"""
-    out_dir = VAULT_PATH / "00_feeds"
+    """Legacy helper: Obsidian 오늘의 뉴스 폴더에 MD + JSON 저장"""
+    out_dir = VAULT_PATH / "오늘의 뉴스"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     # 카테고리별 그룹 (priority → source 정렬)
@@ -335,7 +335,7 @@ def main():
     print(f"\n저장 완료")
     print(f"   MD  : {md_path}")
     print(f"   JSON: {json_path}")
-    print(f"\n다음 단계: /feed-curator 를 실행하세요.")
+    print(f"\n다음 단계: source-intake를 먼저 거치고, 그 다음 content-planner로 넘어가세요.")
 
 
 if __name__ == "__main__":
