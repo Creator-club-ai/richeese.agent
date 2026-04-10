@@ -1,6 +1,6 @@
 ---
 name: content-planner
-description: This skill should be used when source-intake has finished and the user is ready to plan a piece of content end-to-end before copywriting. Turn an approved source packet or signal packet into one working title, one core thesis, one save reason, and a 4-11 slide content plan, then stop for user approval before handing off to the editor skill.
+description: This skill should be used when source-intake has finished and the user is ready to plan a piece of content end-to-end before copywriting. Turn a source packet into one working title, one core thesis, one save reason, and a 4-11 slide content plan, then stop for user approval before handing off to the editor skill.
 ---
 
 # 콘텐츠 기획자
@@ -12,7 +12,7 @@ description: This skill should be used when source-intake has finished and the u
 ## Read First
 
 - `brands/richesse-club/BRAND_GUIDE.md`
-- 승인된 source packet 또는 signal packet
+- source-intake가 끝난 source packet
 
 ## Workflow
 
@@ -30,23 +30,27 @@ description: This skill should be used when source-intake has finished and the u
 - `Working Title`
 - `Category`
 - `Format`
-- `Content Pattern`
 - `User Value`
 - `Depth`
 - `Timing`
 - `Core Thesis`
 - `Save Reason`
 
-## Content Pattern Rule
+## Format Rule
 
-기획 단계에서는 채널 형식과 별도로 콘텐츠 패턴을 하나 고른다.
+`Format`은 항상 `BRAND_GUIDE.md`의 공식 포맷 분류에서만 고른다.
 
-- `정리형`: 하나의 주제나 프레임을 구조적으로 정리하는 카드
-- `리스트형`: 여러 항목을 병렬로 나열하고 비교하는 카드
-- `뉴스형`: 최신 사건이나 발표를 중심으로 빠르게 맥락과 의미를 붙이는 카드
-- `인사이트형`: 하나의 강한 관찰이나 판단을 중심으로 밀어붙이는 카드
+- `뉴스형`
+- `큐레이션형`
+- `입문형`
+- `정리형`
+- `비교형`
+- `리스트형`
+- `케이스형`
+- `인사이트형`
+- `해설형`
 
-`인사이트형`은 `정리형`에 포함하지 않는다. 정리형은 구조화가 중심이고, 인사이트형은 해석과 주장 자체가 중심이다.
+기획 단계에서 별도의 패턴 체계를 새로 만들지 않는다. 브랜드 가이드의 `Format`이 single source of truth다.
 
 ## Content Planning Rule
 
@@ -54,6 +58,8 @@ description: This skill should be used when source-intake has finished and the u
 - 보통 6-8장
 - 정보량이 많을 때만 10-11장
 - 정보가 약하면 억지로 늘리지 않는다
+- 각도는 하나로 묶되, 너무 빨리 좁혀 힘을 죽이지 않는다
+- 자기계발형, 마인드셋형, 커리어형 카드도 source-backed면 허용한다
 
 각 슬라이드에는 아래 3개를 반드시 쓴다.
 
@@ -74,7 +80,6 @@ description: This skill should be used when source-intake has finished and the u
 Working Title:
 Category:
 Format:
-Content Pattern:
 User Value:
 Depth:
 Timing:
@@ -115,8 +120,8 @@ working_title:
 core_angle:
 publish_date:
 category:
-format: carousel
-content_pattern:
+content_format:
+platform_format: carousel
 priority:
 status: idea
 done: false
@@ -148,3 +153,4 @@ ig_saves:
 - 승인 전에는 채팅 초안만 사용한다.
 - 승인 전에는 `editor`로 넘어가지 않는다.
 - `designer` 전제 문구를 여기서 만들지 않는다.
+- `Format`과 별도로 겹치는 패턴 필드를 만들지 않는다.

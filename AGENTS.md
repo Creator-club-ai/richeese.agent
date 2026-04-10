@@ -177,7 +177,7 @@ Write `Design Notes` as direct production guidance, not abstract mood words.
   - what should feel editorial, observational, or reference-like
   - what kind of hierarchy, pacing, and whitespace the slides need
 - Prefer visual directions that feel polished, selective, and calm.
-- Avoid default black-and-gold luxury clichés, noisy infographic energy, startup SaaS aesthetics, and over-decorated "premium" styling.
+- Avoid default black-and-gold luxury cliches, noisy infographic energy, startup SaaS aesthetics, and over-decorated "premium" styling.
 - If the post is storage-first, the design should help scanning and saving.
 - If the post is branding-first, the design should protect tone and atmosphere over raw information density.
 - Default type system:
