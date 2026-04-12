@@ -1,6 +1,6 @@
 ---
 name: designer
-description: This skill should be used when the user has approved carousel copy from the editor skill and is ready for design handoff and Figma production. Take the approved copy and content-planner classification, produce design notes, then build the actual slides in Figma using the Figma MCP. Save final_report.md to Obsidian 05_handoff and the project root.
+description: This skill should be used when the user has approved carousel copy from the editor skill and is ready for design handoff and Figma production. Take the approved copy and content-planner classification, produce design notes, then build the actual slides in Figma using the Figma MCP. This is outside the default automated loop and should run only when design handoff is explicitly requested.
 ---
 
 # Designer
@@ -12,16 +12,19 @@ description: This skill should be used when the user has approved carousel copy 
 ## Read First
 
 - `brands/richesse-club/BRAND_GUIDE.md`
+- `brands/richesse-club/CONTENT_STRATEGY.md`
 - 승인된 content plan
 - 승인된 Slide Copy
+- `python scripts/editorial_memory.py snapshot` when running under automated PDCA
 
 ## Workflow
 
 1. content-planner 분류와 copy를 같이 읽는다.
 2. visual direction을 정한다.
 3. `final_report.md`를 작성한다.
-4. 승인 후 handoff note에 저장한다.
-5. 필요하면 Figma MCP로 실제 슬라이드를 만든다.
+4. 필요하면 design adversarial check를 한 번 더 한다.
+5. 승인 후 운영 카드와 `final_report.md`에 반영한다.
+6. 필요하면 Figma MCP로 실제 슬라이드를 만든다.
 
 ## final_report.md Structure
 
@@ -74,7 +77,6 @@ Vault 경로 우선순위:
 
 승인 후 저장:
 
-- `{vault}/05_handoff/YYYY-MM-DD-[working-title]-final_report.md`
 - `{vault}/content/instagram/[working-title].md`
 - `{repo}/final_report.md`
 
@@ -86,3 +88,11 @@ Vault 경로 우선순위:
 - generic luxury 스타일을 밀지 않는다.
 - 정보 구조와 분위기를 같이 설계한다.
 - 승인 전에는 최종 저장이나 Figma production을 확정하지 않는다.
+
+## Automation Rule
+
+When running under `head`:
+
+- run only when design handoff is explicitly requested
+- route backward only for real hierarchy, pacing, or brand-fit failures
+- log the verdict after the design note pass

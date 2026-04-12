@@ -64,7 +64,7 @@ richesse.club 콘텐츠 OS 수집 소스 목록.
 ## 피드 추가 방법
 
 1. 이 파일에 행 추가
-2. `scripts/fetch_feeds.py` 상단 `FEEDS` 리스트에도 동일하게 추가:
+2. `scripts/fetch_and_curate.py` 상단 `FEEDS` 리스트에도 동일하게 추가:
 ```python
 {"name": "소스명", "url": "RSS URL", "category": "카테고리", "priority": 우선순위, "type": "rss"},
 ```

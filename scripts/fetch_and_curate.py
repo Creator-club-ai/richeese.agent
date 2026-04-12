@@ -211,6 +211,37 @@ def fetch_feed(config):
     return articles
 
 
+def count_cross_sources(articles):
+    """같은 토픽을 다룬 소스 수를 계산한다. source_count >= 2면 화제성 신호."""
+    STOPWORDS = {
+        "the", "a", "an", "of", "in", "to", "and", "for", "with", "on", "at",
+        "by", "from", "is", "are", "was", "were", "has", "have", "its", "it",
+        "this", "that", "be", "as", "or", "but", "not", "new", "says", "said",
+    }
+
+    def extract_keywords(title):
+        words = re.findall(r"[a-zA-Z가-힣]{3,}", title.lower())
+        return {w for w in words if w not in STOPWORDS}
+
+    n = len(articles)
+    source_counts = [1] * n
+
+    for i in range(n):
+        keywords_i = extract_keywords(articles[i].get("title", ""))
+        if len(keywords_i) < 2:
+            continue
+        sources_seen = {articles[i]["source"]}
+        for j in range(n):
+            if i == j:
+                continue
+            keywords_j = extract_keywords(articles[j].get("title", ""))
+            if len(keywords_i & keywords_j) >= 2:
+                sources_seen.add(articles[j]["source"])
+        source_counts[i] = len(sources_seen)
+
+    return source_counts
+
+
 def deduplicate(articles):
     seen = set()
     unique = []
@@ -264,7 +295,12 @@ def main():
     for feed in FEEDS:
         all_articles.extend(fetch_feed(feed))
 
-    # 배치 내 중복 제거 → 기존과 중복 제거
+    # source_count 계산 (중복 제거 전)
+    source_counts = count_cross_sources(all_articles)
+    for article, count in zip(all_articles, source_counts):
+        article["source_count"] = count
+
+    # 배치 내 중복 제거 → 기존과 중복 제거 (source_count는 max 유지)
     unique_new = deduplicate(all_articles)
     if existing_keys:
         unique_new = [a for a in unique_new if not any(k in existing_keys for k in article_keys(a))]

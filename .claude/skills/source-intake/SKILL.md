@@ -1,6 +1,6 @@
 ---
 name: source-intake
-description: This skill should be used first when the user provides a YouTube URL, article URL, X post, transcript, interview, memo, idea, or a selected news signal. Extract a normalized source packet, save an immutable snapshot note to Obsidian raw/, run wiki ingest, then stop for user approval before content-planner.
+description: This skill should be used first when the user provides a YouTube URL, article URL, X post, transcript, interview, memo, idea, or a selected news signal. Extract a normalized source packet, save an immutable snapshot note to Obsidian raw/, run wiki ingest, and in automated PDCA mode continue toward content-planner unless the source is too weak or fact-risk is still critical.
 ---
 
 # Source Intake
@@ -12,7 +12,9 @@ description: This skill should be used first when the user provides a YouTube UR
 ## Read First
 
 - `brands/richesse-club/BRAND_GUIDE.md`
+- `brands/richesse-club/CONTENT_STRATEGY.md`
 - 사용자가 준 원문 링크, 텍스트, 메모
+- `python scripts/editorial_memory.py snapshot` when running under automated PDCA
 
 ## Start Rule
 
@@ -25,7 +27,7 @@ description: This skill should be used first when the user provides a YouTube UR
 - transcript
 - 메모
 - 아이디어
-- `feed-fetcher`에서 고른 신호
+- `morning-brew`에서 고른 신호
 
 ## Workflow
 
@@ -34,7 +36,9 @@ description: This skill should be used first when the user provides a YouTube UR
 3. source packet을 만든다.
 4. snapshot note를 `raw/`에 append-only로 저장한다.
 5. 가치 있는 개념이 있으면 `wiki` ingest를 실행한다.
-6. packet 요약을 채팅에 보여주고 멈춘다.
+6. 소스 강도와 리스크를 판단한다.
+7. manual mode면 packet 요약을 채팅에 보여주고 멈춘다.
+8. automated PDCA mode면 blocker가 없을 때 `content-planner`로 넘긴다.
 
 ## YouTube Rule
 
@@ -61,6 +65,8 @@ python scripts/get_transcript.py "<youtube_url>" --lang ko en --save
 - usable points
 - direction cues
 - risks or gaps
+- source strength
+- fact risk
 
 필요하면 챕터 또는 섹션 breakdown도 붙인다.
 
@@ -103,6 +109,20 @@ Vault 경로 우선순위:
 ## Rules
 
 - `raw/`에 저장한 snapshot은 수정하지 않는다.
-- `content-planner`로 바로 넘어가지 않는다.
+- raw source에서 정규화 없이 `content-planner`로 바로 넘어가지 않는다.
 - 해석이 빈약한 소스는 빈약하다고 말한다.
 - 원문에 없는 사실은 추가하지 않는다.
+
+## Automation Rule
+
+When running under `head`:
+
+- mini model may extract sections, quotes, and factual claims
+- full model must decide `core thesis`, `direction cues`, `source strength`, and `fact risk`
+- route forward only when the source is usable
+
+Use these rough thresholds:
+
+- `source strength < 0.55` → stop and report weakness
+- `fact risk > 0.40` → do one repair pass or stop
+- otherwise route to `content-planner`

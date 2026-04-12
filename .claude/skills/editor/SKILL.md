@@ -1,6 +1,6 @@
 ---
 name: editor
-description: This skill should be used when the user asks to "write carousel copy", "draft slide copy", "rewrite an Instagram carousel", "tighten headline and body copy", or turn richesse.club planning/source material into publishable carousel copy. Write compressed editorial copy with clear save value, then stop for user approval.
+description: This skill should be used when the user asks to "write carousel copy", "draft slide copy", "rewrite an Instagram carousel", "tighten headline and body copy", or turn richesse.club planning/source material into publishable carousel copy. Write compressed editorial copy with clear save value. In automated PDCA mode, use review sidecars when useful, log the verdict, and stop with the final copy ready unless design handoff is explicitly requested.
 ---
 
 # 글쓰기 마스터
@@ -17,15 +17,17 @@ description: This skill should be used when the user asks to "write carousel cop
 - content plan 또는 source packet
 - `references/writing-guide.md` — 톤, 타입별 규칙, Quick Test 포함
 - 필요하면 관련 원문 source
+- `python scripts/editorial_memory.py snapshot` when running under automated PDCA
 
 ## Workflow
 
 1. 입력 자료에서 저장 포인트와 핵심 문장을 다시 잡는다.
 2. 콘텐츠 타입(케이스/사실형 vs 사상가 해설형)을 먼저 판단한다.
 3. 슬라이드별 `headline`과 `body`를 쓴다.
-4. 채팅에 초안을 보여주고 멈춘다.
-5. 승인 후 copy note와 운영 카드의 `## Slide Copy`를 갱신한다.
-6. 기본적으로 여기서 종료한다.
+4. 필요하면 `Copy Critic`과 `Risk Desk`를 sidecar로 돌린다.
+5. manual mode면 채팅에 초안을 보여주고 멈춘다.
+6. 승인 후 또는 automated PDCA mode면 운영 카드의 `## Slide Copy`를 갱신한다.
+7. blocker가 없으면 원고 최종본으로 멈춘다. `designer`는 명시적으로 handoff가 요청될 때만 넘긴다.
 
 기본 처리:
 
@@ -55,7 +57,6 @@ Vault 경로 우선순위:
 
 승인 후 저장:
 
-- `{vault}/04_copy/YYYY-MM-DD-[working-title].md`
 - `{vault}/content/instagram/[working-title].md`
 
 ## Rules
@@ -63,6 +64,16 @@ Vault 경로 우선순위:
 - content plan을 다시 설계하지 않는다.
 - 사실이 약한 문장은 세게 쓰지 않는다.
 - 승인 전에는 채팅 초안만 사용한다.
-- 승인 후에도 기본적으로 여기서 멈춘다.
+- manual mode에서는 승인 후 기본적으로 여기서 멈춘다.
 - `designer`는 실제 handoff가 필요할 때만 이어서 쓴다.
 - source만으로도 충분히 방향이 선명하면 바로 카피를 쓸 수 있다.
+
+## Automation Rule
+
+When running under `head`:
+
+- use `Copy Critic` when the draft is long, soft, or suspiciously generic
+- use `Risk Desk` when there are numbers, quotes, market claims, or strong causal wording
+- keep cover headlines short, forceful, and high-pressure; do not over-explain the cover
+- mini may do cheap adversarial scanning, but final brand and publish judgment stays on the full model
+- log the verdict before handing off

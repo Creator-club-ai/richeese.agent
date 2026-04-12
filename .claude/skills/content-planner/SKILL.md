@@ -1,6 +1,6 @@
 ---
 name: content-planner
-description: This skill should be used when source-intake has finished and the user is ready to plan a piece of content end-to-end before copywriting. Turn a source packet into one working title, one core thesis, one save reason, and a 4-11 slide content plan, then stop for user approval before handing off to the editor skill.
+description: This skill should be used when source-intake has finished and the user is ready to plan a piece of content end-to-end before copywriting. Turn a source packet into one working title, one core thesis, one save reason, and a 4-11 slide content plan. In automated PDCA mode, use angle sidecars when needed, log the verdict, and continue to the editor skill unless the angle is still weak or off-brand.
 ---
 
 # 콘텐츠 기획자
@@ -12,7 +12,9 @@ description: This skill should be used when source-intake has finished and the u
 ## Read First
 
 - `brands/richesse-club/BRAND_GUIDE.md`
+- `brands/richesse-club/CONTENT_STRATEGY.md`
 - source-intake가 끝난 source packet
+- `python scripts/editorial_memory.py snapshot` when running under automated PDCA
 
 ## Workflow
 
@@ -20,8 +22,10 @@ description: This skill should be used when source-intake has finished and the u
 2. 방향 메타를 고정한다.
 3. 4-11장 사이에서 슬라이드 구조를 설계한다.
 4. 슬라이드 흐름과 운영 카드 뼈대를 같이 채운다.
-5. 초안을 채팅에 보여주고 멈춘다.
-6. 승인 후 Obsidian stage note와 운영 카드에 반영한다.
+5. 필요하면 `Angle Miner A / B`를 sidecar로 돌린다.
+6. manual mode면 초안을 채팅에 보여주고 멈춘다.
+7. 승인 후 또는 automated PDCA mode면 Obsidian `content/instagram/` 카드에 저장한다.
+8. blocker가 없으면 `editor`로 넘긴다. `designer`는 이 단계의 기본 다음 단계가 아니다.
 
 ## Direction Fields
 
@@ -107,7 +111,6 @@ Vault 경로 우선순위:
 
 승인 후 저장:
 
-- `{vault}/03_brief/YYYY-MM-DD-[working-title].md`
 - `{vault}/content/instagram/[working-title].md`
 
 ## Card Sync Rule
@@ -151,6 +154,27 @@ ig_saves:
 - 방향은 하나만 잡는다.
 - 본문 카피는 여기서 완성하지 않는다.
 - 승인 전에는 채팅 초안만 사용한다.
-- 승인 전에는 `editor`로 넘어가지 않는다.
+- manual mode에서는 승인 전 `editor`로 넘어가지 않는다.
 - `designer` 전제 문구를 여기서 만들지 않는다.
 - `Format`과 별도로 겹치는 패턴 필드를 만들지 않는다.
+
+## Automation Rule
+
+When running under `head`:
+
+- read editorial memory first
+- spawn `Angle Miner A` and `Angle Miner B` only when the angle is ambiguous
+- the main planner chooses one direction only
+- log the verdict before handing off
+
+Spawn angle sidecars only when:
+
+- 2개 이상 plausible angle이 보인다
+- save reason이 아직 약하다
+- broad topic을 강제로 좁혀야 한다
+
+Do not spawn them when:
+
+- the user already fixed the angle explicitly
+- the source is too weak
+- this is a simple revision of an approved card

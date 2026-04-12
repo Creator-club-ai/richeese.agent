@@ -1,9 +1,9 @@
 ---
-name: feed-fetcher
+name: morning-brew
 description: This skill should be used when the user asks for "오늘 뉴스", "latest signals", "뉴스 가져와줘", or wants richesse.club-relevant feed collection. Run the feed fetch script, curate the strongest signals in Korean, save the curated Korean output to Obsidian, then stop for user selection.
 ---
 
-# Feed Fetcher
+# Morning Brew
 
 ## Purpose
 
@@ -42,6 +42,7 @@ pip install feedparser
 - 단순 보도가 아닌 판단, 구조, 숫자, 선언이 있다
 - richesse.club 독자가 저장하거나 공유할 이유가 있다
 - 업계 사람이 "이거 봤어?" 하고 보낼 만하다
+- **`source_count ≥ 3` — 3개 이상 소스에서 동시 등장한 기사는 화제성 신호로 우선 고려한다**
 
 즉시 제외한다.
 
@@ -50,6 +51,14 @@ pip install feedparser
 - 해석 없는 수치 나열
 - 정치·사회 논쟁성 이슈
 - richesse.club 톤과 거리가 먼 대중 뉴스
+
+## 유형 분류
+
+큐레이션 시 각 항목을 아래 세 유형 중 하나로 분류한다.
+
+- **뉴스**: 특정 사건, 발표, 계약, 정책 움직임 등 시의성 있는 보도. 주로 TechCrunch, Wired, Reuters, Google News 계열.
+- **아티클**: 분석, 에세이, 롱폼 뉴스레터, 인터뷰. 주로 Substack (The Generalist, Not Boring, Lenny's), Stratechery, HBR, First Round. 타이밍이 Evergreen인 경우 대부분 아티클.
+- **영상**: YouTube. 강연, 인터뷰, 팟캐스트 녹화.
 
 ## Output Format (고정)
 
@@ -64,7 +73,9 @@ pip install feedparser
 ---
 
 ## 1. [한국어 제목]
+**유형**: 뉴스 / 아티클 / 영상
 **출처**: 소스명 — [원문 링크](URL)
+**화제성**: 🔥 N개 소스 등장  ← source_count ≥ 3일 때만 표시
 **한 줄 요약**: 무슨 일이 일어났는가 (1문장, 한국어)
 **richesse 각도**: richesse.club 독자에게 왜 의미 있는가
 **추천 형식**: 정리형 / 인사이트형 / 해설형 / 케이스형

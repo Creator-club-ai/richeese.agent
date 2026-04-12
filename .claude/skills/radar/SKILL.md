@@ -1,13 +1,13 @@
 ---
 name: radar
-description: This skill should be used only when the Python environment is unavailable and the RSS scripts cannot run. Search the web directly, surface 5 richesse.club-relevant signals, and use it as a manual fallback instead of the standard feed-fetcher workflow.
+description: This skill should be used only when the Python environment is unavailable and the RSS scripts cannot run. Search the web directly, surface 5 richesse.club-relevant signals, and use it as a manual fallback instead of the standard morning-brew workflow.
 ---
 
 # Radar
 
 ## Purpose
 
-`feed-fetcher`를 돌릴 수 없을 때만 웹 검색으로 오늘의 신호를 수동 확보한다. 정상 경로를 대체하는 비상용 스킬이다.
+`morning-brew`를 돌릴 수 없을 때만 웹 검색으로 오늘의 신호를 수동 확보한다. 정상 경로를 대체하는 비상용 스킬이다.
 
 ## Read First
 
