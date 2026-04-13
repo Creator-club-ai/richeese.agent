@@ -1,83 +1,76 @@
 #!/usr/bin/env python3
 """
-get_transcript.py
-
-YouTube URL에서 자막을 추출하고 읽기 좋은 마크다운으로 정리합니다.
---save 플래그를 사용하면 Obsidian raw/ 폴더에 자동 저장됩니다.
+Fetch a YouTube transcript and optionally save it into the active profile vault.
 
 Usage:
     python get_transcript.py <youtube_url>
     python get_transcript.py <youtube_url> --save
     python get_transcript.py <youtube_url> --lang ko en --save
 
-의존성: pip install youtube-transcript-api yt-dlp
+Dependencies:
+    pip install youtube-transcript-api yt-dlp
 """
 
-import sys
+from __future__ import annotations
+
+import argparse
 import io
 import re
-import argparse
-import os
+import sys
 from datetime import datetime
-
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 from pathlib import Path
+
+from profile_runtime import load_runtime_profile
+
+if hasattr(sys.stdout, "buffer"):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 try:
     from youtube_transcript_api import YouTubeTranscriptApi
+    from youtube_transcript_api._errors import NoTranscriptFound, TranscriptsDisabled, VideoUnavailable
 except ImportError:
-    print("youtube-transcript-api가 없습니다.\n실행: pip install youtube-transcript-api")
-    sys.exit(1)
+    print("youtube-transcript-api is not installed.\nRun: pip install youtube-transcript-api")
+    raise SystemExit(1)
 
 
-# ── Vault 경로 ─────────────────────────────────────────────────────────────────
+RUNTIME_PROFILE = load_runtime_profile()
 
-def get_vault_path() -> Path:
-    env = os.environ.get("RICHESSE_VAULT_PATH")
-    if env:
-        return Path(env)
-    onedrive = os.environ.get("OneDrive", "")
-    if onedrive:
-        return Path(onedrive) / "문서" / "Obsidian Vault" / "richesse-content-os"
-    return Path.home() / "OneDrive" / "문서" / "Obsidian Vault" / "richesse-content-os"
-
-
-# ── 유틸 ───────────────────────────────────────────────────────────────────────
 
 def extract_video_id(url: str) -> str:
     match = re.search(r"(?:v=|youtu\.be/|embed/|shorts/)([A-Za-z0-9_-]{11})", url)
-    if match:
-        return match.group(1)
-    raise ValueError(f"YouTube URL에서 video ID를 찾을 수 없습니다: {url}")
+    if not match:
+        raise ValueError(f"Could not extract a video ID from: {url}")
+    return match.group(1)
 
 
-def get_video_meta(video_id: str) -> dict:
-    """yt-dlp로 영상 제목, 채널, 날짜를 가져온다."""
+def get_video_meta(video_id: str) -> dict[str, str]:
     try:
         import yt_dlp
+    except ImportError:
+        return {"title": "", "channel": "", "date": ""}
+
+    try:
         with yt_dlp.YoutubeDL({"quiet": True, "no_warnings": True, "skip_download": True}) as ydl:
             info = ydl.extract_info(f"https://www.youtube.com/watch?v={video_id}", download=False)
-            return {
-                "title":   info.get("title", ""),
-                "channel": info.get("uploader", ""),
-                "date":    info.get("upload_date", ""),  # YYYYMMDD
-            }
     except Exception:
         return {"title": "", "channel": "", "date": ""}
 
+    return {
+        "title": info.get("title", ""),
+        "channel": info.get("uploader", ""),
+        "date": info.get("upload_date", ""),
+    }
 
-def get_transcript(video_id: str, lang_priority: list) -> tuple:
-    """자막 세그먼트 리스트, 사용 언어 반환."""
-    from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound, VideoUnavailable
 
+def get_transcript(video_id: str, lang_priority: list[str]) -> tuple[list[dict[str, object]], str]:
     api = YouTubeTranscriptApi()
 
     try:
         transcript_list = api.list(video_id)
-    except TranscriptsDisabled:
-        raise RuntimeError("이 영상은 자막이 비활성화되어 있습니다.")
-    except VideoUnavailable:
-        raise RuntimeError("영상을 찾을 수 없거나 비공개 영상입니다.")
+    except TranscriptsDisabled as exc:
+        raise RuntimeError("Transcripts are disabled for this video.") from exc
+    except VideoUnavailable as exc:
+        raise RuntimeError("The video is unavailable or private.") from exc
 
     transcript = None
     used_lang = None
@@ -88,102 +81,89 @@ def get_transcript(video_id: str, lang_priority: list) -> tuple:
             used_lang = lang
             break
         except NoTranscriptFound:
-            pass
+            continue
 
-    if not transcript:
+    if transcript is None:
         for lang in lang_priority:
             try:
                 transcript = transcript_list.find_generated_transcript([lang])
                 used_lang = f"{lang} (auto)"
                 break
             except NoTranscriptFound:
-                pass
+                continue
 
-    if not transcript:
+    if transcript is None:
+        available = [item.language_code for item in transcript_list]
         try:
-            available = [t.language_code for t in transcript_list]
             transcript = transcript_list.find_generated_transcript(available)
             used_lang = "auto"
-        except Exception:
-            raise RuntimeError("사용 가능한 자막이 없습니다.")
+        except Exception as exc:
+            raise RuntimeError("No usable transcript was found for this video.") from exc
 
-    raw = transcript.fetch()
-    segments = []
-    for item in raw:
+    raw_segments = transcript.fetch()
+    segments: list[dict[str, object]] = []
+    for item in raw_segments:
         if hasattr(item, "text") and hasattr(item, "start"):
             segments.append({"start": round(float(item.start), 2), "text": item.text.strip()})
         elif isinstance(item, dict):
-            segments.append({"start": round(float(item.get("start", 0)), 2), "text": item.get("text", "").strip()})
+            segments.append({"start": round(float(item.get("start", 0)), 2), "text": str(item.get("text", "")).strip()})
 
-    return segments, used_lang
+    return segments, str(used_lang)
 
 
-def segments_to_paragraphs(segments: list, gap_threshold: float = 4.0) -> list:
-    """
-    시간 간격 기준으로 세그먼트를 단락으로 묶는다.
-    gap_threshold초 이상 간격이 있으면 새 단락 시작.
-    중복/잘린 문장 정리 포함.
-    """
+def segments_to_paragraphs(segments: list[dict[str, object]], gap_threshold: float = 4.0) -> list[dict[str, object]]:
     if not segments:
         return []
 
-    paragraphs = []
-    current_lines = []
-    current_start = segments[0]["start"]
+    paragraphs: list[dict[str, object]] = []
+    current_lines: list[str] = []
+    current_start = float(segments[0]["start"])
 
-    for i, seg in enumerate(segments):
-        text = seg["text"].strip()
+    for index, segment in enumerate(segments):
+        text = str(segment["text"]).strip()
         if not text:
             continue
 
-        # 이전 세그먼트와의 간격 계산
-        if i > 0:
-            gap = seg["start"] - segments[i - 1]["start"]
+        if index > 0:
+            gap = float(segment["start"]) - float(segments[index - 1]["start"])
             if gap >= gap_threshold and current_lines:
-                paragraphs.append({
-                    "start": current_start,
-                    "text": " ".join(current_lines),
-                })
+                paragraphs.append({"start": current_start, "text": " ".join(current_lines)})
                 current_lines = []
-                current_start = seg["start"]
+                current_start = float(segment["start"])
 
         current_lines.append(text)
 
     if current_lines:
-        paragraphs.append({
-            "start": current_start,
-            "text": " ".join(current_lines),
-        })
+        paragraphs.append({"start": current_start, "text": " ".join(current_lines)})
 
     return paragraphs
 
 
 def format_timestamp(seconds: float) -> str:
-    h = int(seconds // 3600)
-    m = int((seconds % 3600) // 60)
-    s = int(seconds % 60)
-    if h > 0:
-        return f"{h}:{m:02d}:{s:02d}"
-    return f"{m}:{s:02d}"
+    hours = int(seconds // 3600)
+    minutes = int((seconds % 3600) // 60)
+    secs = int(seconds % 60)
+    if hours > 0:
+        return f"{hours}:{minutes:02d}:{secs:02d}"
+    return f"{minutes}:{secs:02d}"
 
 
 def slugify(text: str) -> str:
-    text = text.lower().strip()
-    text = re.sub(r"[^\w\s가-힣-]", "", text)
-    text = re.sub(r"[\s_]+", "-", text)
-    return text[:60]
+    normalized = text.lower().strip()
+    normalized = re.sub(r"[^\w\s가-힣]", "", normalized)
+    normalized = re.sub(r"[\s_]+", "-", normalized)
+    return normalized[:60] or "untitled"
 
 
-def make_markdown(video_id: str, url: str, meta: dict, paragraphs: list, lang: str) -> str:
-    """Obsidian raw/ 저장용 마크다운 생성."""
-    title   = meta.get("title", "")
+def make_markdown(video_id: str, url: str, meta: dict[str, str], paragraphs: list[dict[str, object]], lang: str) -> str:
+    title = meta.get("title", "")
     channel = meta.get("channel", "")
     raw_date = meta.get("date", "")
     upload_date = f"{raw_date[:4]}-{raw_date[4:6]}-{raw_date[6:]}" if len(raw_date) == 8 else raw_date
 
     lines = [
         "---",
-        f'source_type: youtube',
+        "source_type: youtube",
         f'title: "{title}"',
         f'channel: "{channel}"',
         f'url: "{url}"',
@@ -195,77 +175,79 @@ def make_markdown(video_id: str, url: str, meta: dict, paragraphs: list, lang: s
         "",
         f"# {title}",
         "",
-        f"**채널:** {channel}  ",
+        f"**Channel:** {channel}  ",
         f"**URL:** {url}  ",
-        f"**자막 언어:** {lang}",
+        f"**Transcript Language:** {lang}",
         "",
         "---",
         "",
-        "## 트랜스크립트",
+        "## Transcript",
         "",
     ]
 
-    for para in paragraphs:
-        ts = format_timestamp(para["start"])
-        lines.append(f"**`{ts}`** {para['text']}")
+    for paragraph in paragraphs:
+        timestamp = format_timestamp(float(paragraph["start"]))
+        lines.append(f"**`{timestamp}`** {paragraph['text']}")
         lines.append("")
 
     return "\n".join(lines)
 
 
-def save_to_vault(markdown: str, meta: dict, date_str: str) -> Path:
-    vault = get_vault_path()
-    raw_dir = vault / "raw"
+def save_to_vault(markdown: str, meta: dict[str, str], date_str: str) -> Path:
+    raw_dir = RUNTIME_PROFILE.raw_dir
     raw_dir.mkdir(parents=True, exist_ok=True)
 
     title_slug = slugify(meta.get("title", "untitled"))
-    filename = f"{date_str}-{title_slug}.md"
-    out_path = raw_dir / filename
-    out_path.write_text(markdown, encoding="utf-8")
-    return out_path
+    output_path = raw_dir / f"{date_str}-{title_slug}.md"
+    output_path.write_text(markdown, encoding="utf-8")
+    return output_path
 
 
-# ── 메인 ───────────────────────────────────────────────────────────────────────
-
-def main():
-    parser = argparse.ArgumentParser(description="YouTube 자막 추출 → 가독성 마크다운")
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Fetch a YouTube transcript and format it as markdown.")
     parser.add_argument("url", help="YouTube URL")
-    parser.add_argument("--lang", nargs="+", default=["ko", "en"], help="자막 언어 우선순위 (기본: ko en)")
-    parser.add_argument("--save", action="store_true", help="Obsidian raw/ 폴더에 저장")
-    args = parser.parse_args()
+    parser.add_argument("--lang", nargs="+", default=["ko", "en"], help="Transcript language priority. Default: ko en")
+    parser.add_argument("--save", action="store_true", help="Save the transcript into the active profile raw/ directory.")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
 
     try:
         video_id = extract_video_id(args.url)
-    except ValueError as e:
-        print(f"오류: {e}")
-        sys.exit(1)
+    except ValueError as exc:
+        print(f"Error: {exc}")
+        raise SystemExit(1)
 
-    print(f"영상 ID: {video_id}")
-    print("메타데이터 가져오는 중...")
+    print(f"Video ID: {video_id}")
+    print("Loading metadata...")
     meta = get_video_meta(video_id)
     if meta.get("title"):
-        print(f"제목: {meta['title']}")
+        print(f"Title: {meta['title']}")
 
-    print("자막 추출 중...")
+    print("Fetching transcript...")
     try:
         segments, lang = get_transcript(video_id, args.lang)
-    except RuntimeError as e:
-        print(f"오류: {e}")
-        sys.exit(1)
+    except RuntimeError as exc:
+        print(f"Error: {exc}")
+        raise SystemExit(1)
 
-    print(f"자막 언어: {lang}  /  세그먼트 {len(segments)}개")
+    print(f"Transcript language: {lang} / segments: {len(segments)}")
     paragraphs = segments_to_paragraphs(segments)
-    print(f"단락 정리: {len(paragraphs)}개")
+    print(f"Paragraphs: {len(paragraphs)}")
 
     date_str = datetime.now().strftime("%Y-%m-%d")
     markdown = make_markdown(video_id, args.url, meta, paragraphs, lang)
 
     if args.save:
-        out_path = save_to_vault(markdown, meta, date_str)
-        print(f"\n저장 완료: {out_path}")
-    else:
-        print("\n" + "─" * 60)
-        print(markdown)
+        output_path = save_to_vault(markdown, meta, date_str)
+        print(f"\nSaved transcript: {output_path}")
+        print(f"RAW_TRANSCRIPT_PATH: {output_path}")
+        return
+
+    print("\n" + "=" * 60)
+    print(markdown)
 
 
 if __name__ == "__main__":

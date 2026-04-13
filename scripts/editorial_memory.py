@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Build and maintain richesse.club editorial memory in the Obsidian vault.
+Build and maintain active-profile editorial memory in the Obsidian vault.
 """
 
 from __future__ import annotations
@@ -15,6 +15,22 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
+
+if hasattr(sys.stdout, "buffer"):
+    sys.stdout = open(sys.stdout.fileno(), mode="w", encoding="utf-8", buffering=1, closefd=False)
+if hasattr(sys.stderr, "buffer"):
+    sys.stderr = open(sys.stderr.fileno(), mode="w", encoding="utf-8", buffering=1, closefd=False)
+
+
+PUBLIC_STAGE_ALIASES = {
+    "brew": "research",
+    "intake": "research",
+    "planner": "analyze",
+    "editor": "write",
+    "designer": "design",
+}
+PUBLIC_STAGES = ["research", "analyze", "write", "review", "refine", "design", "publish"]
+LOG_STAGE_CHOICES = sorted(set(PUBLIC_STAGES + list(PUBLIC_STAGE_ALIASES.keys())))
 
 
 def get_vault_path() -> Path:
@@ -35,8 +51,7 @@ class Card:
 
     @property
     def title(self) -> str:
-        value = self.frontmatter.get("working_title") or self.path.stem
-        return str(value).strip()
+        return str(self.frontmatter.get("working_title") or self.path.stem).strip()
 
     @property
     def category(self) -> str:
@@ -57,18 +72,18 @@ class Card:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="richesse.club editorial memory")
+    parser = argparse.ArgumentParser(description="active-profile editorial memory")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    snapshot = subparsers.add_parser("snapshot", help="print current editorial memory snapshot")
+    snapshot = subparsers.add_parser("snapshot", help="Print the current editorial memory snapshot.")
     snapshot.add_argument("--limit", type=int, default=5)
 
-    refresh = subparsers.add_parser("refresh", help="rebuild editorial memory artifacts")
+    refresh = subparsers.add_parser("refresh", help="Rebuild editorial memory artifacts.")
     refresh.add_argument("--limit", type=int, default=5)
 
-    log = subparsers.add_parser("log", help="append one decision event")
+    log = subparsers.add_parser("log", help="Append one decision event.")
     log.add_argument("--title", required=True)
-    log.add_argument("--stage", required=True, choices=["brew", "intake", "planner", "editor", "designer", "publish"])
+    log.add_argument("--stage", required=True, choices=LOG_STAGE_CHOICES)
     log.add_argument("--verdict", required=True, choices=["approved", "revise", "rejected", "published"])
     log.add_argument("--score", type=float, default=None)
     log.add_argument("--category", default="")
@@ -93,19 +108,19 @@ def split_frontmatter(text: str) -> tuple[dict[str, object], str]:
         return {}, text
 
     lines = text.splitlines()
-    fm_lines: list[str] = []
+    frontmatter_lines: list[str] = []
     end_index = None
-    for idx in range(1, len(lines)):
-        if lines[idx].strip() == "---":
-            end_index = idx
+    for index in range(1, len(lines)):
+        if lines[index].strip() == "---":
+            end_index = index
             break
-        fm_lines.append(lines[idx])
+        frontmatter_lines.append(lines[index])
 
     if end_index is None:
         return {}, text
 
     body = "\n".join(lines[end_index + 1 :]).lstrip("\n")
-    return parse_simple_yaml(fm_lines), body
+    return parse_simple_yaml(frontmatter_lines), body
 
 
 def parse_simple_yaml(lines: Iterable[str]) -> dict[str, object]:
@@ -150,20 +165,21 @@ def parse_simple_yaml(lines: Iterable[str]) -> dict[str, object]:
 
 def parse_sections(body: str) -> dict[str, str]:
     sections: dict[str, str] = {}
-    heading: str | None = None
+    current_heading: str | None = None
     buffer: list[str] = []
 
     for line in body.splitlines():
         if line.startswith("## "):
-            if heading is not None:
-                sections[heading] = "\n".join(buffer).strip()
-            heading = line[3:].strip()
+            if current_heading is not None:
+                sections[current_heading] = "\n".join(buffer).strip()
+            current_heading = line[3:].strip()
             buffer = []
             continue
         buffer.append(line)
 
-    if heading is not None:
-        sections[heading] = "\n".join(buffer).strip()
+    if current_heading is not None:
+        sections[current_heading] = "\n".join(buffer).strip()
+
     return sections
 
 
@@ -200,10 +216,11 @@ def ensure_memory_dir(vault: Path) -> Path:
 
 def append_log(vault: Path, args: argparse.Namespace) -> dict[str, object]:
     ensure_memory_dir(vault)
+    normalized_stage = PUBLIC_STAGE_ALIASES.get(args.stage, args.stage)
     entry = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "title": args.title.strip(),
-        "stage": args.stage,
+        "stage": normalized_stage,
         "verdict": args.verdict,
         "score": args.score,
         "category": args.category.strip(),
@@ -229,9 +246,17 @@ def load_logs(vault: Path) -> list[dict[str, object]]:
             if not line:
                 continue
             try:
-                entries.append(json.loads(line))
+                entry = json.loads(line)
             except json.JSONDecodeError:
                 continue
+
+            stage = str(entry.get("stage") or "").strip()
+            route = str(entry.get("route") or "").strip()
+            if stage in PUBLIC_STAGE_ALIASES:
+                entry["stage"] = PUBLIC_STAGE_ALIASES[stage]
+            if route in PUBLIC_STAGE_ALIASES:
+                entry["route"] = PUBLIC_STAGE_ALIASES[route]
+            entries.append(entry)
     return entries
 
 
@@ -243,6 +268,7 @@ def build_snapshot(cards: list[Card], logs: list[dict[str, object]], limit: int)
     category_counter = Counter(card.category for card in cards if card.category and card.category != "unknown")
     pattern_counter = Counter(card.pattern for card in cards if card.pattern and card.pattern != "unknown")
     verdict_counter = Counter(str(log.get("verdict") or "") for log in logs if log.get("verdict"))
+    phase_counter = Counter(str(log.get("stage") or "") for log in logs if log.get("stage"))
 
     approved_tags = Counter()
     rejected_tags = Counter()
@@ -271,6 +297,7 @@ def build_snapshot(cards: list[Card], logs: list[dict[str, object]], limit: int)
         lines.append(f"- verdict mix: {verdict_summary}")
 
     sections = [
+        ("Phase Activity", top_counter(phase_counter, limit), "no public-phase activity logged yet"),
         ("Category Patterns", top_counter(category_counter, limit), "not enough data"),
         ("Format Patterns", top_counter(pattern_counter, limit), "not enough data"),
         ("Approval Signals", top_counter(approved_tags, limit), "no approval tags logged yet"),
@@ -298,7 +325,7 @@ def build_snapshot(cards: list[Card], logs: list[dict[str, object]], limit: int)
     lines.extend(["", "## Recent Decisions"])
     if recent_logs:
         for entry in recent_logs:
-            detail_parts = []
+            detail_parts: list[str] = []
             tags = ", ".join(entry.get("tags") or [])
             route = str(entry.get("route") or "").strip()
             if tags:
@@ -307,7 +334,7 @@ def build_snapshot(cards: list[Card], logs: list[dict[str, object]], limit: int)
                 detail_parts.append(f"route: {route}")
             suffix = f" ({'; '.join(detail_parts)})" if detail_parts else ""
             lines.append(
-                f"- {entry.get('timestamp', '')}: [{entry.get('stage', '')}] {entry.get('verdict', '')} — {entry.get('title', '')}{suffix}"
+                f"- {entry.get('timestamp', '')}: [{entry.get('stage', '')}] {entry.get('verdict', '')} - {entry.get('title', '')}{suffix}"
             )
     else:
         lines.append("- no decisions logged yet")
@@ -362,7 +389,8 @@ def write_profile(vault: Path, cards: list[Card], logs: list[dict[str, object]],
         "# Editorial Memory Profile",
         "",
         "This is the adaptive memory layer for richesse.club automation.",
-        "Always read it after `BRAND_GUIDE.md` and `CONTENT_STRATEGY.md`.",
+        "Treat `research -> analyze -> write -> review -> refine` as the primary operating loop when reading these logs.",
+        "Always read it after the active profile docs.",
         "If this file conflicts with the brand guide, the brand guide wins.",
         "",
         snapshot.strip(),
