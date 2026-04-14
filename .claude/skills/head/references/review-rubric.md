@@ -47,7 +47,7 @@ Pass when all are true:
 
 - layout rhythm matches the content density
 - the visual direction supports the angle instead of decorating it
-- hierarchy is obvious on 1080 x 1440
+- hierarchy is obvious on `1080 x 1440`
 - design notes are production-ready, not abstract mood words
 - the result avoids generic luxury cliches
 
@@ -61,10 +61,10 @@ Common failure tags:
 
 ## Route Table
 
-- `weak-source`, `evidence-thin`, `fact-risk-critical` → `source-intake`
-- `too-broad`, `too-generic`, `weak-save-value`, `format-mismatch` → `content-planner`
-- `hook-weak`, `cover-overexplained`, `body-flat`, `too-wordy`, `repetitive-structure` → `editor`
-- `visual-mismatch`, `hierarchy-weak`, `pacing-issue`, `generic-luxury` → `designer`
+- `weak-source`, `evidence-thin`, `fact-risk-critical` -> `research-desk`
+- `too-broad`, `too-generic`, `weak-save-value`, `format-mismatch` -> `content-planner`
+- `hook-weak`, `cover-overexplained`, `body-flat`, `too-wordy`, `repetitive-structure` -> `editor`
+- `visual-mismatch`, `hierarchy-weak`, `pacing-issue`, `generic-luxury` -> `designer`
 
 ## Adversarial Pass
 

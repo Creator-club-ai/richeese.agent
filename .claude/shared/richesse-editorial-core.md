@@ -7,6 +7,7 @@ This file is the canonical operating model for the repository.
 - `head` is the primary runner.
 - `research -> analyze -> write -> review -> refine` are the public phase labels.
 - `designer` is outside the default loop and runs only on explicit handoff.
+- `morning-brew` is an optional discovery utility, not part of the default loop.
 - Legacy desks remain internal execution layers under `.claude/agents/`.
 - Legacy stage skills remain internal execution wrappers under `.claude/skills/`.
 
@@ -22,10 +23,23 @@ This file is the canonical operating model for the repository.
 1. `ACTIVE_PROFILE.md`
 2. the profile documents referenced there
 3. this file
-4. `.claude/shared/phase-contracts.md`
-5. `.claude/skills/head/SKILL.md`
-6. the user request
-7. source material only when the current run needs it
+4. `.claude/shared/runtime-architecture.md`
+5. `.claude/shared/phase-contracts.md`
+6. `.claude/skills/head/SKILL.md`
+7. the user request
+8. source material only when the current run needs it
+
+## Architecture
+
+The repository skeleton lives in `.claude/shared/runtime-architecture.md`.
+
+That document is the implementation-facing contract for:
+
+- which layer owns policy vs infrastructure
+- how requested modes resolve into concrete execution modes
+- what qualifies as a phase artifact
+- how memory logging distinguishes capture events from approval events
+- which tests must hold before changing the runtime
 
 ## Ownership
 
@@ -42,8 +56,9 @@ Keep the stack explicit:
 
 - public orchestrator: `head`
 - public phases: `research`, `analyze`, `write`, `review`, `refine`
+- optional discovery utility: `morning-brew`
 - internal desks: `.claude/agents/*.md`
-- internal legacy execution wrappers: `morning-brew`, `source-intake`, `content-planner`, `editor`, `wiki`
+- internal execution wrappers: `content-planner`, `editor`, `wiki`
 - no deprecated orchestration aliases by default
 
 If a name does not belong to the first two layers, it should not be treated as a default user-facing runtime surface.
@@ -66,11 +81,15 @@ The system should behave like a lean editorial company:
 
 | Public phase | Internal execution |
 | --- | --- |
-| `research` | `morning-brew`, `source-intake`, `wiki`, `research-desk`, `memory-ops` |
+| `research` | `research-desk`, `wiki`, `memory-ops` |
 | `analyze` | `content-planner`, `strategy-desk`, optional angle-mining sidecars |
 | `write` | `editor`, `copy-desk`, optional copy-critic sidecar |
 | `review` | `risk-desk`, `copy-desk` in critic mode, `memory-ops` |
-| `refine` | reroute to `source-intake`, `content-planner`, or `editor` by cause |
+| `refine` | reroute to `research-desk`, `content-planner`, or `editor` by cause |
+
+Optional pre-loop utility:
+
+- `morning-brew` handles latest-signal discovery, shortlist generation, and heat triage before one signal is escalated into `research`.
 
 ## Subagent Dispatch Rule
 
@@ -96,10 +115,16 @@ The default loop is:
 
 Use `designer` only after the copy is approved and the user explicitly wants production handoff.
 
+Optional discovery path:
+
+`head -> morning-brew -> [user picks one signal] -> research -> analyze -> write -> review`
+
 ## Routing Rules
 
-- latest signals / RSS / "today's signals" requests start at `research` via `morning-brew`
-- YouTube URL, article URL, X post, transcript, memo, pasted source, and selected signals start at `research` via `source-intake`
+- latest signals / RSS / "today's signals" requests may start at `morning-brew` when the user wants discovery or a shortlist first
+- YouTube URL, article URL, X post, transcript, memo, pasted source, and selected signals start at `research` via `research-desk`
+- `morning-brew` should help the user compare candidates, not silently choose the editorial priority on its own
+- do not let `morning-brew` stand in for `research`; one signal still needs evidence-building before planning
 - do not send raw source directly to `analyze`
 - `analyze` must choose one angle only
 - `write` must consume an approved plan, not raw source
@@ -113,7 +138,7 @@ Use the Obsidian vault as the system state layer.
 Primary locations:
 
 - `raw/` for immutable source snapshots
-- the profile-defined latest-signals folder for morning-brew outputs
+- the profile-defined latest-signals folder for morning-brew or other discovery outputs
 - `wiki/` for reusable knowledge
 - `wiki/editorial-memory/` for adaptive memory
 - `wiki/editorial-memory/head-artifacts/` for phase handoff artifacts and templates
@@ -125,7 +150,7 @@ Before design handoff, the only default project-root artifact is `final_report.m
 ## Memory Rules
 
 - `head` should read `python scripts/editorial_memory.py snapshot` before a substantial run.
-- Log verdicts when a phase meaningfully completes.
+- Log gate outcomes separately from capture events. Non-gated automation should use a non-approval event such as `captured`.
 - Run `python scripts/editorial_memory.py refresh` at the end of a completed loop or a meaningful stop.
 
 ## Stop Conditions

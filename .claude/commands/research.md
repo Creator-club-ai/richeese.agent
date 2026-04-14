@@ -1,6 +1,6 @@
 ---
 description: Run the public research phase under Head
-argument-hint: [signal, URL, source, or request]
+argument-hint: [selected signal, URL, source, or request]
 ---
 
 Act as the public `research` phase for: $ARGUMENTS

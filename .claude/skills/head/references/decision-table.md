@@ -44,7 +44,7 @@ Use `gpt-5.4-mini high` for:
 | cheap adversarial scan of a draft | no | hand back to head |
 | claim extraction for risk review | no | hand back to Risk Desk |
 
-## 3. Source-Intake Table
+## 3. Research Intake Table
 
 | Signal | Action | Model |
 |---|---|---|
@@ -125,8 +125,8 @@ This table applies only when design handoff is explicitly requested.
 
 | Failure tag | Route |
 |---|---|
-| `weak-source` | `source-intake` |
-| `fact-risk-critical` | `source-intake` |
+| `weak-source` | `research-desk` |
+| `fact-risk-critical` | `research-desk` |
 | `too-broad` | `content-planner` |
 | `too-generic` | `content-planner` |
 | `weak-save-value` | `content-planner` |

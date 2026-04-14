@@ -1,6 +1,6 @@
 ---
 name: research
-description: Public evidence phase under Head. Use when the user wants source gathering, latest-signal scanning, or direct-source intake before planning. `research` routes into `morning-brew` or `source-intake`, uses `wiki` and `memory-ops` as support, and returns a `ResearchOutput`.
+description: Public evidence phase under Head. Use when the user wants one chosen signal or one direct source turned into usable evidence before planning. `research` routes into `research-desk`, can reuse discovery shortlist context when `morning-brew` already ran, uses `wiki` and `memory-ops` as support, and returns a `ResearchOutput`.
 ---
 
 # Research
@@ -29,20 +29,25 @@ Users should ask for `research`, not choose desks manually.
 
 ## Dispatch
 
-- latest signals / RSS / "today's signals" -> `morning-brew`
-- direct source / URL / transcript / memo / pasted text -> `source-intake`
+- selected signal from `morning-brew` -> `research-desk`
+- direct source / URL / transcript / memo / pasted text -> `research-desk`
 - use `wiki` for ingest or lookup when it adds signal
 - use `memory-ops` when a snapshot or refresh is needed
+- use `morning-brew` only when the user explicitly needs discovery before selecting one signal
+- reuse shared signal helpers from `scripts/signal_adapters/common.py` when discovery context needs to carry into evidence building
 
 Subagent rule:
 
 - `research` should normally dispatch internal desks instead of doing non-trivial normalization inline.
-- `morning-brew` and `source-intake` are execution wrappers, not public competitors to `research`.
+- `research-desk` is the default internal owner for evidence building.
+- `morning-brew` is optional discovery support, not a public competitor to `research`.
+- platform collectors stay in `scripts/signal_adapters/*.py`; `research` owns evidence synthesis, not multi-source scanning.
 
 ## Rules
 
-- raw source must stop here before planning
+- one selected signal or one raw source must stop here before planning
 - do not hand raw source straight to `analyze`
+- do not treat a `morning-brew` shortlist as a finished `ResearchOutput`
 - return a structured `ResearchOutput`
 - stop cleanly when source strength is too weak
 

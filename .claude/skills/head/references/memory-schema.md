@@ -22,7 +22,7 @@ One JSON object per decision event.
   "timestamp": "2026-04-12T03:55:00+00:00",
   "title": "2인 90일 - AI 스타트업의 새 공식",
   "stage": "planner",
-  "verdict": "approved",
+  "verdict": "captured",
   "score": 0.82,
   "category": "Business",
   "pattern": "정리형",
@@ -31,6 +31,11 @@ One JSON object per decision event.
   "route": "editor"
 }
 ```
+
+Verdict semantics:
+
+- `captured` = an artifact or phase snapshot was recorded, but no public approval gate has been passed yet
+- `approved`, `revise`, `rejected`, `published` = actual judgment outcomes that may influence adaptive memory
 
 ## Card Frontmatter Extensions
 

@@ -11,7 +11,7 @@ They are meant to stabilize handoffs, not force JSON for every run.
 
 Purpose:
 
-- turn raw source or feed scanning into usable evidence
+- turn one chosen source or one selected signal into usable evidence
 
 Required fields:
 

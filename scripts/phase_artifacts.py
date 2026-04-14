@@ -100,11 +100,14 @@ def write_phase_template(
     return _write_artifact(run.run_dir / f"{phase}-template.md", frontmatter, ordered_sections)
 
 
-def scaffold_follow_on_templates(run: PhaseRun, active_profile: str, research_artifact: Path) -> dict[str, Path]:
-    return {
-        "analyze": write_phase_template(
-            run,
-            active_profile,
+def scaffold_follow_on_templates(
+    run: PhaseRun,
+    active_profile: str,
+    research_artifact: Path,
+    phases: tuple[str, ...] = ("analyze",),
+) -> dict[str, Path]:
+    definitions: dict[str, tuple[str, str, list[str]]] = {
+        "analyze": (
             "AnalyzeOutput",
             "analyze",
             [
@@ -121,11 +124,8 @@ def scaffold_follow_on_templates(run: PhaseRun, active_profile: str, research_ar
                 "Blockers",
                 "Angle Status",
             ],
-            research_artifact,
         ),
-        "write": write_phase_template(
-            run,
-            active_profile,
+        "write": (
             "WriteOutput",
             "write",
             [
@@ -137,12 +137,9 @@ def scaffold_follow_on_templates(run: PhaseRun, active_profile: str, research_ar
                 "Confidence",
                 "Copy Status",
             ],
-            research_artifact,
         ),
-        "review": write_phase_template(
-            run,
-            active_profile,
-            "ReviewOutput",
+        "review": (
+            "ReviewVerdict",
             "review",
             [
                 "Status",
@@ -153,12 +150,9 @@ def scaffold_follow_on_templates(run: PhaseRun, active_profile: str, research_ar
                 "Required Changes",
                 "Suggested Patch",
             ],
-            research_artifact,
         ),
-        "refine": write_phase_template(
-            run,
-            active_profile,
-            "RefineOutput",
+        "refine": (
+            "RepairRequest",
             "refine",
             [
                 "Target Phase",
@@ -167,6 +161,17 @@ def scaffold_follow_on_templates(run: PhaseRun, active_profile: str, research_ar
                 "Preserve Angle",
                 "Next Step",
             ],
-            research_artifact,
         ),
     }
+    templates: dict[str, Path] = {}
+    for phase in phases:
+        artifact_type, phase_name, sections = definitions[phase]
+        templates[phase] = write_phase_template(
+            run,
+            active_profile,
+            artifact_type,
+            phase_name,
+            sections,
+            research_artifact,
+        )
+    return templates

@@ -30,6 +30,9 @@ if hasattr(sys.stderr, "buffer"):
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS_DIR = Path(__file__).resolve().parent
 PUBLIC_PHASES = ["research", "analyze", "write", "review", "refine(if needed)"]
+DISCOVERY_RUN_MODE = "signals"
+DISCOVERY_UTILITY = "morning-brew"
+LEGACY_MODE_ALIASES = {"brew": DISCOVERY_RUN_MODE}
 
 
 def resolve_active_profile() -> str:
@@ -48,8 +51,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--mode",
         default="auto",
-        choices=["auto", "brew", "direct"],
-        help="Brew scans latest signals; direct routes a specific source.",
+        choices=["auto", DISCOVERY_RUN_MODE, "direct", "brew"],
+        help="Signals runs optional latest-signals discovery; brew is the legacy alias; direct routes a specific source.",
     )
     parser.add_argument("--manual", action="store_true", help="Stop after the initial routed step.")
     parser.add_argument(
@@ -62,6 +65,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--lang", nargs="*", default=["ko", "en"], help="Transcript language preference.")
     parser.add_argument("--json", action="store_true", help="Emit the phase plan in a JSON-like plain-text block.")
     return parser.parse_args()
+
+
+def resolve_run_mode(requested_mode: str, source_ref: str | None) -> str:
+    if requested_mode == "auto":
+        return DISCOVERY_RUN_MODE if not source_ref else "direct"
+    return LEGACY_MODE_ALIASES.get(requested_mode, requested_mode)
 
 
 def detect_source_kind(source_ref: str | None, explicit_kind: str) -> str:
@@ -113,7 +122,13 @@ def run_memory_step(command_name: str) -> subprocess.CompletedProcess[str]:
     )
 
 
-def log_phase_event(stage: str, title: str, notes: str = "", route: str = "") -> subprocess.CompletedProcess[str]:
+def log_phase_event(
+    stage: str,
+    title: str,
+    notes: str = "",
+    route: str = "",
+    verdict: str = "captured",
+) -> subprocess.CompletedProcess[str]:
     command = [
         sys.executable,
         str(SCRIPTS_DIR / "editorial_memory.py"),
@@ -123,7 +138,7 @@ def log_phase_event(stage: str, title: str, notes: str = "", route: str = "") ->
         "--stage",
         stage,
         "--verdict",
-        "approved",
+        verdict,
     ]
     if notes:
         command.extend(["--notes", notes])
@@ -132,11 +147,11 @@ def log_phase_event(stage: str, title: str, notes: str = "", route: str = "") ->
     return run_step(f"memory:log:{stage}", command)
 
 
-def run_leaf_automation(args: argparse.Namespace, source_kind: str) -> subprocess.CompletedProcess[str] | None:
-    if args.mode == "brew" or (args.mode == "auto" and not args.source_ref):
-        return run_step("research:brew", [sys.executable, str(SCRIPTS_DIR / "fetch_and_curate.py")])
+def run_leaf_automation(args: argparse.Namespace, run_mode: str, source_kind: str) -> subprocess.CompletedProcess[str] | None:
+    if run_mode == DISCOVERY_RUN_MODE:
+        return run_step(f"discovery:{DISCOVERY_UTILITY}", [sys.executable, str(SCRIPTS_DIR / "fetch_and_curate.py")])
 
-    if source_kind == "youtube" and args.source_ref:
+    if run_mode == "direct" and source_kind == "youtube" and args.source_ref:
         command = [sys.executable, str(SCRIPTS_DIR / "get_transcript.py"), args.source_ref]
         if args.lang:
             command.extend(["--lang", *args.lang])
@@ -147,12 +162,13 @@ def run_leaf_automation(args: argparse.Namespace, source_kind: str) -> subproces
     return None
 
 
-def emit_plan(mode: str, source_kind: str, phases: list[str], as_json: bool) -> None:
+def emit_plan(requested_mode: str, run_mode: str, source_kind: str, phases: list[str], as_json: bool) -> None:
     active_profile = resolve_active_profile()
     if as_json:
         print("{")
         print(f'  "active_profile": "{active_profile}",')
-        print(f'  "mode": "{mode}",')
+        print(f'  "requested_mode": "{requested_mode}",')
+        print(f'  "run_mode": "{run_mode}",')
         print(f'  "source_kind": "{source_kind}",')
         print('  "phases": [')
         for index, phase in enumerate(phases):
@@ -164,8 +180,11 @@ def emit_plan(mode: str, source_kind: str, phases: list[str], as_json: bool) -> 
 
     print("Head phase plan:")
     print(f"- active profile: {active_profile}")
-    print(f"- mode: {mode}")
+    print(f"- requested mode: {requested_mode}")
+    print(f"- run mode: {run_mode}")
     print(f"- source kind: {source_kind}")
+    if run_mode == DISCOVERY_RUN_MODE:
+        print(f"- discovery utility: {DISCOVERY_UTILITY} (optional pre-loop scan)")
     print(f"- phases: {' -> '.join(phases)}")
 
 
@@ -207,6 +226,10 @@ def extract_json_block(text: str, start_marker: str, end_marker: str) -> list[di
     return payload if isinstance(payload, list) else []
 
 
+def extract_shortlisted_articles(text: str) -> list[dict[str, Any]]:
+    return extract_json_block(text, "--- NEW_ARTICLES_START ---", "--- NEW_ARTICLES_END ---")
+
+
 def _parse_markdown_frontmatter(path: Path) -> dict[str, str]:
     text = path.read_text(encoding="utf-8", errors="replace")
     if not text.startswith("---"):
@@ -236,7 +259,7 @@ def _extract_transcript_excerpts(path: Path, limit: int = 5) -> list[str]:
 
 def synthesize_research_artifacts(
     profile: RuntimeProfile,
-    mode: str,
+    run_mode: str,
     source_kind: str,
     completed: subprocess.CompletedProcess[str] | None,
 ) -> tuple[Path | None, dict[str, Path]]:
@@ -245,39 +268,8 @@ def synthesize_research_artifacts(
 
     artifact_paths = extract_artifact_paths(completed.stdout or "")
 
-    if mode == "brew":
-        articles = extract_json_block(completed.stdout or "", "--- NEW_ARTICLES_START ---", "--- NEW_ARTICLES_END ---")
-        if not articles:
-            return None, {}
-
-        run = create_phase_run(profile, f"latest-signals-{articles[0].get('title', 'signals')}")
-        source_inventory = "\n".join(
-            f"- {article.get('source', 'unknown')}: {article.get('title', '').strip()} - {article.get('url', '').strip()}"
-            for article in articles[:8]
-        ) or "- no shortlisted sources"
-        usable_points = "\n".join(
-            f"- {article.get('title', '').strip()} ({article.get('category', 'unknown')} / {article.get('source', 'unknown')})"
-            for article in articles[:6]
-        ) or "- no usable points extracted"
-        research_artifact = write_research_output(
-            run,
-            profile.active_profile,
-            "Latest signals scan",
-            "brew",
-            {
-                "Topic": f"Latest signals scan ({len(articles)} shortlisted items)",
-                "Research Depth": "shallow",
-                "Source Inventory": source_inventory,
-                "What Happened": f"A latest-signals scan ran across profile feeds and returned {len(articles)} shortlisted candidates.",
-                "Usable Points": usable_points,
-                "Direction Cues": "- choose one shortlisted signal and narrow it into a single angle",
-                "Risks or Gaps": "- shortlist only; selected signals may still need direct-source normalization before drafting",
-                "Source Strength": "mixed but usable",
-                "Fact Risk": "medium",
-            },
-            recommendation="hand off to analyze",
-        )
-        return research_artifact, scaffold_follow_on_templates(run, profile.active_profile, research_artifact)
+    if run_mode == DISCOVERY_RUN_MODE:
+        return None, {}
 
     if source_kind == "youtube":
         transcript_path = next((Path(path) for path in artifact_paths if path.lower().endswith(".md")), None)
@@ -351,7 +343,7 @@ def remaining_public_path(phases: list[str], next_phase: str) -> list[str]:
 
 
 def print_handoff_summary(
-    mode: str,
+    run_mode: str,
     source_kind: str,
     phases: list[str],
     snapshot_output: str,
@@ -361,13 +353,16 @@ def print_handoff_summary(
 ) -> None:
     active_profile = resolve_active_profile()
     artifact_paths = extract_artifact_paths(completed.stdout) if completed and completed.stdout else []
+    shortlisted_articles = extract_shortlisted_articles(completed.stdout) if completed and completed.stdout else []
     next_phase = next_manual_phase(research_artifact)
     contract_complete = research_contract_complete(research_artifact)
 
     print("Head handoff summary:")
     print(f"- active profile: {active_profile}")
-    print(f"- mode: {mode}")
+    print(f"- run mode: {run_mode}")
     print(f"- source kind: {source_kind}")
+    if run_mode == DISCOVERY_RUN_MODE:
+        print(f"- discovery utility: {DISCOVERY_UTILITY}")
     print(f"- next manual phase: {next_phase}")
     print(f"- research contract complete: {'yes' if contract_complete else 'no'}")
 
@@ -392,22 +387,31 @@ def print_handoff_summary(
         for phase, path in phase_templates.items():
             print(f"  - {phase}: {path}")
 
+    if run_mode == DISCOVERY_RUN_MODE:
+        if shortlisted_articles:
+            print(f"- discovery shortlist: {len(shortlisted_articles)} candidate signal(s) ready for selection")
+            print("- next step guidance: choose one shortlisted signal, then rerun Head or research with that signal as the source")
+            print("- ownership note: morning-brew discovers candidates; the user picks the editorial priority; Head owns the loop after selection")
+        else:
+            print("- discovery shortlist: no strong candidate signals returned")
+
     print(f"- remaining public path: {' -> '.join(remaining_public_path(phases, next_phase))}")
 
 
 def main() -> int:
     args = parse_args()
     profile = load_runtime_profile(REPO_ROOT)
+    run_mode = resolve_run_mode(args.mode, args.source_ref)
     source_kind = detect_source_kind(args.source_ref, args.source_kind)
     phase_plan = build_phase_plan(args.mode, source_kind, args.handoff)
 
-    emit_plan(args.mode, source_kind, phase_plan, args.json)
+    emit_plan(args.mode, run_mode, source_kind, phase_plan, args.json)
 
     snapshot = run_memory_step("snapshot")
     if snapshot.returncode != 0:
         return snapshot.returncode
 
-    completed = run_leaf_automation(args, source_kind)
+    completed = run_leaf_automation(args, run_mode, source_kind)
     if completed is None:
         print(
             "Head routed this run to agent-owned execution.\n"
@@ -419,10 +423,16 @@ def main() -> int:
     elif completed.returncode != 0:
         return completed.returncode
 
-    research_artifact, phase_templates = synthesize_research_artifacts(profile, args.mode, source_kind, completed)
+    research_artifact, phase_templates = synthesize_research_artifacts(profile, run_mode, source_kind, completed)
     if research_artifact is not None:
         title = extract_research_title(research_artifact)
-        logged = log_phase_event("research", title, notes=f"artifact: {research_artifact}")
+        logged = log_phase_event(
+            "research",
+            title,
+            notes=f"artifact: {research_artifact}",
+            route=next_manual_phase(research_artifact),
+            verdict="captured",
+        )
         if logged.returncode != 0:
             return logged.returncode
 
@@ -432,7 +442,7 @@ def main() -> int:
         print("Head runner completed the initial automation step and kept the public phase path intact.")
 
     print_handoff_summary(
-        args.mode,
+        run_mode,
         source_kind,
         phase_plan,
         snapshot.stdout,

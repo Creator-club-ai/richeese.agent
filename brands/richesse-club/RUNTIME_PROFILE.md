@@ -27,8 +27,9 @@ This file defines the active profile overlay for the shared editorial runtime.
 
 ## Routing Overlay
 
-- latest_signals_requests: `research` via `morning-brew`
-- direct_source_requests: `research` via `source-intake`
+- latest_signals_requests: optional `morning-brew` discovery, then one selected signal into `research`
+- direct_source_requests: `research` via `research-desk`
+- selected_signal_requests: `research` via `research-desk`
 - plan_requests: `analyze`
 - copy_requests: `write`
 - gate_requests: `review`

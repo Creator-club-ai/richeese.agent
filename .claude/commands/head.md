@@ -15,5 +15,6 @@ Requirements:
 
 - treat `head` as the main runner
 - route through `research -> analyze -> write -> review -> refine`
+- use `morning-brew` only when discovery or shortlist selection is explicitly needed
 - use internal desks and sidecars for most non-trivial execution
 - stop before design unless handoff is explicitly requested

@@ -28,7 +28,7 @@ It is not a generic retry phase.
 
 ## Route-Back Logic
 
-- evidence weakness or unsupported claims -> `source-intake`
+- evidence weakness or unsupported claims -> `research-desk`
 - broad angle, weak save reason, or generic framing -> `content-planner`
 - weak hook, bloated body, or flat copy -> `editor`
 - optional visual mismatch after explicit handoff -> `designer`

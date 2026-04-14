@@ -5,6 +5,7 @@ This wrapper stays thin by design.
 The shared editorial operating model lives in:
 
 - `.claude/shared/richesse-editorial-core.md`
+- `.claude/shared/runtime-architecture.md`
 - `.claude/shared/phase-contracts.md`
 - `.claude/skills/head/SKILL.md`
 
@@ -13,10 +14,11 @@ Read order for any runtime:
 1. `ACTIVE_PROFILE.md`
 2. the profile documents referenced there
 3. `.claude/shared/richesse-editorial-core.md`
-4. `.claude/shared/phase-contracts.md`
-5. `.claude/skills/head/SKILL.md`
-6. the user request
-7. relevant source material only if the current run needs it
+4. `.claude/shared/runtime-architecture.md`
+5. `.claude/shared/phase-contracts.md`
+6. `.claude/skills/head/SKILL.md`
+7. the user request
+8. relevant source material only if the current run needs it
 
 Compatibility notes:
 

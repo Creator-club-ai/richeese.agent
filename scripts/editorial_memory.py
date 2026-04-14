@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import re
 import sys
 from collections import Counter, defaultdict
@@ -16,6 +15,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
+from profile_runtime import load_runtime_profile
+
 if hasattr(sys.stdout, "buffer"):
     sys.stdout = open(sys.stdout.fileno(), mode="w", encoding="utf-8", buffering=1, closefd=False)
 if hasattr(sys.stderr, "buffer"):
@@ -23,24 +24,22 @@ if hasattr(sys.stderr, "buffer"):
 
 
 PUBLIC_STAGE_ALIASES = {
+    "signals": "research",
     "brew": "research",
-    "intake": "research",
     "planner": "analyze",
     "editor": "write",
     "designer": "design",
+}
+# Historical log-stage aliases only. Do not expose these as active runtime surfaces.
+LEGACY_LOG_STAGE_ALIASES = {
+    "intake": "research",
 }
 PUBLIC_STAGES = ["research", "analyze", "write", "review", "refine", "design", "publish"]
 LOG_STAGE_CHOICES = sorted(set(PUBLIC_STAGES + list(PUBLIC_STAGE_ALIASES.keys())))
 
 
 def get_vault_path() -> Path:
-    env = os.environ.get("RICHESSE_VAULT_PATH")
-    if env:
-        return Path(env)
-    onedrive = os.environ.get("OneDrive", "")
-    if onedrive:
-        return Path(onedrive) / "문서" / "Obsidian Vault" / "richesse-content-os"
-    return Path.home() / "OneDrive" / "문서" / "Obsidian Vault" / "richesse-content-os"
+    return load_runtime_profile().vault_path
 
 
 @dataclass
@@ -84,7 +83,7 @@ def parse_args() -> argparse.Namespace:
     log = subparsers.add_parser("log", help="Append one decision event.")
     log.add_argument("--title", required=True)
     log.add_argument("--stage", required=True, choices=LOG_STAGE_CHOICES)
-    log.add_argument("--verdict", required=True, choices=["approved", "revise", "rejected", "published"])
+    log.add_argument("--verdict", required=True, choices=["captured", "approved", "revise", "rejected", "published"])
     log.add_argument("--score", type=float, default=None)
     log.add_argument("--category", default="")
     log.add_argument("--pattern", default="")
@@ -254,8 +253,12 @@ def load_logs(vault: Path) -> list[dict[str, object]]:
             route = str(entry.get("route") or "").strip()
             if stage in PUBLIC_STAGE_ALIASES:
                 entry["stage"] = PUBLIC_STAGE_ALIASES[stage]
+            elif stage in LEGACY_LOG_STAGE_ALIASES:
+                entry["stage"] = LEGACY_LOG_STAGE_ALIASES[stage]
             if route in PUBLIC_STAGE_ALIASES:
                 entry["route"] = PUBLIC_STAGE_ALIASES[route]
+            elif route in LEGACY_LOG_STAGE_ALIASES:
+                entry["route"] = LEGACY_LOG_STAGE_ALIASES[route]
             entries.append(entry)
     return entries
 
@@ -390,6 +393,7 @@ def write_profile(vault: Path, cards: list[Card], logs: list[dict[str, object]],
         "",
         "This is the adaptive memory layer for richesse.club automation.",
         "Treat `research -> analyze -> write -> review -> refine` as the primary operating loop when reading these logs.",
+        "Treat `morning-brew` as optional discovery ahead of that loop, not as a substitute for `research`.",
         "Always read it after the active profile docs.",
         "If this file conflicts with the brand guide, the brand guide wins.",
         "",

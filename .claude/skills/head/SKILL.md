@@ -26,17 +26,19 @@ Treat `head` as the only true orchestrator surface.
 - In Codex, `head` is normally called through natural-language requests.
 - In Claude, `.claude/commands/head.md` is only a wrapper alias for the same surface.
 - `research`, `analyze`, `write`, `review`, and `refine` are public phase labels, not separate orchestrators.
+- `morning-brew` is an optional discovery utility, not part of the default public loop.
 - Internal desks and sidecars should never be presented as the default way to use the system.
 
 ## Read First
 
 1. `.claude/shared/richesse-editorial-core.md`
-2. `ACTIVE_PROFILE.md`
-3. the profile documents referenced there
-4. `.claude/shared/phase-contracts.md`
-5. `python scripts/editorial_memory.py snapshot`
-6. the user request
-7. only the source material needed for the current run
+2. `.claude/shared/runtime-architecture.md`
+3. `ACTIVE_PROFILE.md`
+4. the profile documents referenced there
+5. `.claude/shared/phase-contracts.md`
+6. `python scripts/editorial_memory.py snapshot`
+7. the user request
+8. only the source material needed for the current run
 
 ## Public Phase Model
 
@@ -61,10 +63,8 @@ Use internal desks for almost all non-trivial execution.
 Default mappings:
 
 - `research`
-  - `morning-brew`
-  - `source-intake`
-  - `wiki`
   - `research-desk`
+  - `wiki`
   - `memory-ops`
 - `analyze`
   - `content-planner`
@@ -79,7 +79,7 @@ Default mappings:
   - `copy-desk` in critic mode
   - `memory-ops`
 - `refine`
-  - reroute to `source-intake`, `content-planner`, or `editor`
+  - reroute to `research-desk`, `content-planner`, or `editor`
 
 Rules:
 
@@ -90,8 +90,8 @@ Rules:
 
 ## Start Routing
 
-- latest signals / RSS / "today's signals" -> `research` via `morning-brew`
-- YouTube URL / article URL / X post / memo / transcript / pasted source -> `research` via `source-intake`
+- latest signals / RSS / "today's signals" when the user wants discovery first -> `morning-brew`
+- selected signal / YouTube URL / article URL / X post / memo / transcript / pasted source -> `research` via `research-desk`
 - approved source packet or explicit angle request -> `analyze`
 - approved plan or explicit copy request -> `write`
 - draft copy or approval gate request -> `review`
@@ -99,6 +99,8 @@ Rules:
 - design handoff request after approval -> `designer`
 
 Never send raw source directly to `analyze`.
+Never let `morning-brew` skip `research` and feed raw shortlist output straight into `analyze`.
+Treat shortlist choice as a user decision unless the user explicitly delegates that prioritization.
 
 ## Default Operating Loop
 
@@ -116,8 +118,10 @@ Use the memory snapshot as adaptive context, not as a replacement for the brand 
 
 Route into the right research path.
 
-- `morning-brew` for feed scanning
-- `source-intake` for direct source work
+- `research-desk` for direct source work
+- `research-desk` for one selected signal from `morning-brew`
+- use `morning-brew` only when the user explicitly needs a discovery shortlist first
+- do not silently auto-pick a morning-brew candidate unless the user asked Head to prioritize on their behalf
 
 The output must satisfy `ResearchOutput`.
 
