@@ -24,17 +24,19 @@ if hasattr(sys.stderr, "buffer"):
 
 
 PUBLIC_STAGE_ALIASES = {
-    "signals": "research",
-    "brew": "research",
-    "planner": "analyze",
-    "editor": "write",
+    "signals": "news",
+    "brew": "news",
+    "source": "research",
+    "analyze": "planner",
+    "write": "writer",
+    "editor": "writer",
     "designer": "design",
 }
 # Historical log-stage aliases only. Do not expose these as active runtime surfaces.
 LEGACY_LOG_STAGE_ALIASES = {
     "intake": "research",
 }
-PUBLIC_STAGES = ["research", "analyze", "write", "review", "refine", "design", "publish"]
+PUBLIC_STAGES = ["news", "research", "planner", "writer", "design", "publish"]
 LOG_STAGE_CHOICES = sorted(set(PUBLIC_STAGES + list(PUBLIC_STAGE_ALIASES.keys())))
 
 
@@ -392,8 +394,9 @@ def write_profile(vault: Path, cards: list[Card], logs: list[dict[str, object]],
         "# Editorial Memory Profile",
         "",
         "This is the adaptive memory layer for richesse.club automation.",
-        "Treat `research -> analyze -> write -> review -> refine` as the primary operating loop when reading these logs.",
-        "Treat `morning-brew` as optional discovery ahead of that loop, not as a substitute for `research`.",
+        "Treat `news -> research -> planner -> writer` as the primary operating loop when reading these logs.",
+        "Treat `signals`, `brew`, `analyze`, and `write` as compatibility aliases for older logs.",
+        "Treat feed discovery as optional input to research, not as a substitute for evidence-building.",
         "Always read it after the active profile docs.",
         "If this file conflicts with the brand guide, the brand guide wins.",
         "",

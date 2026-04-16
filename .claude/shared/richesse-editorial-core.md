@@ -1,22 +1,53 @@
-# Richesse Editorial Core
+# Content OS Core
 
-This file is the canonical operating model for the repository.
+This repository is a skill-bundle-first Content OS.
+
+Version 0 has four public skills only:
+
+- `content-os-news`
+- `content-os-research`
+- `content-os-planner`
+- `content-os-writer`
+
+The default flow is:
+
+```text
+content-os-news -> content-os-research -> content-os-planner -> content-os-writer
+```
+
+Run one skill at a time unless the user explicitly asks to continue.
 
 ## Product Surface
 
-- `head` is the primary runner.
-- `research -> analyze -> write -> review -> refine` are the public phase labels.
-- `designer` is outside the default loop and runs only on explicit handoff.
-- `morning-brew` is an optional discovery utility, not part of the default loop.
-- Legacy desks remain internal execution layers under `.claude/agents/`.
-- Legacy stage skills remain internal execution wrappers under `.claude/skills/`.
+- `content-os-news` scrapes and shortlists current signals from configured sources.
+- `content-os-research` deep-researches one selected signal or direct source.
+- `content-os-planner` turns research into one content plan.
+- `content-os-writer` turns an approved plan into publishable copy.
+
+Not in v0:
+
+- Head runner
+- gate/review desk
+- repair/refine desk
+- designer handoff
+- mandatory memory
+- mandatory artifacts
+- global runtime or CLI
+
+Compatibility aliases may exist in older prompts, but the active surface is the four skills above.
+
+## Output Language
+
+- Editorial outputs should follow the active profile.
+- For `richesse-club`, editorial outputs should be Korean unless the user asks otherwise.
+- Code paths, file names, URLs, proper nouns, and source titles should remain literal.
 
 ## Calling Model
 
-- In Codex-style runtimes, users normally call the system with natural language such as `Head로 이 주제 research부터 review까지 진행해줘`.
-- In Claude-style runtimes, `.claude/commands/*.md` provide command sugar for the same public surface.
-- `head` and the public phases are the only user-facing runtime concepts that should feel first-class.
-- Internal desks, sidecars, and legacy stage wrappers should not be presented as the default entrypoint.
+- Users may invoke any of the four skills by natural language or command wrapper.
+- Commands are allowed as aliases; they must not become a runtime harness.
+- Do not imply that the full chain must run automatically.
+- Stop at a useful checkpoint and name the next skill.
 
 ## Read Order
 
@@ -25,166 +56,46 @@ This file is the canonical operating model for the repository.
 3. this file
 4. `.claude/shared/runtime-architecture.md`
 5. `.claude/shared/phase-contracts.md`
-6. `.claude/skills/head/SKILL.md`
-7. the user request
-8. source material only when the current run needs it
+6. `.claude/skills/README.md`
+7. the selected `.claude/skills/*/SKILL.md`
+8. the user request
+9. source material only when the current run needs it
 
-## Architecture
+## Source Adapters
 
-The repository skeleton lives in `.claude/shared/runtime-architecture.md`.
+Keep `scripts/signal_adapters/`.
 
-That document is the implementation-facing contract for:
+They are intentionally split by platform because RSS, X, YouTube, Threads, Naver, and other sources fail in different ways.
 
-- which layer owns policy vs infrastructure
-- how requested modes resolve into concrete execution modes
-- what qualifies as a phase artifact
-- how memory logging distinguishes capture events from approval events
-- which tests must hold before changing the runtime
-
-## Ownership
-
-- Shared core owns substantive policy.
-- `AGENTS.md` and `CLAUDE.md` are wrappers only.
-- `head` owns orchestration behavior.
-- Public phase skills own handoff semantics.
-- Legacy stage skills and desk prompts own focused execution.
-- Commands are entrypoint sugar only.
-
-## Surface Taxonomy
-
-Keep the stack explicit:
-
-- public orchestrator: `head`
-- public phases: `research`, `analyze`, `write`, `review`, `refine`
-- optional discovery utility: `morning-brew`
-- internal desks: `.claude/agents/*.md`
-- internal execution wrappers: `content-planner`, `editor`, `wiki`
-- no deprecated orchestration aliases by default
-
-If a name does not belong to the first two layers, it should not be treated as a default user-facing runtime surface.
-
-## Operating Identity
-
-Act like the editorial operator for the active profile.
-
-The system should behave like a lean editorial company:
-
-- `Head` owns routing, integration, gates, and the final call.
-- `research` is the evidence phase.
-- `analyze` is the planning phase.
-- `write` is the drafting phase.
-- `review` is the quality gate.
-- `refine` is the targeted repair phase.
-- `designer` is optional production handoff.
-
-## Phase Map
-
-| Public phase | Internal execution |
-| --- | --- |
-| `research` | `research-desk`, `wiki`, `memory-ops` |
-| `analyze` | `content-planner`, `strategy-desk`, optional angle-mining sidecars |
-| `write` | `editor`, `copy-desk`, optional copy-critic sidecar |
-| `review` | `risk-desk`, `copy-desk` in critic mode, `memory-ops` |
-| `refine` | reroute to `research-desk`, `content-planner`, or `editor` by cause |
-
-Optional pre-loop utility:
-
-- `morning-brew` handles latest-signal discovery, shortlist generation, and heat triage before one signal is escalated into `research`.
-
-## Subagent Dispatch Rule
-
-Absorb the useful part of the second-claude-code model:
-
-- `head` is the orchestrator, not the main hands-on worker.
-- Most non-trivial execution should be dispatched to internal desks or sidecars.
-- `head` keeps the routing, gate, and integration logic.
-- Desks do focused execution and return structured outputs.
-- Sidecars attack ambiguity, weak hooks, and fact risk; they do not own the full run.
-
-Practical rule:
-
-- If a task is trivial, `head` may do it inline.
-- If a task is non-trivial, `head` should prefer dispatch.
-- If there is disagreement between subagents, `head` makes the final call.
-
-## Default Loop
-
-The default loop is:
-
-`head -> research -> analyze -> write -> review -> [refine if needed]`
-
-Use `designer` only after the copy is approved and the user explicitly wants production handoff.
-
-Optional discovery path:
-
-`head -> morning-brew -> [user picks one signal] -> research -> analyze -> write -> review`
-
-## Routing Rules
-
-- latest signals / RSS / "today's signals" requests may start at `morning-brew` when the user wants discovery or a shortlist first
-- YouTube URL, article URL, X post, transcript, memo, pasted source, and selected signals start at `research` via `research-desk`
-- `morning-brew` should help the user compare candidates, not silently choose the editorial priority on its own
-- do not let `morning-brew` stand in for `research`; one signal still needs evidence-building before planning
-- do not send raw source directly to `analyze`
-- `analyze` must choose one angle only
-- `write` must consume an approved plan, not raw source
-- `review` can approve, reroute, or block
-- `refine` repairs the failing layer instead of restarting the full loop
+Adapters own collection and normalization only. They do not own deep research, planning, copywriting, review, repair, or publishing decisions.
 
 ## Storage Rules
 
-Use the Obsidian vault as the system state layer.
+Storage is optional infrastructure.
 
-Primary locations:
+Use the active profile's Obsidian vault only when the run benefits from durable state or the user asks for files.
+
+Primary optional locations:
 
 - `raw/` for immutable source snapshots
-- the profile-defined latest-signals folder for morning-brew or other discovery outputs
+- the profile-defined latest-signals folder for discovery outputs
 - `wiki/` for reusable knowledge
 - `wiki/editorial-memory/` for adaptive memory
-- `wiki/editorial-memory/head-artifacts/` for phase handoff artifacts and templates
 - `content/instagram/` for working cards
 
 Do not create extra project-root planning files by default.
-Before design handoff, the only default project-root artifact is `final_report.md`.
-
-## Memory Rules
-
-- `head` should read `python scripts/editorial_memory.py snapshot` before a substantial run.
-- Log gate outcomes separately from capture events. Non-gated automation should use a non-approval event such as `captured`.
-- Run `python scripts/editorial_memory.py refresh` at the end of a completed loop or a meaningful stop.
 
 ## Stop Conditions
 
 Stop when:
 
 - the source is too weak
-- fact risk remains critical after one serious repair pass
-- the angle remains generic or off-brand
-- editorial memory strongly matches rejected patterns
+- fact risk remains critical after serious research
+- the plan is generic or off-brand
+- the approved plan is missing
 - the user explicitly requests manual mode
 
-Otherwise keep moving through the public phases.
-
-## final_report.md Contract
-
-Use `final_report.md` only for explicit design handoff.
-
-Minimum sections:
-
-- `Topic`
-- `Category`
-- `Format`
-- `User Value`
-- `Depth`
-- `Timing`
-- `Core Angle`
-- `Why Now`
-- `Slide Outline`
-- `Slide Copy`
-- `Design Notes`
-- `Risks or Source Limits`
-
-`Design Notes` should be production guidance, not abstract mood text.
+Otherwise complete the requested skill and name the next step.
 
 ## Sync Rule
 
@@ -193,4 +104,4 @@ When the operating model changes:
 1. edit this file first
 2. update `.claude/shared/phase-contracts.md` if the public contracts changed
 3. update `AGENTS.md` and `CLAUDE.md` in the same work
-4. update `head` and any affected phase wrappers
+4. update `.claude/skills/README.md` and affected `.claude/skills/*/SKILL.md` files

@@ -21,79 +21,16 @@ def load_module(module_name: str, relative_path: str):
     return module
 
 
-run_head_cycle = load_module("run_head_cycle", "scripts/run_head_cycle.py")
+profile_runtime = load_module("profile_runtime", "scripts/profile_runtime.py")
+phase_artifacts = load_module("phase_artifacts", "scripts/phase_artifacts.py")
 editorial_memory = load_module("editorial_memory", "scripts/editorial_memory.py")
 fetch_and_curate = load_module("fetch_and_curate", "scripts/fetch_and_curate.py")
-
-
-class HeadRunnerContractTests(unittest.TestCase):
-    def _fake_profile(self, root: Path):
-        return run_head_cycle.RuntimeProfile(
-            active_profile="richesse-club",
-            profile_root=root / "brands" / "richesse-club",
-            runtime_profile=root / "brands" / "richesse-club" / "RUNTIME_PROFILE.md",
-            brand_guide=root / "brands" / "richesse-club" / "BRAND_GUIDE.md",
-            content_strategy=root / "brands" / "richesse-club" / "CONTENT_STRATEGY.md",
-            vault_path=root / "vault",
-            raw_dir=root / "vault" / "raw",
-            latest_signals_dir=root / "vault" / "오늘의 뉴스",
-            wiki_dir=root / "vault" / "wiki",
-            editorial_memory_dir=root / "vault" / "wiki" / "editorial-memory",
-            working_cards_dir=root / "vault" / "content" / "instagram",
-            head_artifacts_dir=root / "vault" / "wiki" / "editorial-memory" / "head-artifacts",
-        )
-
-    def test_signals_automation_stops_at_discovery_shortlist(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            profile = self._fake_profile(Path(tmp))
-            completed = run_head_cycle.subprocess.CompletedProcess(
-                args=["python", "scripts/fetch_and_curate.py"],
-                returncode=0,
-                stdout=(
-                    "LATEST_SIGNALS_JSON_PATH: C:\\temp\\signals.json\n"
-                    "--- NEW_ARTICLES_START ---\n"
-                    '[{"title":"Signal A","url":"https://example.com/a","source":"TechCrunch","category":"Business"}]\n'
-                    "--- NEW_ARTICLES_END ---\n"
-                ),
-                stderr="",
-            )
-            research_artifact, templates = run_head_cycle.synthesize_research_artifacts(profile, "signals", "idea", completed)
-            self.assertIsNone(research_artifact)
-            self.assertEqual(run_head_cycle.next_manual_phase(research_artifact), "research")
-            self.assertEqual(templates, {})
-
-    def test_auto_mode_without_source_resolves_to_signals(self):
-        self.assertEqual(run_head_cycle.resolve_run_mode("auto", None), "signals")
-
-    def test_legacy_brew_mode_alias_resolves_to_signals(self):
-        self.assertEqual(run_head_cycle.resolve_run_mode("brew", None), "signals")
-
-    def test_default_auto_signals_path_stops_before_research_contract(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            profile = self._fake_profile(Path(tmp))
-            completed = run_head_cycle.subprocess.CompletedProcess(
-                args=["python", "scripts/fetch_and_curate.py"],
-                returncode=0,
-                stdout=(
-                    "LATEST_SIGNALS_JSON_PATH: C:\\temp\\signals.json\n"
-                    "--- NEW_ARTICLES_START ---\n"
-                    '[{"title":"Signal A","url":"https://example.com/a","source":"TechCrunch","category":"Business"}]\n'
-                    "--- NEW_ARTICLES_END ---\n"
-                ),
-                stderr="",
-            )
-            run_mode = run_head_cycle.resolve_run_mode("auto", None)
-            research_artifact, templates = run_head_cycle.synthesize_research_artifacts(profile, run_mode, "idea", completed)
-            self.assertIsNone(research_artifact)
-            self.assertEqual(templates, {})
-
-    def test_no_artifact_keeps_next_phase_at_research(self):
-        self.assertEqual(run_head_cycle.next_manual_phase(None), "research")
+from signal_adapters import runtime as adapter_runtime
 
 
 class PhaseArtifactContractTests(unittest.TestCase):
     def _fake_profile(self, root: Path):
-        return run_head_cycle.RuntimeProfile(
+        return profile_runtime.RuntimeProfile(
             active_profile="richesse-club",
             profile_root=root / "brands" / "richesse-club",
             runtime_profile=root / "brands" / "richesse-club" / "RUNTIME_PROFILE.md",
@@ -101,7 +38,7 @@ class PhaseArtifactContractTests(unittest.TestCase):
             content_strategy=root / "brands" / "richesse-club" / "CONTENT_STRATEGY.md",
             vault_path=root / "vault",
             raw_dir=root / "vault" / "raw",
-            latest_signals_dir=root / "vault" / "오늘의 뉴스",
+            latest_signals_dir=root / "vault" / "latest-signals",
             wiki_dir=root / "vault" / "wiki",
             editorial_memory_dir=root / "vault" / "wiki" / "editorial-memory",
             working_cards_dir=root / "vault" / "content" / "instagram",
@@ -112,8 +49,8 @@ class PhaseArtifactContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             profile = self._fake_profile(root)
-            run = run_head_cycle.create_phase_run(profile, "signal-a")
-            research_artifact = run_head_cycle.write_research_output(
+            run = phase_artifacts.create_phase_run(profile, "signal-a")
+            research_artifact = phase_artifacts.write_research_output(
                 run,
                 profile.active_profile,
                 "Signal A",
@@ -129,27 +66,28 @@ class PhaseArtifactContractTests(unittest.TestCase):
                     "Source Strength": "usable",
                     "Fact Risk": "medium",
                 },
-                "hand off to analyze",
+                "send to content-os-planner",
             )
-            templates = run_head_cycle.scaffold_follow_on_templates(
+            templates = phase_artifacts.scaffold_follow_on_templates(
                 run,
                 profile.active_profile,
                 research_artifact,
-                phases=("review", "refine"),
+                phases=("planner", "writer"),
             )
-            review_text = templates["review"].read_text(encoding="utf-8")
-            refine_text = templates["refine"].read_text(encoding="utf-8")
-            self.assertIn('artifact_type: "ReviewVerdict"', review_text)
-            self.assertIn('artifact_type: "RepairRequest"', refine_text)
+            planner_text = templates["planner"].read_text(encoding="utf-8")
+            writer_text = templates["writer"].read_text(encoding="utf-8")
+            self.assertIn('artifact_type: "PlanOutput"', planner_text)
+            self.assertIn('artifact_type: "CopyOutput"', writer_text)
 
 
 class EditorialMemoryStageTests(unittest.TestCase):
     def test_legacy_stage_aliases_normalize_to_public_phases(self):
-        self.assertEqual(editorial_memory.PUBLIC_STAGE_ALIASES["signals"], "research")
-        self.assertEqual(editorial_memory.PUBLIC_STAGE_ALIASES["brew"], "research")
-        self.assertEqual(editorial_memory.PUBLIC_STAGE_ALIASES["planner"], "analyze")
-        self.assertEqual(editorial_memory.PUBLIC_STAGE_ALIASES["editor"], "write")
+        self.assertEqual(editorial_memory.PUBLIC_STAGE_ALIASES["signals"], "news")
+        self.assertEqual(editorial_memory.PUBLIC_STAGE_ALIASES["brew"], "news")
+        self.assertEqual(editorial_memory.PUBLIC_STAGE_ALIASES["analyze"], "planner")
+        self.assertEqual(editorial_memory.PUBLIC_STAGE_ALIASES["editor"], "writer")
         self.assertIn("research", editorial_memory.LOG_STAGE_CHOICES)
+        self.assertIn("news", editorial_memory.LOG_STAGE_CHOICES)
         self.assertIn("signals", editorial_memory.LOG_STAGE_CHOICES)
         self.assertIn("brew", editorial_memory.LOG_STAGE_CHOICES)
 
@@ -159,11 +97,11 @@ class EditorialMemoryStageTests(unittest.TestCase):
             [
                 {
                     "timestamp": "2026-04-14T00:00:00+00:00",
-                    "stage": "research",
+                    "stage": "news",
                     "verdict": "captured",
                     "title": "Signal A",
                     "tags": ["raw-capture"],
-                    "route": "analyze",
+                    "route": "planner",
                 }
             ],
             5,
@@ -205,6 +143,48 @@ class DiscoveryCollectorTests(unittest.TestCase):
         self.assertEqual(len(shortlist), 1)
         self.assertEqual(shortlist[0]["title"], "AI Strategy Shift")
         self.assertEqual(removed, 2)
+
+    def test_build_new_shortlist_filters_before_saving(self):
+        articles = [
+            {
+                "title": "AI startup pricing shift",
+                "url": "https://example.com/keep",
+                "source": "Source A",
+                "priority": 1,
+                "summary": "A founder changes the business model.",
+                "category": "Business",
+            },
+            {
+                "title": "Celebrity tennis playoff gossip",
+                "url": "https://example.com/drop",
+                "source": "Source B",
+                "priority": 1,
+                "summary": "Entertainment recap.",
+                "category": "Sports",
+            },
+        ]
+        config = fetch_and_curate.FilterConfig(
+            include_keywords=("startup", "founder"),
+            exclude_keywords=("celebrity",),
+            allowed_categories=("business",),
+            max_items=10,
+        )
+        shortlist, removed = fetch_and_curate.build_new_shortlist(articles, set(), config)
+        self.assertEqual([article["title"] for article in shortlist], ["AI startup pricing shift"])
+        self.assertEqual(removed, 1)
+
+    def test_lookback_days_is_clamped(self):
+        original = adapter_runtime.os.environ.get("CONTENT_OS_LOOKBACK_DAYS")
+        try:
+            adapter_runtime.os.environ["CONTENT_OS_LOOKBACK_DAYS"] = "99"
+            self.assertEqual(adapter_runtime.lookback_days(), 4)
+            adapter_runtime.os.environ["CONTENT_OS_LOOKBACK_DAYS"] = "0"
+            self.assertEqual(adapter_runtime.lookback_days(), 1)
+        finally:
+            if original is None:
+                adapter_runtime.os.environ.pop("CONTENT_OS_LOOKBACK_DAYS", None)
+            else:
+                adapter_runtime.os.environ["CONTENT_OS_LOOKBACK_DAYS"] = original
 
 
 if __name__ == "__main__":

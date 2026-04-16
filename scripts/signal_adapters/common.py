@@ -13,8 +13,6 @@ import requests
 SignalArticle = dict[str, object]
 SourceConfig = dict[str, object]
 
-HOURS_LOOKBACK = 48
-YOUTUBE_LOOKBACK = 168
 MAX_PER_FEED = 5
 
 JINA_BASE = "https://r.jina.ai/"
@@ -119,7 +117,7 @@ def fetch_jina_content(target_url: str, label: str) -> str:
             print(f"  - {label}: Jina HTTP {response.status_code}")
             return ""
     except Exception as exc:
-        print(f"  - {label}: request failed ({exc})")
+        print(f"  - {label}: 요청 실패 ({exc})")
         return ""
 
     try:
@@ -129,7 +127,7 @@ def fetch_jina_content(target_url: str, label: str) -> str:
         content = response.text
 
     if not content:
-        print(f"  - {label}: empty content")
+        print(f"  - {label}: 내용 없음")
         return ""
     return content
 

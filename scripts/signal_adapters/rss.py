@@ -1,34 +1,30 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
-
 import feedparser
 
 from .common import (
-    HOURS_LOOKBACK,
     MAX_PER_FEED,
-    YOUTUBE_LOOKBACK,
     SignalArticle,
     SourceConfig,
     is_relevant,
     parse_date,
     strip_html,
 )
+from .runtime import cutoff_utc
 
 
 def fetch_rss(config: SourceConfig, feed_type: str = "rss") -> list[SignalArticle]:
     articles: list[SignalArticle] = []
-    lookback = YOUTUBE_LOOKBACK if feed_type == "youtube" else HOURS_LOOKBACK
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=lookback)
+    cutoff = cutoff_utc()
 
     try:
         parsed = feedparser.parse(str(config["url"]))
     except Exception as exc:
-        print(f"  - {config['name']}: failed to parse feed ({exc})")
+        print(f"  - {config['name']}: 피드 파싱 실패 ({exc})")
         return articles
 
     if not parsed.entries:
-        print(f"  - {config['name']}: no entries")
+        print(f"  - {config['name']}: 항목 없음")
         return articles
 
     raw_count = 0
@@ -65,7 +61,7 @@ def fetch_rss(config: SourceConfig, feed_type: str = "rss") -> list[SignalArticl
         )
 
     filtered_out = raw_count - len(articles)
-    suffix = f" (filtered out {filtered_out})" if filtered_out else ""
-    print(f"  - {config['name']}: kept {len(articles)}{suffix}")
+    suffix = f" (제외 {filtered_out}개)" if filtered_out else ""
+    print(f"  - {config['name']}: {len(articles)}개 수집{suffix}")
     return articles
 

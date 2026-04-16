@@ -15,6 +15,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 def _parse_markdown_assignments(path: Path) -> dict[str, str]:
+    if not path.exists():
+        return {}
     text = path.read_text(encoding="utf-8", errors="replace")
     values: dict[str, str] = {}
     for line in text.splitlines():
@@ -51,15 +53,15 @@ def load_runtime_profile(repo_root: Path = REPO_ROOT) -> RuntimeProfile:
     active_profile_path = repo_root / "ACTIVE_PROFILE.md"
     active_values = _parse_markdown_assignments(active_profile_path)
 
-    active_profile = active_values.get("active_profile", "richesse-club")
-    profile_root = repo_root / active_values.get("profile_root", "brands/richesse-club/")
-    runtime_profile = repo_root / active_values.get("runtime_profile", "brands/richesse-club/RUNTIME_PROFILE.md")
-    brand_guide = repo_root / active_values.get("brand_guide", "brands/richesse-club/BRAND_GUIDE.md")
-    content_strategy = repo_root / active_values.get("content_strategy", "brands/richesse-club/CONTENT_STRATEGY.md")
+    active_profile = os.environ.get("CONTENT_OS_PROFILE") or active_values.get("active_profile") or repo_root.name
+    profile_root = repo_root / active_values.get("profile_root", f"brands/{active_profile}/")
+    runtime_profile = repo_root / active_values.get("runtime_profile", f"brands/{active_profile}/RUNTIME_PROFILE.md")
+    brand_guide = repo_root / active_values.get("brand_guide", f"brands/{active_profile}/BRAND_GUIDE.md")
+    content_strategy = repo_root / active_values.get("content_strategy", f"brands/{active_profile}/CONTENT_STRATEGY.md")
 
     runtime_values = _parse_markdown_assignments(runtime_profile)
-    default_vault_name = runtime_values.get("default_vault_name", "richesse-content-os")
-    vault_env = runtime_values.get("vault_env", "RICHESSE_VAULT_PATH")
+    default_vault_name = runtime_values.get("default_vault_name", f"{active_profile}-content-os")
+    vault_env = runtime_values.get("vault_env", "CONTENT_OS_VAULT_PATH")
 
     env_vault = os.environ.get(vault_env, "")
     vault_path = Path(env_vault) if env_vault else _default_vault_path(default_vault_name)

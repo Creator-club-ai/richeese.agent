@@ -1,0 +1,17 @@
+{
+  "rss_feeds": [
+    {"name": "Example Blog", "url": "https://example.com/feed.xml", "category": "General", "priority": 1}
+  ],
+  "google_news_feeds": [
+    {"name": "GNews: example topic", "url": "https://news.google.com/rss/search?q=example+topic&hl=en&gl=US&ceid=US:en", "category": "General", "priority": 2}
+  ],
+  "x_handles": [
+    {"handle": "example", "category": "General", "priority": 2}
+  ],
+  "threads_handles": [],
+  "youtube_channels": [],
+  "youtube_searches": [
+    {"query": "example topic interview", "category": "General", "priority": 2}
+  ],
+  "naver_news_urls": []
+}

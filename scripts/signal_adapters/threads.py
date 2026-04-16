@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import re
-from datetime import datetime
 
 from .common import MAX_PER_FEED, SignalArticle, SourceConfig, fetch_jina_content, is_relevant
+from .runtime import run_date
 
 
 def fetch_threads(config: SourceConfig) -> list[SignalArticle]:
@@ -15,7 +15,7 @@ def fetch_threads(config: SourceConfig) -> list[SignalArticle]:
         return articles
 
     blocks = re.split(r"\n{2,}", content.strip())
-    today_str = datetime.now().strftime("%Y-%m-%d")
+    today_str = run_date()
     raw_count = 0
     for block in blocks:
         if len(articles) >= MAX_PER_FEED:
@@ -45,7 +45,7 @@ def fetch_threads(config: SourceConfig) -> list[SignalArticle]:
         )
 
     filtered_out = raw_count - len(articles)
-    suffix = f" (filtered out {filtered_out})" if filtered_out else ""
-    print(f"  - Threads/@{handle}: kept {len(articles)}{suffix}")
+    suffix = f" (제외 {filtered_out}개)" if filtered_out else ""
+    print(f"  - Threads/@{handle}: {len(articles)}개 수집{suffix}")
     return articles
 

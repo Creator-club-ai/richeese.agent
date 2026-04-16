@@ -1,21 +1,18 @@
-# Runtime Architecture
+# Skill Bundle Architecture
 
-This document is the repository skeleton for the editorial runtime.
+This repository is now a thin Content OS skill bundle.
 
-Use it before changing orchestration, memory semantics, artifact contracts, or test coverage.
+Use this document before changing skill boundaries, source adapters, optional memory, artifact contracts, or tests.
 
 ## Goal
 
-Keep the runtime stable by making the layer boundaries explicit.
+Keep the usable surface small:
 
-The recurring failure mode in this repo has been policy and infrastructure drifting apart:
+```text
+content-os-news -> content-os-research -> content-os-planner -> content-os-writer
+```
 
-- public docs promise one workflow
-- scripts implement a narrower or different workflow
-- tests only cover the happy path
-- memory logs blur "captured" with "approved"
-
-This document is the guardrail against that drift.
+No Head runner harness is required.
 
 ## Layers
 
@@ -28,62 +25,20 @@ Owns product behavior and editorial rules.
 - `brands/*/CONTENT_STRATEGY.md`
 - `.claude/shared/richesse-editorial-core.md`
 - `.claude/shared/phase-contracts.md`
+- `.claude/skills/README.md`
 
-This layer answers:
+### 2. Public Skill Layer
 
-- what the public phases are
-- what each phase must output
-- what should stop the run
-- what design handoff means
+Owns the active user-facing workflow.
 
-### 2. Architecture Layer
+- `.claude/skills/content-os-news/SKILL.md`
+- `.claude/skills/content-os-research/SKILL.md`
+- `.claude/skills/content-os-planner/SKILL.md`
+- `.claude/skills/content-os-writer/SKILL.md`
 
-Owns implementation boundaries and invariants.
+### 3. Source Adapter Layer
 
-- `.claude/shared/runtime-architecture.md`
-
-This layer answers:
-
-- which script owns which concern
-- how requested CLI modes resolve into actual execution modes
-- how artifacts are named
-- how memory events are classified
-- which tests are mandatory when changing the skeleton
-
-### 3. Runtime Infrastructure Layer
-
-Owns reusable runtime primitives.
-
-- `scripts/profile_runtime.py`
-- `scripts/editorial_memory.py`
-- `scripts/phase_artifacts.py`
-
-Responsibilities:
-
-- resolve the active profile and storage overlay
-- write memory artifacts into the vault
-- emit phase artifact files that match public contracts
-
-These scripts must stay generic. They should not embed phase-specific editorial judgment.
-
-### 4. Orchestration Layer
-
-Owns request routing and minimal automation assembly.
-
-- `scripts/run_head_cycle.py`
-- `.claude/skills/head/SKILL.md`
-
-Responsibilities:
-
-- resolve requested mode into a concrete run mode
-- run the cheapest valid automation step
-- synthesize public artifacts from leaf outputs
-- log capture events and refresh memory
-- stop before pretending the whole loop is complete
-
-### 5. Leaf Automation Layer
-
-Owns narrow extraction or collection tasks.
+Owns narrow extraction and collection tasks.
 
 - `scripts/fetch_and_curate.py`
 - `scripts/get_transcript.py`
@@ -91,231 +46,93 @@ Owns narrow extraction or collection tasks.
 
 Responsibilities:
 
-- collect raw feed shortlist or transcript text
+- collect raw feed candidates
+- normalize platform-specific items
+- deduplicate and shortlist
 - emit narrow machine-usable output
-- never claim to satisfy higher-phase contracts on their own
 
-Recommended shape for discovery collectors:
+Source catalogs should be project-configurable through `signal_sources_path` in `RUNTIME_PROFILE.md` or the `CONTENT_OS_SIGNAL_SOURCES` environment variable.
 
-- one thin entry script such as `fetch_and_curate.py`
-- platform-specific adapter modules under `scripts/signal_adapters/`
-- shared normalization helpers reused across discovery and evidence intake
+Saved latest-signal artifacts must contain only filtered shortlist items, not the raw collected feed dump.
 
-These scripts are inputs to Head, not substitutes for Head.
+Signal lookback should default to 3 days and stay within 1-4 days unless the project intentionally changes the adapter code.
 
-### 6. Test Layer
+Adapters must not own deep research, planning, writing, review, repair, or publishing decisions.
+
+### 4. Optional Infrastructure Layer
+
+Owns reusable mechanical helpers.
+
+- `scripts/editorial_memory.py`
+- `scripts/phase_artifacts.py`
+
+These scripts are optional. They must not become the product surface.
+
+### 5. Test Layer
 
 Owns structural regression checks.
 
 - `tests/test_runtime_contracts.py`
 
-Responsibilities:
+## Pipeline Rules
 
-- cover the default path, not just explicit happy-path flags
-- verify contract names and artifact scaffolds
-- verify memory semantics when they affect approval signals
-
-## Signal Pipeline
-
-This repository should treat multi-source signal reading as a reusable pipeline, not as one monolithic collector script.
-
-The default editorial loop starts at `research`.
-
-`morning-brew` may exist as an optional discovery utility ahead of that loop, but it is not a required public phase.
-
-When runtime code needs a concrete execution label for that discovery path, use `signals` as the canonical run mode and treat `brew` as a legacy alias only.
-
-### Roles
-
-- source adapters
-  - platform-specific readers such as RSS, Google News, YouTube, X, Threads, and Naver
-  - responsibility: fetch and normalize raw items into a common signal shape
-- `morning-brew`
-  - optional discovery utility
-  - responsibility: read broadly, score heat/relevance/fit, and output a shortlist for user selection
-- `research`
-  - source normalizer and evidence builder
-  - responsibility: take one chosen signal or one direct source and turn it into a `ResearchOutput`
-- `analyze`
-  - angle selector only
-  - responsibility: choose the content direction from evidence that already exists
-
-### Rule
-
-If a concern depends on reading many candidate sources and deciding what is worth escalating, it belongs to `morning-brew`.
-
-If a concern depends on turning one chosen signal or one direct source into usable evidence, it belongs to `research`.
-
-If a concern depends on deciding thesis, save reason, or slide direction, it belongs to `analyze`.
-
-`analyze` should never fetch raw platform signals directly.
-
-### Reuse Boundary
-
-Reuse should happen through shared signal schema and scoring helpers, not by letting every phase call every collector.
-
-Good reuse:
-
-- `morning-brew` and `research` share `scripts/signal_adapters/common.py` and the common signal schema
-- `research` can reuse a shortlisted signal or scoring context from `morning-brew`
-- direct-source intake can reuse the same normalized signal shape
-- platform-specific collectors stay in `scripts/signal_adapters/*.py`, while evidence-building stays under `research` / `research-desk`
-
-Bad reuse:
-
-- `analyze` reaching back into raw feeds
-- platform adapters deciding editorial angle
-- one giant script owning collection, scoring, evidence synthesis, and planning at once
-
-### Discovery Boundary
-
-The intended shape is:
-
-- optional discovery: `morning-brew`
-- core loop start: `research`
+- Broad current-signal collection belongs to `content-os-news`.
+- One chosen signal or direct source becomes evidence in `content-os-research`.
+- Thesis, save reason, and slide/content structure belong to `content-os-planner`.
+- Final copy belongs to `content-os-writer`.
 
 Good paths:
 
-- `morning-brew -> user picks one signal -> research -> analyze`
-- `direct source -> research -> analyze`
+- `content-os-news -> user picks one signal -> content-os-research -> content-os-planner -> content-os-writer`
+- `direct source -> content-os-research -> content-os-planner -> content-os-writer`
 
-Bad path:
+Bad paths:
 
-- `morning-brew -> analyze`
-
-`morning-brew` may help select what to escalate, but it should not replace the evidence-building responsibility of `research`.
-
+- source adapter -> planner
+- raw source -> writer
+- one giant script that collects, researches, plans, writes, reviews, and repairs
 
 ## Core Invariants
 
-These rules should remain true after every change.
+### Invariant 1: discovery is not evidence
 
-### Invariant 1: requested mode is not execution mode
+`content-os-news` may produce a shortlist, but that shortlist is not a `ResearchOutput`.
 
-`auto` is a request, not a concrete runtime mode.
+### Invariant 2: adapters do not own public contracts
 
-Before any work starts, Head must resolve:
+Leaf scripts may emit raw or normalized source data.
 
-- `auto` + no source ref -> `signals`
-- `auto` + source ref -> `direct`
-- explicit `signals` -> `signals`
-- explicit `brew` -> `signals` (legacy alias only)
-- explicit `direct` -> `direct`
+Only the relevant skill converts that data into public handoff contracts.
 
-Anything downstream of that resolution should operate on the concrete run mode.
+### Invariant 3: artifact names match v0 contracts
 
-### Invariant 2: leaf scripts do not own public contracts
+The active v0 artifact names are:
 
-Leaf scripts may emit:
-
-- JSON shortlist
-- raw transcript markdown
-- narrow extraction artifacts
-
-Only Head may convert those into public phase artifacts such as `ResearchOutput`.
-
-### Invariant 3: artifact types must match public contracts exactly
-
-The artifact names are:
-
+- `SignalShortlist`
 - `ResearchOutput`
-- `AnalyzeOutput`
-- `WriteOutput`
-- `ReviewVerdict`
-- `RepairRequest`
-
-Do not invent nearby names like `ReviewOutput` or `RefineOutput`.
+- `PlanOutput`
+- `CopyOutput`
 
 ### Invariant 4: capture is not approval
 
 Memory logs must distinguish between:
 
 - capture events: `captured`
-- gate outcomes: `approved`, `revise`, `rejected`, `published`
+- outcome events: `approved`, `revise`, `rejected`, `published`
 
-Only gate outcomes should feed approval/rejection pattern summaries.
+Only outcome events should feed approval/rejection pattern summaries.
 
-### Invariant 5: default path must be tested
+### Invariant 5: commands are wrappers only
 
-If the public runtime says "run Head normally", tests must cover the default path that users actually hit.
-
-Explicit-flag-only tests are not enough.
-
-## Script Ownership
-
-### `scripts/profile_runtime.py`
-
-Owns:
-
-- active profile resolution
-- vault path resolution
-- runtime directory mapping
-
-Must not own:
-
-- orchestration decisions
-- memory scoring
-- artifact judgment
-
-### `scripts/editorial_memory.py`
-
-Owns:
-
-- log append
-- snapshot synthesis
-- refresh outputs
-
-Must not own:
-
-- public phase routing
-- contract synthesis
-
-### `scripts/phase_artifacts.py`
-
-Owns:
-
-- run directory creation
-- public artifact writing
-- phase template scaffolding
-
-Must not own:
-
-- phase decisions
-- memory verdict selection
-
-### `scripts/run_head_cycle.py`
-
-Owns:
-
-- run-mode resolution
-- minimal routing
-- leaf automation calls
-- ResearchOutput synthesis from leaf results
-- capture-event logging
-
-Must not own:
-
-- editorial policy
-- brand rules
-- claim truth beyond shallow synthesis
+Command files may call these skills, but commands must not carry separate workflow policy or become a runtime harness.
 
 ## Change Checklist
 
-When changing the runtime skeleton:
+When changing the skill skeleton:
 
-1. update the policy doc if behavior changed
-2. update this architecture doc if boundaries changed
-3. update scripts
-4. update tests for the default path and the changed invariant
-5. run `python -m unittest -v`
-6. if that misses tests, fix discovery instead of accepting the gap
-
-## Test Entry Point
-
-The baseline command is:
-
-```bash
-python -m unittest -v
-```
-
-If that does not discover the runtime tests, the repository skeleton is broken and should be fixed before relying on the suite.
+1. update `.claude/shared/richesse-editorial-core.md` if behavior changed
+2. update `.claude/shared/phase-contracts.md` if contracts changed
+3. update this architecture document if boundaries changed
+4. update the affected `.claude/skills/*/SKILL.md` files
+5. update tests for the changed invariant
+6. run `python -m unittest -v`

@@ -3,17 +3,17 @@ from __future__ import annotations
 import html as html_mod
 import json
 import re
-from datetime import datetime, timedelta, timezone
 
 import requests
 
 from .common import MAX_PER_FEED, REQUEST_TIMEOUT, SignalArticle, SourceConfig, is_relevant, parse_datetime_string
+from .runtime import cutoff_utc
 
 
 def fetch_twitter(config: SourceConfig) -> list[SignalArticle]:
     handle = str(config["handle"])
     articles: list[SignalArticle] = []
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=48)
+    cutoff = cutoff_utc()
 
     url = f"https://syndication.twitter.com/srv/timeline-profile/screen-name/{handle}"
     try:

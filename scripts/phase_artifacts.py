@@ -104,12 +104,12 @@ def scaffold_follow_on_templates(
     run: PhaseRun,
     active_profile: str,
     research_artifact: Path,
-    phases: tuple[str, ...] = ("analyze",),
+    phases: tuple[str, ...] = ("planner",),
 ) -> dict[str, Path]:
     definitions: dict[str, tuple[str, str, list[str]]] = {
-        "analyze": (
-            "AnalyzeOutput",
-            "analyze",
+        "planner": (
+            "PlanOutput",
+            "planner",
             [
                 "Working Title",
                 "Category",
@@ -120,46 +120,23 @@ def scaffold_follow_on_templates(
                 "Core Thesis",
                 "Save Reason",
                 "Slide Outline",
-                "Selected Angle",
-                "Blockers",
-                "Angle Status",
+                "Claims To Preserve",
+                "Risks or Gaps",
+                "Plan Status",
             ],
         ),
-        "write": (
-            "WriteOutput",
-            "write",
+        "writer": (
+            "CopyOutput",
+            "writer",
             [
                 "Working Title",
                 "Cover Headline",
                 "Slide Copy",
+                "Caption",
                 "Claims",
                 "Open Questions",
                 "Confidence",
                 "Copy Status",
-            ],
-        ),
-        "review": (
-            "ReviewVerdict",
-            "review",
-            [
-                "Status",
-                "Issues",
-                "Severity",
-                "Strengths To Preserve",
-                "Target Phase",
-                "Required Changes",
-                "Suggested Patch",
-            ],
-        ),
-        "refine": (
-            "RepairRequest",
-            "refine",
-            [
-                "Target Phase",
-                "Patch",
-                "Rationale",
-                "Preserve Angle",
-                "Next Step",
             ],
         ),
     }

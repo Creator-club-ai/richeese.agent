@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import re
-from datetime import datetime
 
 from .common import MAX_PER_FEED, SignalArticle, SourceConfig, fetch_jina_content, is_relevant, normalize_title
+from .runtime import run_date
 
 
 def fetch_naver_news(config: SourceConfig) -> list[SignalArticle]:
@@ -16,7 +16,7 @@ def fetch_naver_news(config: SourceConfig) -> list[SignalArticle]:
     article_url_re = re.compile(r"n\.news\.naver\.com/mnews/article/|news\.naver\.com/cluster/")
     link_pattern = re.compile(r"\[([^\]]{5,})\]\((https?://[^\)]+)\)")
 
-    today_str = datetime.now().strftime("%Y-%m-%d")
+    today_str = run_date()
     seen_titles: set[str] = set()
     for match in link_pattern.finditer(content):
         if len(articles) >= MAX_PER_FEED:
