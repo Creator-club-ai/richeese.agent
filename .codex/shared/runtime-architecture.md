@@ -1,149 +1,67 @@
-# Skill Bundle Architecture
+# Runtime Architecture
 
-This repository is now a thin Content OS skill bundle.
+이 문서는 content-os 스킬이 **어떻게 이어 붙고, 어디에 출력을 쓰는가**를 정의한다. 브랜드 판단 기준은 여기에 없다 (브랜드는 `brands/<profile>/BRAND_GUIDE.md`).
 
-Use this document before changing skill boundaries, source adapters, optional memory, artifact contracts, or tests.
+## 1. 역할 분리
 
-## Goal
+- **이 저장소 (`콘텐츠/`)** — 스킬 소스와 브랜드 문서가 사는 곳. 직접 작업하지 않는다.
+- **Workspace (Obsidian vault)** — 실제 아티팩트가 쌓이는 곳. 스킬은 vault 안 폴더에 쓴다.
+- **Active profile** — `ACTIVE_PROFILE.md`가 가리키는 브랜드. 현재는 `richesse-club`.
 
-Keep the usable surface small:
+스킬은 `~/.agents/skills/`에 설치되어 어느 디렉토리에서 실행해도 동일하게 동작한다. vault에서 codex를 실행하면 vault의 `AGENTS.md`가 브랜드 문서를 참조하도록 안내한다.
 
-```text
-content-os-news -> content-os-research -> content-os-planner -> content-os-writer
+## 2. 스킬 체인 (v1)
+
+```
+content-os-news  →  content-os-research  →  content-os-planner  →  content-os-writer  →  content-os-reviewer
 ```
 
-No Head runner harness is required.
+- 한 번에 한 단계만 실행한다. 사용자가 명시적으로 다음 단계를 요청할 때만 이어 간다.
+- news 단계에서 사용자가 **signal을 체크 박스로 선택**한 후 research가 그 한 건만 읽는다.
+- reviewer는 `pass` 판정이 나면 아티팩트를 `04 Published/`로 이관한다. `fix` 또는 `revise`면 writer로 되돌린다.
 
-## Layers
+## 3. Vault 폴더 규약
 
-### 1. Policy Layer
+```
+<vault>/
+  01 Daily Brief/
+    YYYY-MM-DD.md                ← content-os-news 출력
+  03 Workshop/
+    <slug>/
+      research.md                 ← content-os-research
+      plan.md                     ← content-os-planner
+      draft.md                    ← content-os-writer
+      review.md                   ← content-os-reviewer
+  04 Published/
+    <slug>.md                     ← reviewer pass 후 이관
+  05 Sources/
+    Articles/YYYY-MM-DD-<slug>.md
+    YouTube/YYYY-MM-DD-<slug>.md
+  06 Wiki/
+    _schema.md
+    Companies/ People/ Concepts/ Trends/
+  07 Templates/                   ← 참조용, 스킬이 덮어쓰지 않음
+```
 
-Owns product behavior and editorial rules.
+- `<slug>`는 `YYYY-MM-DD-<topic-slug-kebab>` 형식. 예: `2026-04-17-figma-ipo`.
+- `<vault>`는 workspace의 Obsidian vault 루트. 스킬은 현재 작업 디렉토리를 vault 루트로 간주한다.
+- `03 Workshop/<slug>/` 폴더는 research 단계에서 처음 생성한다.
 
-- `ACTIVE_PROFILE.md`
-- `brands/*/BRAND_GUIDE.md`
-- `brands/*/CONTENT_STRATEGY.md`
-- `.codex/shared/richesse-editorial-core.md`
-- `.codex/shared/phase-contracts.md`
-- `.codex/skills/README.md`
+## 4. 핸드오프 방식
 
-### 2. Public Skill Layer
+- 각 phase는 **다음 phase가 읽을 markdown 파일**을 낸다. 프론트매터는 `phase-contracts.md`가 정의한다.
+- 다음 스킬은 경로로 핸드오프를 받는다. 예: `/content-os-planner 03 Workshop/2026-04-17-figma-ipo/research.md`.
+- 중간에 사람이 파일을 열어 고치는 것을 전제한다. 스킬은 파일의 최신 상태를 다시 읽는다.
 
-Owns the active user-facing workflow.
+## 5. Wiki 업데이트 정책
 
-- `.codex/skills/content-os-news/SKILL.md`
-- `.codex/skills/content-os-research/SKILL.md`
-- `.codex/skills/content-os-planner/SKILL.md`
-- `.codex/skills/content-os-writer/SKILL.md`
+- `content-os-research`만 `06 Wiki/` 를 쓴다. 다른 스킬은 읽기 전용.
+- 규칙은 `06 Wiki/_schema.md`를 따른다 (기존 내용 덮어쓰지 않고 날짜와 함께 추가).
+- planner와 writer는 Wiki를 읽어 인용 맥락을 확보하되, 쓰지 않는다.
 
-### 3. Command Alias Layer
+## 6. What Is Not Here
 
-Owns thin shortcuts only.
-
-- `.codex/commands/news.md`
-- `.codex/commands/research.md`
-- `.codex/commands/plan.md`
-- `.codex/commands/write.md`
-
-Command aliases must point to the matching skill and must not carry independent workflow policy.
-
-### 4. Source Adapter Layer
-
-Owns narrow extraction and collection tasks.
-
-- `scripts/fetch_and_curate.py`
-- `scripts/get_transcript.py`
-- `scripts/signal_adapters/*.py`
-
-Responsibilities:
-
-- collect raw feed candidates
-- normalize platform-specific items
-- deduplicate and shortlist
-- emit narrow machine-usable output
-
-Source catalogs should be project-configurable through `signal_sources_path` in `RUNTIME_PROFILE.md` or the `CONTENT_OS_SIGNAL_SOURCES` environment variable.
-
-Saved latest-signal artifacts must contain only filtered shortlist items, not the raw collected feed dump.
-
-Signal lookback should default to 3 days and stay within 1-4 days unless the project intentionally changes the adapter code.
-
-Adapters must not own deep research, planning, writing, review, repair, or publishing decisions.
-
-### 5. Optional Infrastructure Layer
-
-Owns reusable mechanical helpers.
-
-- `scripts/editorial_memory.py`
-- `scripts/phase_artifacts.py`
-
-These scripts are optional. They must not become the product surface.
-
-### 6. Test Layer
-
-Owns structural regression checks.
-
-- `tests/test_runtime_contracts.py`
-
-## Pipeline Rules
-
-- Broad current-signal collection belongs to `content-os-news`.
-- One chosen signal or direct source becomes evidence in `content-os-research`.
-- Thesis, save reason, and slide/content structure belong to `content-os-planner`.
-- Final copy belongs to `content-os-writer`.
-
-Good paths:
-
-- `content-os-news -> user picks one signal -> content-os-research -> content-os-planner -> content-os-writer`
-- `direct source -> content-os-research -> content-os-planner -> content-os-writer`
-
-Bad paths:
-
-- source adapter -> planner
-- raw source -> writer
-- one giant script that collects, researches, plans, writes, reviews, and repairs
-
-## Core Invariants
-
-### Invariant 1: discovery is not evidence
-
-`content-os-news` may produce a shortlist, but that shortlist is not a `ResearchOutput`.
-
-### Invariant 2: adapters do not own public contracts
-
-Leaf scripts may emit raw or normalized source data.
-
-Only the relevant skill converts that data into public handoff contracts.
-
-### Invariant 3: artifact names match v0 contracts
-
-The active v0 artifact names are:
-
-- `SignalShortlist`
-- `ResearchOutput`
-- `PlanOutput`
-- `CopyOutput`
-
-### Invariant 4: capture is not approval
-
-Memory logs must distinguish between:
-
-- capture events: `captured`
-- outcome events: `approved`, `revise`, `rejected`, `published`
-
-Only outcome events should feed approval/rejection pattern summaries.
-
-### Invariant 5: commands are wrappers only
-
-Command files may call these skills, but commands must not carry separate workflow policy or become a runtime harness.
-
-## Change Checklist
-
-When changing the skill skeleton:
-
-1. update `.codex/shared/richesse-editorial-core.md` if behavior changed
-2. update `.codex/shared/phase-contracts.md` if contracts changed
-3. update this architecture document if boundaries changed
-4. update the affected skill files
-5. update tests for the changed invariant
-6. run `python -m unittest -v`
+- 브랜드 판단 (Category/Format/User Value/Depth/Timing, 톤, anti-patterns) → `brands/richesse-club/BRAND_GUIDE.md`
+- 믹스·페이스 목표 → `brands/richesse-club/CONTENT_STRATEGY.md`
+- Phase별 frontmatter 스키마 → `phase-contracts.md`
+- 브랜드 가치 정의 (매거진 이름, 독자) → `brands/richesse-club/BRAND_GUIDE.md` §1

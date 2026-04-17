@@ -1,43 +1,43 @@
 # Content OS Skills
 
-Version 0 has four skills only.
-
-Codex should read these four project skills:
+Version 1 has five skills:
 
 ```text
 .codex/skills/content-os-news/
 .codex/skills/content-os-research/
 .codex/skills/content-os-planner/
 .codex/skills/content-os-writer/
+.codex/skills/content-os-reviewer/
 ```
 
 ## Flow
 
 ```text
-content-os-news -> content-os-research -> content-os-planner -> content-os-writer
+content-os-news -> content-os-research -> content-os-planner -> content-os-writer -> content-os-reviewer
 ```
 
 Run one skill at a time unless the user explicitly asks for the next step.
 
+Artifacts land in the Obsidian vault following the folder conventions in `.codex/shared/runtime-architecture.md`. Frontmatter schemas per phase live in `.codex/shared/phase-contracts.md`.
+
 ## Skills
 
-- `content-os-news`: scrape and shortlist signals from configured sources.
-- `content-os-research`: deep-research one selected signal or direct source.
-- `content-os-planner`: turn research into one content plan.
-- `content-os-writer`: turn an approved plan into publishable copy.
+- `content-os-news` — scrape and shortlist signals, write `01 Daily Brief/<date>.md` with 5-axis hints and a checkbox per signal.
+- `content-os-research` — deep-research one selected signal, update `06 Wiki/`, save `05 Sources/` raw, emit `03 Workshop/<slug>/research.md`.
+- `content-os-planner` — turn research into an editorial brief with 5-axis locked in; emit `03 Workshop/<slug>/plan.md`.
+- `content-os-writer` — turn the plan into slide copy respecting the tone split; emit `03 Workshop/<slug>/draft.md`.
+- `content-os-reviewer` — gate the draft against BRAND_GUIDE + CONTENT_STRATEGY; emit `03 Workshop/<slug>/review.md` with verdict `pass | fix | revise`.
 
-## What Is Not In V0
+## Install
 
-- Head runner
-- gate/review skill
-- repair skill
-- designer handoff
-- mandatory memory
-- mandatory artifacts
-- global runtime or CLI
+Skills must live in `~/.agents/skills/` to be callable from the Obsidian vault. Run:
+
+```bash
+bash scripts/install_skills.sh
+```
+
+Re-run whenever a SKILL.md or references/ file changes.
 
 ## Source Adapters
 
-Keep `scripts/signal_adapters/`.
-
-They are intentionally split by platform. RSS, X, YouTube, Threads, and Naver fail in different ways and need separate parsing logic.
+Keep `scripts/signal_adapters/`. They are intentionally split by platform. RSS, X, YouTube, Threads, and Naver fail in different ways and need separate parsing logic.
