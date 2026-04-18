@@ -29,6 +29,59 @@ EXCLUDE_RE = re.compile("|".join(EXCLUDE_PATTERNS), re.IGNORECASE)
 
 TRACKING_QUERY_PREFIXES = ("utm_",)
 TRACKING_QUERY_KEYS = {"fbclid", "gclid", "igshid", "mc_cid", "mc_eid", "ref", "ref_src", "source"}
+SOCIAL_PREFIX_RE = re.compile(r"^(rt\s+@?\w+:\s+|via\s+@?\w+:\s+)", re.IGNORECASE)
+URL_SUFFIX_RE = re.compile(r"https?://\S+$", re.IGNORECASE)
+SOURCE_SUFFIX_RE = re.compile(r"\s+[-|·]\s+[A-Za-z0-9&.,'\- ]+$")
+
+TITLE_STOPWORDS = {
+    "the",
+    "a",
+    "an",
+    "of",
+    "in",
+    "to",
+    "and",
+    "for",
+    "with",
+    "on",
+    "at",
+    "by",
+    "from",
+    "is",
+    "are",
+    "was",
+    "were",
+    "has",
+    "have",
+    "its",
+    "it",
+    "this",
+    "that",
+    "be",
+    "as",
+    "or",
+    "but",
+    "not",
+    "new",
+    "says",
+    "said",
+    "after",
+    "ahead",
+    "just",
+    "now",
+    "latest",
+}
+
+SOURCE_TYPE_ORDER = {
+    "rss": 0,
+    "naver": 0,
+    "threads": 1,
+    "x": 1,
+    "x_syndication": 2,
+    "google_news": 2,
+    "youtube_ytdlp": 3,
+    "youtube_search": 4,
+}
 
 
 def strip_html(text: str | None) -> str:
@@ -64,7 +117,16 @@ def normalize_url(url: str) -> str:
 
 def normalize_title(title: str) -> str:
     compact = re.sub(r"\s+", " ", (title or "").strip().lower())
+    compact = SOCIAL_PREFIX_RE.sub("", compact)
+    compact = URL_SUFFIX_RE.sub("", compact).strip()
+    compact = SOURCE_SUFFIX_RE.sub("", compact).strip()
     return re.sub(r"[^\w\s가-힣]", "", compact).strip()
+
+
+def title_tokens(title: str) -> set[str]:
+    normalized = normalize_title(title)
+    tokens = set(re.findall(r"[a-z0-9가-힣]{3,}", normalized))
+    return {token for token in tokens if token not in TITLE_STOPWORDS}
 
 
 def article_keys(article: SignalArticle) -> list[str]:
@@ -78,11 +140,35 @@ def article_keys(article: SignalArticle) -> list[str]:
     return keys
 
 
-def article_rank(article: SignalArticle) -> tuple[int, int, int]:
+def same_story(left: SignalArticle, right: SignalArticle) -> bool:
+    left_url = normalize_url(str(left.get("url", "")))
+    right_url = normalize_url(str(right.get("url", "")))
+    if left_url and right_url and left_url == right_url:
+        return True
+
+    left_title = str(left.get("title_en") or left.get("title", ""))
+    right_title = str(right.get("title_en") or right.get("title", ""))
+    left_tokens = title_tokens(left_title)
+    right_tokens = title_tokens(right_title)
+    if len(left_tokens) < 2 or len(right_tokens) < 2:
+        return False
+
+    overlap = left_tokens & right_tokens
+    if len(overlap) >= 4:
+        return True
+
+    minimum = min(len(left_tokens), len(right_tokens))
+    if minimum >= 3 and len(overlap) >= minimum - 1:
+        return True
+    return False
+
+
+def article_rank(article: SignalArticle) -> tuple[int, int, int, int]:
     return (
         int(article.get("priority", 99)),
-        1 if article.get("type") == "google_news" else 0,
+        SOURCE_TYPE_ORDER.get(str(article.get("type", "")), 9),
         0 if article.get("summary") else 1,
+        -int(article.get("source_count", 1) or 1),
     )
 
 
@@ -167,19 +253,9 @@ def run_ytdlp_json(args: list[str], timeout: int = 60) -> list[dict[str, object]
 
 
 def count_cross_sources(articles: list[SignalArticle]) -> list[int]:
-    stopwords = {
-        "the", "a", "an", "of", "in", "to", "and", "for", "with", "on", "at",
-        "by", "from", "is", "are", "was", "were", "has", "have", "its", "it",
-        "this", "that", "be", "as", "or", "but", "not", "new", "says", "said",
-    }
-
-    def extract_keywords(title: str) -> set[str]:
-        words = re.findall(r"[A-Za-z가-힣]{3,}", title.lower())
-        return {word for word in words if word not in stopwords}
-
     source_counts = [1] * len(articles)
     for index, article in enumerate(articles):
-        keywords_i = extract_keywords(str(article.get("title", "")))
+        keywords_i = title_tokens(str(article.get("title", "")))
         if len(keywords_i) < 2:
             continue
 
@@ -187,7 +263,7 @@ def count_cross_sources(articles: list[SignalArticle]) -> list[int]:
         for other_index, other_article in enumerate(articles):
             if index == other_index:
                 continue
-            keywords_j = extract_keywords(str(other_article.get("title", "")))
+            keywords_j = title_tokens(str(other_article.get("title", "")))
             if len(keywords_i & keywords_j) >= 2:
                 sources_seen.add(str(other_article.get("source", "")))
         source_counts[index] = len(sources_seen)
@@ -202,7 +278,8 @@ def deduplicate(articles: list[SignalArticle]) -> list[SignalArticle]:
         keys = article_keys(article)
         if keys and any(key in seen for key in keys):
             continue
+        if any(same_story(article, kept) for kept in unique):
+            continue
         unique.append(article)
         seen.update(keys)
     return unique
-

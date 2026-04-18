@@ -7,11 +7,10 @@ description: Use to collect and shortlist fresh content signals from configured 
 
 ## Job
 
-Find fresh signals worth considering for content.
+우선 신호를 모으고 오늘 볼 만한 shortlist를 만든다.
 
-Use this first when the user wants news, latest signals, feed scanning, source discovery, or "what should we cover?"
-
-This skill owns `Detect`, not `Decide`.
+이 스킬은 `Detect` 레이어다.  
+여기서 하는 일은 후보를 찾는 것이지, 너무 이른 단계에서 브랜드 핏만으로 후보를 죽이는 것이 아니다.
 
 ## Read First
 
@@ -32,7 +31,11 @@ From this repository:
 python scripts/fetch_and_curate.py
 ```
 
-The script must save only the filtered shortlist.
+The script saves the filtered shortlist as a machine artifact.
+
+- `YYYY-MM-DD.json` is the machine artifact.
+- The final daily note must be rewritten as `YYYY-MM-DD.md` using `오늘의 뉴스/TEMPLATE.md`.
+- Do not treat the script's raw output as the final Obsidian note.
 
 Filtering is configured by the active runtime profile:
 
@@ -53,21 +56,40 @@ Freshness is a hard gate.
 - If a source cannot verify recency well enough, keep it out of the shortlist unless the user explicitly asks for archival or evergreen discovery.
 - Search-based sources must not stamp today's date onto old content just to pass filtering.
 
-For another project, add those fields to its `RUNTIME_PROFILE.md`, or set `CONTENT_OS_SIGNAL_SOURCES` to a JSON source catalog.
-
 Platform adapters stay here:
 
 ```text
 scripts/signal_adapters/
 ```
 
-Do not merge them. They are split by platform on purpose.
+## Selection stance
+
+메인 축은 분명하다.
+
+- `AI`
+- `Business`
+- `Wealth`
+- `Startup`
+
+하지만 이 축은 `hard gate`가 아니라 `sorting preference`다.
+
+- 메인 축과 가까운 신호를 위로 올린다.
+- 바로 richesse에 맞지 않아 보여도 신선하고 살아 있으면 `wildcard`로 남긴다.
+- 강한 editorial filtering은 후속 `research`, `planner`, `review`에서 한다.
+
+## Deduplication stance
+
+같은 이야기를 여러 출처가 반복한 경우, 여러 건으로 보지 않는다.
+
+- 원문 기사와 Google News 요약이 겹치면 한 건으로 묶는다.
+- 기사와 X/Threads 재유통이 겹치면 원문 쪽을 우선한다.
+- 같은 주제를 다른 헤드라인으로 반복해도 사실상 같은 story면 한 건으로 묶는다.
 
 ## Owns
 
 - RSS, X, YouTube, Threads, Naver, and configured source scanning
 - candidate filtering
-- signal deduplication
+- same-story deduplication
 - filtered latest-signals artifacts
 - shortlist strength labels
 
@@ -83,14 +105,7 @@ Do not merge them. They are split by platform on purpose.
 
 Return a shortlist.
 
-Do not overfit to the brand too early.
-
-- At `Detect`, the job is to surface strong and fresh signals, not to prove they are already perfect richesse.club pieces.
-- If a signal is fresh and interesting but not yet clearly shaped for the brand, keep it as a lower-priority or wildcard candidate instead of killing it too early.
-- Strong editorial filtering belongs later in `research`, `planner`, and `review`.
-- Write the daily note in the house structure when `오늘의 뉴스/TEMPLATE.md` exists.
-
-Each item should include:
+When obvious, include:
 
 - title
 - source
@@ -100,7 +115,13 @@ Each item should include:
 - risks or gaps
 - recommendation: `send to content-os-research`, `send to wiki-ingest`, or `skip`
 
-When obvious, it may also include:
+It may also include:
 
 - possible topic seeds
 - related people, brands, or concepts
+- wildcard candidates that are worth keeping alive
+
+Wildcard items should not be linkless notes.
+
+- If an item is kept in `Wildcard / 보류`, include at minimum `source`, `URL`, and a short `reason`.
+- `Wildcard` means “alive but not primary,” not “unstructured dump.”

@@ -12,7 +12,7 @@ import io
 import json
 import sys
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from profile_runtime import load_runtime_profile
@@ -70,41 +70,35 @@ def load_filter_config() -> FilterConfig:
     )
 
 
-def load_existing(date_str: str) -> list[SignalArticle]:
-    json_path = RUNTIME_PROFILE.latest_signals_dir / f"{date_str}.json"
-    if not json_path.exists():
+def _load_json_articles(path: Path) -> list[SignalArticle]:
+    if not path.exists():
         return []
     try:
-        payload = json.loads(json_path.read_text(encoding="utf-8"))
+        payload = json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return []
     return payload if isinstance(payload, list) else []
 
 
-def render_signal_note(articles: list[SignalArticle], date_str: str) -> str:
-    lines = [
-        f"# Latest Signals - {date_str}",
-        "",
-        f"- profile: {RUNTIME_PROFILE.active_profile}",
-        f"- total items: {len(articles)}",
-        "",
-        "## Editorial Radar",
-        "",
-    ]
-    if not articles:
-        lines += ["- none", ""]
-    else:
-        for article in articles:
-            source_count = article.get("source_count", 1)
-            source_signal = f" | source_count {source_count}" if source_count and int(source_count) > 1 else ""
-            lines.append(f"### {article.get('title', 'Untitled')}")
-            lines.append(f"- source: {article.get('source', 'unknown')}")
-            lines.append(f"- url: {article.get('url', '')}")
-            lines.append(f"- category: {article.get('category', 'unknown')}")
-            lines.append(f"- published: {article.get('published', '')}{source_signal}")
-            lines.append(f"- summary: {article.get('summary', '')}")
-            lines.append("")
-    return "\n".join(lines).rstrip() + "\n"
+def load_recent_history(date_str: str, history_days: int) -> list[SignalArticle]:
+    try:
+        current_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+    except ValueError:
+        return []
+
+    articles: list[SignalArticle] = []
+    for path in RUNTIME_PROFILE.latest_signals_dir.glob("*.json"):
+        stem = path.stem[:10]
+        try:
+            note_date = datetime.strptime(stem, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        if note_date >= current_date:
+            continue
+        if note_date < current_date - timedelta(days=history_days):
+            continue
+        articles.extend(_load_json_articles(path))
+    return articles
 
 
 def save(articles: list[SignalArticle], date_str: str) -> Path:
@@ -112,8 +106,6 @@ def save(articles: list[SignalArticle], date_str: str) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / f"{date_str}.json"
     output_path.write_text(json.dumps(articles, ensure_ascii=False, indent=2), encoding="utf-8")
-    note_path = output_dir / f"{date_str}.md"
-    note_path.write_text(render_signal_note(articles, date_str), encoding="utf-8")
     return output_path
 
 
@@ -178,20 +170,19 @@ def passes_filter(article: SignalArticle, config: FilterConfig) -> bool:
         return False
     if config.exclude_keywords and keyword_hits(article, config.exclude_keywords):
         return False
-    category = str(article.get("category", "")).lower()
-    if config.allowed_categories and category not in config.allowed_categories:
-        return False
     if config.include_keywords and not keyword_hits(article, config.include_keywords):
         return False
     return True
 
 
-def filter_score(article: SignalArticle, config: FilterConfig) -> tuple[int, int, int, int]:
+def filter_score(article: SignalArticle, config: FilterConfig) -> tuple[int, int, int, int, int]:
     priority = int(article.get("priority", 99))
     source_count = int(article.get("source_count", 1) or 1)
     has_summary = 1 if article.get("summary") else 0
     include_hits = keyword_hits(article, config.include_keywords)
-    return (-source_count, -include_hits, -has_summary, priority)
+    category = str(article.get("category", "")).lower()
+    category_match = 1 if not config.allowed_categories or category in config.allowed_categories else 0
+    return (-source_count, -include_hits, -category_match, -has_summary, priority)
 
 
 def filter_shortlist(articles: list[SignalArticle], config: FilterConfig | None = None) -> list[SignalArticle]:
@@ -220,10 +211,10 @@ def main() -> None:
     groups = build_source_groups()
     print_scan_plan(groups, filter_config)
 
-    existing = filter_shortlist(load_existing(date_str), filter_config)
-    existing_keys = existing_article_keys(existing)
-    if existing:
-        print(f"Loaded {len(existing)} existing shortlisted items for duplicate checks\n")
+    recent_history = filter_shortlist(load_recent_history(date_str, filter_config.lookback_days), filter_config)
+    existing_keys = existing_article_keys(recent_history)
+    if recent_history:
+        print(f"Loaded {len(recent_history)} recent shortlisted items for duplicate checks\n")
 
     all_articles = collect_all_articles(groups)
     annotate_cross_source_counts(all_articles)
@@ -231,9 +222,8 @@ def main() -> None:
     unique_new, removed = build_new_shortlist(all_articles, existing_keys, filter_config)
     print(f"\nCollected {len(all_articles)} items, filtered/removed {removed}, new shortlist {len(unique_new)} items")
 
-    merged = filter_shortlist(existing + unique_new, filter_config)
-    output_path = save(merged, date_str)
-    print(f"Saved filtered shortlist ({len(merged)} items): {output_path}")
+    output_path = save(unique_new, date_str)
+    print(f"Saved filtered shortlist ({len(unique_new)} items): {output_path}")
     print(f"LATEST_SIGNALS_JSON_PATH: {output_path}")
 
     if unique_new:

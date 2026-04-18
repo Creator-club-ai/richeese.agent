@@ -20,7 +20,7 @@ This skill owns `Decide`, not `Produce`.
 3. `references/plan-output.md`
 4. `content-os-schema.md` if it exists
 5. `wiki/wiki-schema.md` if it exists
-6. `content/ideas/editorial-brief-template.md` if it exists
+6. `wiki/editorial/briefs/editorial-brief-template.md` if it exists
 7. `wiki/dossiers/README.md` if it exists
 8. `wiki/editorial-memory/review-rubric.md` if it exists
 9. `wiki/angles/README.md` if it exists
