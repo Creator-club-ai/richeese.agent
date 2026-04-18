@@ -38,10 +38,10 @@ class PhaseArtifactContractTests(unittest.TestCase):
             content_strategy=root / "brands" / "richesse-club" / "CONTENT_STRATEGY.md",
             vault_path=root / "vault",
             raw_dir=root / "vault" / "raw",
-            latest_signals_dir=root / "vault" / "latest-signals",
+            latest_signals_dir=root / "vault" / "오늘의 뉴스",
             wiki_dir=root / "vault" / "wiki",
             editorial_memory_dir=root / "vault" / "wiki" / "editorial-memory",
-            working_cards_dir=root / "vault" / "content" / "instagram",
+            working_cards_dir=root / "vault" / "content" / "instagram" / "drafts",
             head_artifacts_dir=root / "vault" / "wiki" / "editorial-memory" / "head-artifacts",
         )
 

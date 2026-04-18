@@ -16,8 +16,11 @@ Use this after `content-os-planner`, or when the user provides an approved plan.
 1. `ACTIVE_PROFILE.md` if it exists
 2. the profile documents referenced there
 3. `references/copy-output.md`
-4. the approved `PlanOutput`
-5. the user request
+4. `wiki/editorial-memory/review-rubric.md` if it exists
+5. `wiki/editorial-memory/instagram-reference-patterns.md` if it exists
+6. `content/instagram/published/README.md` if it exists
+7. the approved `PlanOutput`
+8. the user request
 
 ## Owns
 

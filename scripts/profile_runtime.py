@@ -70,7 +70,7 @@ def load_runtime_profile(repo_root: Path = REPO_ROOT) -> RuntimeProfile:
     latest_signals_dir = vault_path / runtime_values.get("latest_signals_dir", "오늘의 뉴스/")
     wiki_dir = vault_path / runtime_values.get("wiki_dir", "wiki/")
     editorial_memory_dir = vault_path / runtime_values.get("editorial_memory_dir", "wiki/editorial-memory/")
-    working_cards_dir = vault_path / runtime_values.get("working_cards_dir", "content/instagram/")
+    working_cards_dir = vault_path / runtime_values.get("working_cards_dir", "content/instagram/drafts/")
     head_artifacts_dir = editorial_memory_dir / "head-artifacts"
 
     return RuntimeProfile(

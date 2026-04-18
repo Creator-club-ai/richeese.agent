@@ -21,12 +21,15 @@ Read order for any run:
 8. the user request
 9. relevant source material only if the current run needs it
 
-Active v0 skills:
+Active v1 skills:
 
 - `content-os-news`
 - `content-os-research`
 - `content-os-planner`
 - `content-os-writer`
+- `content-os-reviewer`
+
+Skills install to `~/.claude/skills/` via `scripts/install_skills.sh` so they are callable from the Obsidian vault (the workspace).
 
 Compatibility notes:
 

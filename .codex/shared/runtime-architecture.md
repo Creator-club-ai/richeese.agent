@@ -1,149 +1,86 @@
-# Skill Bundle Architecture
+# Runtime Architecture
 
-This repository is now a thin Content OS skill bundle.
+이 문서는 `content-os` 스킬 체인이 **현재 live vault 구조** 위에서 어떻게 붙는지 정의한다.
+브랜드 판단 기준은 여기 두지 않는다. 브랜드 규칙은 active profile 문서를 따른다.
 
-Use this document before changing skill boundaries, source adapters, optional memory, artifact contracts, or tests.
+## Active Runtime
 
-## Goal
+- active profile: `ACTIVE_PROFILE.md`
+- runtime overlay: `brands/<profile>/RUNTIME_PROFILE.md`
+- brand rules: `brands/<profile>/BRAND_GUIDE.md`
+- strategy context: `brands/<profile>/CONTENT_STRATEGY.md`
 
-Keep the usable surface small:
+## Skill Chain (v1)
 
 ```text
-content-os-news -> content-os-research -> content-os-planner -> content-os-writer
+content-os-news -> content-os-research -> content-os-planner -> content-os-writer -> content-os-reviewer
 ```
 
-No Head runner harness is required.
+- 한 번에 한 단계만 실행한다.
+- 다음 단계는 사용자가 명시적으로 요청할 때만 간다.
+- `content-os-reviewer`는 추가됐지만, 구조 자체는 기존 live vault를 그대로 따른다.
 
-## Layers
+## Live Vault Structure
 
-### 1. Policy Layer
+```text
+<vault>/
+  raw/
+  오늘의 뉴스/
+    YYYY-MM-DD.md
+    YYYY-MM-DD.json
+  wiki/
+    dossiers/
+    people/
+    brands/
+    concepts/
+    developments/
+    signals/
+    angles/
+    topics/
+    editorial-memory/
+      head-artifacts/
+  content/
+    ideas/
+    instagram/
+      templates/
+      drafts/
+      published/
+    magazine/
+      drafts/
+      published/
+```
 
-Owns product behavior and editorial rules.
+## Artifact Contract
 
-- `ACTIVE_PROFILE.md`
-- `brands/*/BRAND_GUIDE.md`
-- `brands/*/CONTENT_STRATEGY.md`
-- `.codex/shared/richesse-editorial-core.md`
-- `.codex/shared/phase-contracts.md`
-- `.codex/skills/README.md`
+- `content-os-news`
+  - 사람용: `오늘의 뉴스/YYYY-MM-DD.md`
+  - 기계용: `오늘의 뉴스/YYYY-MM-DD.json`
+- `content-os-research`
+  - source를 정리하고 wiki를 업데이트한다
+  - 필요하면 `wiki/editorial-memory/head-artifacts/<run-id>/research-output.md`를 남긴다
+- `content-os-planner`
+  - `content/ideas/<slug>.md`에 editorial brief를 만든다
+- `content-os-writer`
+  - 포맷에 맞춰 `content/instagram/drafts/` 또는 `content/magazine/drafts/`에 초안을 만든다
+- `content-os-reviewer`
+  - draft를 검수하고 `ReviewOutput`을 남긴다
+  - `pass`여도 자동 publish는 하지 않는다
+  - 사용자가 확인한 뒤에만 matching `published/` 폴더로 복사한다
 
-### 2. Public Skill Layer
+## Handoff Rule
 
-Owns the active user-facing workflow.
+- source는 `raw/`와 `오늘의 뉴스/`에 쌓인다
+- reusable knowledge는 `wiki/`로 간다
+- 사람이 실제로 편집하는 brief는 `content/ideas/`
+- 발행 전 산출물은 `drafts/`
+- 발행본은 `published/`
+- machine-only artifacts는 `wiki/editorial-memory/head-artifacts/`
 
-- `.codex/skills/content-os-news/SKILL.md`
-- `.codex/skills/content-os-research/SKILL.md`
-- `.codex/skills/content-os-planner/SKILL.md`
-- `.codex/skills/content-os-writer/SKILL.md`
+## What This Document Does Not Own
 
-### 3. Command Alias Layer
+- category / format / user value / depth / timing 판단
+- richesse tone 기준
+- anti-pattern
+- topic coverage 우선순위
 
-Owns thin shortcuts only.
-
-- `.codex/commands/news.md`
-- `.codex/commands/research.md`
-- `.codex/commands/plan.md`
-- `.codex/commands/write.md`
-
-Command aliases must point to the matching skill and must not carry independent workflow policy.
-
-### 4. Source Adapter Layer
-
-Owns narrow extraction and collection tasks.
-
-- `scripts/fetch_and_curate.py`
-- `scripts/get_transcript.py`
-- `scripts/signal_adapters/*.py`
-
-Responsibilities:
-
-- collect raw feed candidates
-- normalize platform-specific items
-- deduplicate and shortlist
-- emit narrow machine-usable output
-
-Source catalogs should be project-configurable through `signal_sources_path` in `RUNTIME_PROFILE.md` or the `CONTENT_OS_SIGNAL_SOURCES` environment variable.
-
-Saved latest-signal artifacts must contain only filtered shortlist items, not the raw collected feed dump.
-
-Signal lookback should default to 3 days and stay within 1-4 days unless the project intentionally changes the adapter code.
-
-Adapters must not own deep research, planning, writing, review, repair, or publishing decisions.
-
-### 5. Optional Infrastructure Layer
-
-Owns reusable mechanical helpers.
-
-- `scripts/editorial_memory.py`
-- `scripts/phase_artifacts.py`
-
-These scripts are optional. They must not become the product surface.
-
-### 6. Test Layer
-
-Owns structural regression checks.
-
-- `tests/test_runtime_contracts.py`
-
-## Pipeline Rules
-
-- Broad current-signal collection belongs to `content-os-news`.
-- One chosen signal or direct source becomes evidence in `content-os-research`.
-- Thesis, save reason, and slide/content structure belong to `content-os-planner`.
-- Final copy belongs to `content-os-writer`.
-
-Good paths:
-
-- `content-os-news -> user picks one signal -> content-os-research -> content-os-planner -> content-os-writer`
-- `direct source -> content-os-research -> content-os-planner -> content-os-writer`
-
-Bad paths:
-
-- source adapter -> planner
-- raw source -> writer
-- one giant script that collects, researches, plans, writes, reviews, and repairs
-
-## Core Invariants
-
-### Invariant 1: discovery is not evidence
-
-`content-os-news` may produce a shortlist, but that shortlist is not a `ResearchOutput`.
-
-### Invariant 2: adapters do not own public contracts
-
-Leaf scripts may emit raw or normalized source data.
-
-Only the relevant skill converts that data into public handoff contracts.
-
-### Invariant 3: artifact names match v0 contracts
-
-The active v0 artifact names are:
-
-- `SignalShortlist`
-- `ResearchOutput`
-- `PlanOutput`
-- `CopyOutput`
-
-### Invariant 4: capture is not approval
-
-Memory logs must distinguish between:
-
-- capture events: `captured`
-- outcome events: `approved`, `revise`, `rejected`, `published`
-
-Only outcome events should feed approval/rejection pattern summaries.
-
-### Invariant 5: commands are wrappers only
-
-Command files may call these skills, but commands must not carry separate workflow policy or become a runtime harness.
-
-## Change Checklist
-
-When changing the skill skeleton:
-
-1. update `.codex/shared/richesse-editorial-core.md` if behavior changed
-2. update `.codex/shared/phase-contracts.md` if contracts changed
-3. update this architecture document if boundaries changed
-4. update the affected skill files
-5. update tests for the changed invariant
-6. run `python -m unittest -v`
+이 판단은 active profile 문서와 wiki 문서가 맡는다.

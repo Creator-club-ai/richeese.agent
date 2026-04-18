@@ -23,12 +23,13 @@ Read order for any run:
 9. the user request
 10. relevant source material only if the current run needs it
 
-Active v0 skills:
+Active v1 skills:
 
 - `content-os-news`
 - `content-os-research`
 - `content-os-planner`
 - `content-os-writer`
+- `content-os-reviewer`
 
 Compatibility notes:
 

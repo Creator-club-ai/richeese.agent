@@ -1,108 +1,13 @@
-# Content OS Core
+# Richesse Editorial Core
 
-This repository is a skill-bundle-first Content OS.
+이 문서는 intentionally thin하다.
+실제 판단 기준은 active profile 문서가 맡는다.
 
-Version 0 has four public skills only:
+우선 읽을 문서:
 
-- `content-os-news`
-- `content-os-research`
-- `content-os-planner`
-- `content-os-writer`
+- `brands/richesse-club/BRAND_GUIDE.md`
+- `brands/richesse-club/CONTENT_STRATEGY.md`
+- `brands/richesse-club/RUNTIME_PROFILE.md`
 
-The default flow is:
-
-```text
-content-os-news -> content-os-research -> content-os-planner -> content-os-writer
-```
-
-Run one skill at a time unless the user explicitly asks to continue.
-
-## Product Surface
-
-- `content-os-news` scrapes and shortlists current signals from configured sources.
-- `content-os-research` deep-researches one selected signal or direct source.
-- `content-os-planner` turns research into one content plan.
-- `content-os-writer` turns an approved plan into publishable copy.
-
-Not in v0:
-
-- Head runner
-- gate/review desk
-- repair/refine desk
-- designer handoff
-- mandatory memory
-- mandatory artifacts
-- global runtime or CLI
-
-Compatibility aliases may exist in older prompts, but the active surface is the four skills above.
-
-## Output Language
-
-- Editorial outputs should follow the active profile.
-- For `richesse-club`, editorial outputs should be Korean unless the user asks otherwise.
-- Code paths, file names, URLs, proper nouns, and source titles should remain literal.
-
-## Calling Model
-
-- Users may invoke any of the four skills by natural language or command wrapper.
-- Commands are allowed as aliases; they must not become a runtime harness.
-- Do not imply that the full chain must run automatically.
-- Stop at a useful checkpoint and name the next skill.
-
-## Read Order
-
-1. `ACTIVE_PROFILE.md`
-2. the profile documents referenced there
-3. this file
-4. `.codex/shared/runtime-architecture.md`
-5. `.codex/shared/phase-contracts.md`
-6. `.codex/skills/README.md`
-7. the selected `.codex/skills/*/SKILL.md`
-8. the user request
-9. source material only when the current run needs it
-
-## Source Adapters
-
-Keep `scripts/signal_adapters/`.
-
-They are intentionally split by platform because RSS, X, YouTube, Threads, Naver, and other sources fail in different ways.
-
-Adapters own collection and normalization only. They do not own deep research, planning, copywriting, review, repair, or publishing decisions.
-
-## Storage Rules
-
-Storage is optional infrastructure.
-
-Use the active profile's Obsidian vault only when the run benefits from durable state or the user asks for files.
-
-Primary optional locations:
-
-- `raw/` for immutable source snapshots
-- the profile-defined latest-signals folder for discovery outputs
-- `wiki/` for reusable knowledge
-- `wiki/editorial-memory/` for adaptive memory
-- `content/instagram/` for working cards
-
-Do not create extra project-root planning files by default.
-
-## Stop Conditions
-
-Stop when:
-
-- the source is too weak
-- fact risk remains critical after serious research
-- the plan is generic or off-brand
-- the approved plan is missing
-- the user explicitly requests manual mode
-
-Otherwise complete the requested skill and name the next step.
-
-## Sync Rule
-
-When the operating model changes:
-
-1. edit this file first
-2. update `.codex/shared/phase-contracts.md` if the public contracts changed
-3. update `AGENTS.md`
-4. update `.codex/skills/README.md` and affected skill files
-5. mirror the same model into `.claude/*` when Claude should share the change
+이 파일의 역할은 하나다.
+공유 스킬 문서가 브랜드 원칙을 중복 복사하지 않게 막는 것.

@@ -1,6 +1,6 @@
 ---
 name: content-os-writer
-description: Use to turn an approved PlanOutput into publishable or reviewable content copy. This is the Produce layer in the content OS. Use when a brief is approved and the user wants actual draft copy, slide copy, caption copy, or article copy. Produces CopyOutput only.
+description: Use to turn an approved PlanOutput into publishable or reviewable content copy. Produces CopyOutput only.
 ---
 
 # Content OS Writer
@@ -11,8 +11,6 @@ Turn an approved plan into content copy.
 
 Use this after `content-os-planner`, or when the user provides an approved plan.
 
-This skill owns `Produce`, not `Decide`.
-
 ## Read First
 
 1. `ACTIVE_PROFILE.md` if it exists
@@ -20,7 +18,7 @@ This skill owns `Produce`, not `Decide`.
 3. `references/copy-output.md`
 4. `wiki/editorial-memory/review-rubric.md` if it exists
 5. `wiki/editorial-memory/instagram-reference-patterns.md` if it exists
-6. `wiki/editorial/instagram/published/README.md` if it exists
+6. `content/instagram/published/README.md` if it exists
 7. the approved `PlanOutput`
 8. the user request
 
@@ -49,7 +47,6 @@ This skill owns `Produce`, not `Decide`.
 - Keep claims traceable to the research packet.
 - If key facts are missing, mark open questions instead of bluffing.
 - Follow the active profile language and voice.
-- Use the project's published reference corpus as pattern context, not as a source to copy from.
 
 ## Output
 

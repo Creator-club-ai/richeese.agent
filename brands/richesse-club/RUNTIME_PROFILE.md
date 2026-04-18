@@ -17,7 +17,7 @@ This file defines the active profile overlay for the shared editorial runtime.
 - latest_signals_dir: `오늘의 뉴스/`
 - wiki_dir: `wiki/`
 - editorial_memory_dir: `wiki/editorial-memory/`
-- working_cards_dir: `content/instagram/`
+- working_cards_dir: `content/instagram/drafts/`
 
 ## Signal Discovery
 
@@ -25,7 +25,7 @@ This file defines the active profile overlay for the shared editorial runtime.
 - signal_max_items: `20`
 - signal_lookback_days: `3`
 - signal_allowed_categories: `Business, People, Money, Strategy`
-- signal_include_keywords: `startup, founder, business, strategy, ai, product, venture, capital, market, growth, company, brand, money, wealth, 투자, 창업, 스타트업, 사업, 전략, 브랜드, 돈, 부`
+- signal_include_keywords: `startup, founder, business, strategy, ai, product, venture, capital, market, growth, company, brand, money, wealth, 부자, 창업, 스타트업, 사업, 전략, 브랜드, 자산, 투자`
 - signal_exclude_keywords: `sports, entertainment, celebrity, gossip, recipe, travel deal`
 
 ## Public Desks

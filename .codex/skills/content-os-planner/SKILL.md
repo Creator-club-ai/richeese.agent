@@ -1,6 +1,6 @@
 ---
 name: content-os-planner
-description: Use to turn a ResearchOutput or reusable wiki context into one editorial brief when the user wants to plan content, pick a topic, choose an angle, decide a format, or turn research into a brief. This is the Decide layer in the content OS. Keep the skill generic and use the project's own content, wiki, brand, and review documents as the main judgment source. Produces a PlanOutput only.
+description: Use to turn a ResearchOutput into one editorial brief when the user wants to "plan content", "pick an angle", "turn research into a brief", "decide the topic", or "choose the format". Keep the skill generic and use the project's own content, wiki, brand, and review documents as the main judgment source. Produces a PlanOutput only.
 ---
 
 # Content OS Planner
@@ -11,8 +11,6 @@ Turn evidence into one usable editorial brief.
 
 Use this after `content-os-research`, or when the user provides an already-approved evidence packet.
 
-This skill owns `Decide`, not `Produce`.
-
 ## Read First
 
 1. `ACTIVE_PROFILE.md` if it exists
@@ -20,13 +18,11 @@ This skill owns `Decide`, not `Produce`.
 3. `references/plan-output.md`
 4. `content-os-schema.md` if it exists
 5. `wiki/wiki-schema.md` if it exists
-6. `wiki/editorial/briefs/editorial-brief-template.md` if it exists
+6. `content/ideas/editorial-brief-template.md` if it exists
 7. `wiki/dossiers/README.md` if it exists
 8. `wiki/editorial-memory/review-rubric.md` if it exists
-9. `wiki/angles/README.md` if it exists
-10. `wiki/editorial-memory/approval-signals.md` if it exists
-11. the `ResearchOutput` or the already-selected wiki context
-12. the user request
+9. the `ResearchOutput`
+10. the user request
 
 ## Owns
 
@@ -65,7 +61,6 @@ This skill owns `Decide`, not `Produce`.
 ## Rules
 
 - Do not hand raw source into planning. Require research first.
-- If the user is explicitly reusing existing wiki context, start from the relevant compiled notes instead of re-running research.
 - Do not jump from research straight into draft logic.
 - Start with the bigger story, not the headline.
 - Extract topic candidates before angle candidates.

@@ -1,109 +1,102 @@
 # Phase Contracts
 
-These are the public handoff contracts for the four-skill Content OS.
+각 phase가 **무슨 산출물을 남기고 어디에 붙는지**만 정의한다.
+브랜드 판단 기준은 active profile 문서를 따른다.
 
-The contracts stabilize handoffs. They do not require JSON or file writing unless the user asks for an artifact.
+## 1. News
 
-## SignalShortlist
+- main output: `오늘의 뉴스/YYYY-MM-DD.md`
+- machine artifact: `오늘의 뉴스/YYYY-MM-DD.json`
+- role: shortlist only
+- next step: selected signal만 `content-os-research`
 
-Owned by `content-os-news`.
+## 2. Research
 
-Purpose:
+- primary job: source normalization
+- side effects:
+  - 필요 source는 `raw/`에 보관
+  - reusable context는 `wiki/`에 업데이트
+- optional machine artifact:
+  - `wiki/editorial-memory/head-artifacts/<run-id>/research-output.md`
+- next step: `content-os-planner`
 
-- turn configured source scanning into a small set of timely candidates
+`ResearchOutput` should include:
 
-Required fields:
+- topic
+- what happened
+- usable points
+- key quotes (optional)
+- recurring themes (optional)
+- direction cues
+- risks or gaps
+- source strength
+- fact risk
+- recommendation
 
-- `Run Date`
-- `Sources Checked`
-- `Candidates`
-- `Removed As Duplicate`
-- `Shortlist`
-- `Why These`
-- `Risks or Gaps`
-- `Recommendation`
+## 3. Plan
 
-Recommendation values:
+- output path: `content/ideas/<slug>.md`
+- role: editorial brief only
+- next step: `content-os-writer`
 
-- `send to content-os-research`
-- `skip`
+`PlanOutput` should include:
 
-## ResearchOutput
+- working title
+- selected topic
+- topic candidates
+- core fact
+- key insights
+- selected angle
+- angle candidates
+- backup angles
+- tension
+- save reason
+- selected format
+- outline
+- blockers
 
-Owned by `content-os-research`.
+## 4. Draft
 
-Purpose:
+- output path:
+  - Instagram: `content/instagram/drafts/<slug>.md`
+  - Magazine: `content/magazine/drafts/<slug>.md`
+- role: publishable draft
+- next step: `content-os-reviewer`
 
-- turn one chosen signal or one direct source into usable evidence
+`CopyOutput` should include:
 
-Required fields:
+- working title
+- headline
+- body / slide copy
+- claims
+- open questions
+- confidence note
 
-- `Topic`
-- `Research Depth`
-- `Source Inventory`
-- `What Happened`
-- `Usable Points`
-- `Direction Cues`
-- `Risks or Gaps`
-- `Source Strength`
-- `Fact Risk`
-- `Recommendation`
+## 5. Review
 
-Recommendation values:
+- optional machine artifact:
+  - `wiki/editorial-memory/head-artifacts/<run-id>/review-output.md`
+- role: gate only
+- verdicts:
+  - `pass`
+  - `fix`
+  - `revise`
 
-- `send to content-os-planner`
-- `stop`
+`ReviewOutput` should include:
 
-## PlanOutput
+- verdict
+- axes coherence
+- tone
+- anti-richesse check
+- source-backed check
+- value focus
+- next step
 
-Owned by `content-os-planner`.
+When verdict is:
 
-Purpose:
-
-- turn evidence into one content direction and slide/content plan
-
-Required fields:
-
-- `Working Title`
-- `Category`
-- `Format`
-- `User Value`
-- `Depth`
-- `Timing`
-- `Core Thesis`
-- `Save Reason`
-- `Slide Outline`
-- `Claims To Preserve`
-- `Risks or Gaps`
-- `Plan Status`
-
-Plan status values:
-
-- `approved for content-os-writer`
-- `needs more research`
-- `stop`
-
-## CopyOutput
-
-Owned by `content-os-writer`.
-
-Purpose:
-
-- turn an approved plan into publishable copy
-
-Required fields:
-
-- `Working Title`
-- `Cover Headline`
-- `Slide Copy`
-- `Caption`
-- `Claims`
-- `Open Questions`
-- `Confidence`
-- `Copy Status`
-
-Copy status values:
-
-- `publishable`
-- `needs user edit`
-- `blocked`
+- `pass`
+  - ask before copying draft into matching `published/` folder
+- `fix`
+  - provide concrete line edits
+- `revise`
+  - send back to the correct prior phase
