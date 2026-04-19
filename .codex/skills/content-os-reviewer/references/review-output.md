@@ -32,4 +32,4 @@ Next Step values:
 Boundary:
 
 - Reviewer does not rewrite the draft.
-- Reviewer does not silently publish. Always ask the user before copying into the matching `content/.../published/` folder.
+- Reviewer does not silently promote to `04 Published/`. Always ask the user before copying.

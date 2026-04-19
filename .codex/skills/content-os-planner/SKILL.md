@@ -1,9 +1,14 @@
 ---
 name: content-os-planner
-description: Use to turn a ResearchOutput into one editorial brief when the user wants to "plan content", "pick an angle", "turn research into a brief", "decide the topic", or "choose the format". Keep the skill generic and use the project's own content, wiki, brand, and review documents as the main judgment source. Produces a PlanOutput only.
+description: Use to turn a ResearchOutput or approved evidence packet into one editorial brief. Produces a PlanOutput only.
 ---
 
 # Content OS Planner
+
+## Master Source
+
+This skill follows the repository's live operating docs.
+Use the project's own wiki, brand, and review documents as the decision standard.
 
 ## Job
 
@@ -13,15 +18,15 @@ Use this after `content-os-research`, or when the user provides an already-appro
 
 ## Read First
 
-1. `ACTIVE_PROFILE.md` if it exists
-2. the profile documents referenced there
-3. `references/plan-output.md`
-4. `content-os-schema.md` if it exists
-5. `wiki/wiki-schema.md` if it exists
-6. `content/ideas/editorial-brief-template.md` if it exists
-7. `wiki/dossiers/README.md` if it exists
-8. `wiki/editorial-memory/review-rubric.md` if it exists
-9. the `ResearchOutput`
+1. `AGENTS.md`
+2. `content-os-schema.md`
+3. `wiki/concepts/content-type.md`
+4. `wiki/editorial-memory/richesse-house-voice.md`
+5. `wiki/editorial-memory/instagram-format-playbooks.md`
+6. `wiki/editorial-memory/review-rubric.md`
+7. `wiki/editorial/briefs/editorial-brief-template.md`
+8. the relevant wiki notes already connected to the topic
+9. the `ResearchOutput` or evidence packet
 10. the user request
 
 ## Owns
@@ -32,19 +37,21 @@ Use this after `content-os-research`, or when the user provides an already-appro
 - key insights
 - angle candidates
 - one selected angle
+- content type options
+- one selected `content_type`
 - backup angles
 - format options
 - one selected format
-- core thesis
-- save reason
 - tension
-- slide or section outline
+- user value
+- readability note
+- outline
 - blockers
 
 ## Does Not Own
 
 - source gathering
-- deep source validation beyond the provided research packet
+- deep source validation beyond the provided evidence
 - final copywriting
 - review and repair
 
@@ -55,32 +62,38 @@ Use this after `content-os-research`, or when the user provides an already-appro
 3. Extract key insights.
 4. Generate angle candidates.
 5. Select one primary angle and keep backups when useful.
-6. Choose the format that best fits the angle.
-7. Turn the decision into one editorial brief.
+6. Choose the `content_type` that best translates the angle.
+7. Choose the format that best translates the angle and `content_type`.
+8. Turn the decision into one editorial brief in `wiki/editorial/briefs/`.
 
 ## Rules
 
-- Do not hand raw source into planning. Require research first.
-- Do not jump from research straight into draft logic.
-- Start with the bigger story, not the headline.
-- Extract topic candidates before angle candidates.
-- Keep multiple usable insights alive before choosing one primary direction.
-- Keep backup angles only when they are still genuinely usable.
-- Use the project's own wiki, brand, and review documents as the main decision standard.
-- If the input is quotes, interviews, or multiple examples, synthesize the shared idea before picking the angle.
+- Do not hand raw source into planning. Research first.
+- Follow the current order:
+  - `topic -> insight -> angle -> content_type -> format`
+- `content_type` is one of:
+  - `news`
+  - `list`
+  - `organize`
+  - `reported`
+  - `essay`
+- Use the active docs, not old archived docs, as the main standard.
+- Keep backup angles alive only when they are still genuinely usable.
+- Stop if the evidence packet is too weak.
 - Treat the output as an editorial brief, not a generic outline.
-- Stop if the research packet is too weak.
+- Keep the brief concrete enough that a writer can draft immediately.
 
 ## Required Questions
 
-Before finalizing the brief, answer these questions:
+Before finalizing the brief, answer these:
 
 - What is the real topic here?
-- What are the strongest insights that came out of the research?
-- What tension or contradiction makes this interesting?
+- What are the strongest insights?
+- What tension makes this worth reading?
 - Why would someone save this?
+- What `content_type` best translates this angle?
 - What format best translates this angle?
-- What 1-2 viable backup angles should be kept alive?
+- What 1-2 backup angles are still alive?
 
 ## Quality Bar
 
@@ -88,19 +101,11 @@ The brief is not ready if any of these are missing:
 
 - a clear selected topic
 - a clear selected angle
+- a clear selected `content_type`
 - a real save reason
 - a visible tension
 - an outline that matches the chosen format
 
-## Output Discipline
-
-- Prefer a planning brief that a writer can immediately execute.
-- Keep the brief concrete, not theoretical.
-- Preserve good alternate directions as backups instead of deleting them.
-- Make the `Outline` reflect the chosen format instead of generating a generic section list.
-
 ## Output
 
 Return `PlanOutput`.
-
-Next step is usually `content-os-writer`.

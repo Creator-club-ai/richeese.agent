@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wikify"
+  short_description: "Compile sources into updated wiki assets."
+  default_prompt: "Use $wikify to turn this source into updated wiki notes and log entries."

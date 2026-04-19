@@ -5,6 +5,10 @@ description: Use to deep-research one selected signal, URL, transcript, memo, or
 
 # Content OS Research
 
+## Master Source
+
+This skill follows the repository's live operating docs and current wiki structure.
+
 ## Job
 
 Turn one selected signal or direct source into usable evidence.
@@ -13,14 +17,12 @@ Use this after `content-os-news`, or directly when the user provides a URL, tran
 
 ## Read First
 
-1. `ACTIVE_PROFILE.md` if it exists
-2. the profile documents referenced there
-3. `references/research-output.md`
-4. `content-os-schema.md` if it exists
-5. `wiki/wiki-schema.md` if it exists
-6. a related dossier, brand, people, concept, or signal note if it already exists
-7. the selected signal or source material
-8. the user request
+1. `AGENTS.md`
+2. `content-os-schema.md`
+3. `wiki/wiki-schema.md`
+4. the most relevant existing wiki note(s)
+5. the selected signal or source material
+6. the user request
 
 ## Owns
 
@@ -30,13 +32,14 @@ Use this after `content-os-news`, or directly when the user provides a URL, tran
 - fact-risk judgment
 - usable points
 - direction cues
+- likely wiki routing suggestions
 
 ## Does Not Own
 
 - choosing the final content angle
 - writing copy
 - reviewing copy
-- repairing drafts
+- directly turning research into draft copy
 
 ## Rules
 
@@ -44,12 +47,13 @@ Use this after `content-os-news`, or directly when the user provides a URL, tran
 - If the source is too weak, stop.
 - Keep claims traceable to the source.
 - Do not invent facts to fill gaps.
-- Use the project's own wiki structure to suggest where this evidence belongs.
+- Use the project's current wiki structure to suggest where the evidence belongs.
 - If quotes, recurring themes, or reusable observations stand out, include them.
-- Recommend the next step clearly.
+- Recommend the next step clearly:
+  - planner
+  - wikify
+  - stop
 
 ## Output
 
 Return `ResearchOutput`.
-
-Next step is usually `content-os-planner`.
