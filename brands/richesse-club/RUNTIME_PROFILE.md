@@ -1,4 +1,4 @@
-# richesse.club Runtime Profile
+﻿# richesse.club Runtime Profile
 
 This file defines the active profile overlay for the shared editorial runtime.
 
@@ -14,10 +14,10 @@ This file defines the active profile overlay for the shared editorial runtime.
 - vault_env: `RICHESSE_VAULT_PATH`
 - default_vault_name: `richesse-content-os`
 - raw_dir: `raw/`
-- latest_signals_dir: `오늘의 뉴스/`
+- latest_signals_dir: `wiki/capture/today/`
 - wiki_dir: `wiki/`
 - editorial_memory_dir: `wiki/editorial-memory/`
-- working_cards_dir: `content/instagram/drafts/`
+- working_cards_dir: `wiki/editorial/instagram/drafts/`
 
 ## Signal Discovery
 

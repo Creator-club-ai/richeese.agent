@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 Resolve the active profile and storage overlay for the editorial runtime.
 """
@@ -67,10 +67,10 @@ def load_runtime_profile(repo_root: Path = REPO_ROOT) -> RuntimeProfile:
     vault_path = Path(env_vault) if env_vault else _default_vault_path(default_vault_name)
 
     raw_dir = vault_path / runtime_values.get("raw_dir", "raw/")
-    latest_signals_dir = vault_path / runtime_values.get("latest_signals_dir", "오늘의 뉴스/")
+    latest_signals_dir = vault_path / runtime_values.get("latest_signals_dir", "wiki/capture/today/")
     wiki_dir = vault_path / runtime_values.get("wiki_dir", "wiki/")
     editorial_memory_dir = vault_path / runtime_values.get("editorial_memory_dir", "wiki/editorial-memory/")
-    working_cards_dir = vault_path / runtime_values.get("working_cards_dir", "content/instagram/drafts/")
+    working_cards_dir = vault_path / runtime_values.get("working_cards_dir", "wiki/editorial/instagram/drafts/")
     head_artifacts_dir = editorial_memory_dir / "head-artifacts"
 
     return RuntimeProfile(
