@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import json
 import re
@@ -31,7 +31,7 @@ TRACKING_QUERY_PREFIXES = ("utm_",)
 TRACKING_QUERY_KEYS = {"fbclid", "gclid", "igshid", "mc_cid", "mc_eid", "ref", "ref_src", "source"}
 SOCIAL_PREFIX_RE = re.compile(r"^(rt\s+@?\w+:\s+|via\s+@?\w+:\s+)", re.IGNORECASE)
 URL_SUFFIX_RE = re.compile(r"https?://\S+$", re.IGNORECASE)
-SOURCE_SUFFIX_RE = re.compile(r"\s+[-|·]\s+[A-Za-z0-9&.,'\- ]+$")
+SOURCE_SUFFIX_RE = re.compile(r"\s+[-|쨌]\s+[A-Za-z0-9&.,'\- ]+$")
 
 TITLE_STOPWORDS = {
     "the",
@@ -82,6 +82,15 @@ SOURCE_TYPE_ORDER = {
     "youtube_ytdlp": 3,
     "youtube_search": 4,
 }
+
+
+DATE_PREFIX_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})\b")
+DATE_ANYWHERE_RE = re.compile(r"\b(\d{4}-\d{2}-\d{2})\b")
+KOREAN_DATE_RE = re.compile(r"\b(\d{4})\.(\d{1,2})\.(\d{1,2})\b")
+RELATIVE_HOURS_RE = re.compile(r"\b(\d+)\s*(hour|hours|hr|hrs)\s+ago\b", re.IGNORECASE)
+RELATIVE_DAYS_RE = re.compile(r"\b(\d+)\s*(day|days)\s+ago\b", re.IGNORECASE)
+TODAY_WORD_RE = re.compile(r"\b(today|just now)\b", re.IGNORECASE)
+YESTERDAY_WORD_RE = re.compile(r"\b(yesterday)\b", re.IGNORECASE)
 
 
 def strip_html(text: str | None) -> str:
@@ -173,13 +182,12 @@ def article_rank(article: SignalArticle) -> tuple[int, int, int, int]:
 
 
 def parse_date(entry: object) -> datetime | None:
-    for attr in ("published_parsed", "updated_parsed"):
-        value = getattr(entry, attr, None)
-        if value:
-            try:
-                return datetime(*value[:6], tzinfo=timezone.utc)
-            except Exception:
-                continue
+    published = getattr(entry, "published_parsed", None)
+    if published:
+        try:
+            return datetime(*published[:6], tzinfo=timezone.utc)
+        except Exception:
+            return None
     return None
 
 
@@ -187,9 +195,50 @@ def parse_datetime_string(value: str) -> datetime | None:
     if not value:
         return None
     try:
-        return parsedate_to_datetime(value)
+        parsed = parsedate_to_datetime(value)
     except Exception:
         return None
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def parse_jina_date(text: str, reference: datetime | None = None) -> datetime | None:
+    if not text:
+        return None
+
+    working = text.strip()
+    if reference is None:
+        reference = datetime.now(timezone.utc)
+
+    match = DATE_PREFIX_RE.search(working) or DATE_ANYWHERE_RE.search(working)
+    if match:
+        try:
+            return datetime.strptime(match.group(1), "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        except ValueError:
+            pass
+
+    korean = KOREAN_DATE_RE.search(working)
+    if korean:
+        try:
+            year, month, day = korean.groups()
+            return datetime(int(year), int(month), int(day), tzinfo=timezone.utc)
+        except ValueError:
+            pass
+
+    hours = RELATIVE_HOURS_RE.search(working)
+    if hours:
+        return reference - timedelta(hours=int(hours.group(1)))
+
+    days = RELATIVE_DAYS_RE.search(working)
+    if days:
+        return reference - timedelta(days=int(days.group(1)))
+
+    if TODAY_WORD_RE.search(working):
+        return reference
+    if YESTERDAY_WORD_RE.search(working):
+        return reference - timedelta(days=1)
+    return None
 
 
 def fetch_jina_content(target_url: str, label: str) -> str:
@@ -203,7 +252,7 @@ def fetch_jina_content(target_url: str, label: str) -> str:
             print(f"  - {label}: Jina HTTP {response.status_code}")
             return ""
     except Exception as exc:
-        print(f"  - {label}: 요청 실패 ({exc})")
+        print(f"  - {label}: request failed ({exc})")
         return ""
 
     try:
@@ -213,7 +262,7 @@ def fetch_jina_content(target_url: str, label: str) -> str:
         content = response.text
 
     if not content:
-        print(f"  - {label}: 내용 없음")
+        print(f"  - {label}: no content")
         return ""
     return content
 

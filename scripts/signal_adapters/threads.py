@@ -1,9 +1,10 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import re
+from datetime import datetime, timezone
 
-from .common import MAX_PER_FEED, SignalArticle, SourceConfig, fetch_jina_content, is_relevant
-from .runtime import run_date
+from .common import MAX_PER_FEED, SignalArticle, SourceConfig, fetch_jina_content, is_relevant, parse_jina_date
+from .runtime import cutoff_utc
 
 
 def fetch_threads(config: SourceConfig) -> list[SignalArticle]:
@@ -15,14 +16,23 @@ def fetch_threads(config: SourceConfig) -> list[SignalArticle]:
         return articles
 
     blocks = re.split(r"\n{2,}", content.strip())
-    today_str = run_date()
+    cutoff = cutoff_utc()
+    reference = datetime.now(timezone.utc)
     raw_count = 0
+    missing_dates = 0
     for block in blocks:
         if len(articles) >= MAX_PER_FEED:
             break
 
         text = block.strip()
         if len(text) < 20:
+            continue
+
+        published_at = parse_jina_date(text, reference)
+        if not published_at:
+            missing_dates += 1
+            continue
+        if published_at < cutoff:
             continue
 
         raw_count += 1
@@ -39,13 +49,17 @@ def fetch_threads(config: SourceConfig) -> list[SignalArticle]:
                 "category": config["category"],
                 "priority": config["priority"],
                 "type": "threads_jina",
-                "published": today_str,
+                "published": published_at.strftime("%Y-%m-%d"),
                 "summary": summary,
             }
         )
 
     filtered_out = raw_count - len(articles)
-    suffix = f" (제외 {filtered_out}개)" if filtered_out else ""
-    print(f"  - Threads/@{handle}: {len(articles)}개 수집{suffix}")
+    extras: list[str] = []
+    if filtered_out:
+        extras.append(f"filtered out {filtered_out}")
+    if missing_dates:
+        extras.append(f"missing date {missing_dates}")
+    suffix = f" ({', '.join(extras)})" if extras else ""
+    print(f"  - Threads/@{handle}: kept {len(articles)}{suffix}")
     return articles
-

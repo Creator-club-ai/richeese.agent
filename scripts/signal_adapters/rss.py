@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import feedparser
 
@@ -20,14 +20,15 @@ def fetch_rss(config: SourceConfig, feed_type: str = "rss") -> list[SignalArticl
     try:
         parsed = feedparser.parse(str(config["url"]))
     except Exception as exc:
-        print(f"  - {config['name']}: 피드 파싱 실패 ({exc})")
+        print(f"  - {config['name']}: feed parse failed ({exc})")
         return articles
 
     if not parsed.entries:
-        print(f"  - {config['name']}: 항목 없음")
+        print(f"  - {config['name']}: no entries")
         return articles
 
     raw_count = 0
+    missing_dates = 0
     for entry in parsed.entries:
         if len(articles) >= MAX_PER_FEED:
             break
@@ -37,7 +38,10 @@ def fetch_rss(config: SourceConfig, feed_type: str = "rss") -> list[SignalArticl
             continue
 
         published_at = parse_date(entry)
-        if published_at and published_at < cutoff:
+        if not published_at:
+            missing_dates += 1
+            continue
+        if published_at < cutoff:
             continue
 
         title = strip_html(entry.get("title", ""))
@@ -55,13 +59,17 @@ def fetch_rss(config: SourceConfig, feed_type: str = "rss") -> list[SignalArticl
                 "category": config["category"],
                 "priority": config["priority"],
                 "type": feed_type,
-                "published": published_at.strftime("%Y-%m-%d") if published_at else "",
+                "published": published_at.strftime("%Y-%m-%d"),
                 "summary": summary,
             }
         )
 
     filtered_out = raw_count - len(articles)
-    suffix = f" (제외 {filtered_out}개)" if filtered_out else ""
-    print(f"  - {config['name']}: {len(articles)}개 수집{suffix}")
+    extras: list[str] = []
+    if filtered_out:
+        extras.append(f"filtered out {filtered_out}")
+    if missing_dates:
+        extras.append(f"missing date {missing_dates}")
+    suffix = f" ({', '.join(extras)})" if extras else ""
+    print(f"  - {config['name']}: kept {len(articles)}{suffix}")
     return articles
-

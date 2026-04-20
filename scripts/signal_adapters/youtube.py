@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from datetime import datetime, timezone
 
@@ -18,6 +18,7 @@ def fetch_youtube_channel(config: SourceConfig) -> list[SignalArticle]:
         return articles
 
     raw_count = 0
+    missing_dates = 0
     for item in items:
         if len(articles) >= MAX_PER_FEED:
             break
@@ -34,9 +35,12 @@ def fetch_youtube_channel(config: SourceConfig) -> list[SignalArticle]:
             try:
                 published_at = datetime.strptime(upload_date_str, "%Y%m%d").replace(tzinfo=timezone.utc)
             except ValueError:
-                pass
+                published_at = None
 
-        if published_at and published_at < cutoff:
+        if not published_at:
+            missing_dates += 1
+            continue
+        if published_at < cutoff:
             continue
 
         raw_count += 1
@@ -54,13 +58,18 @@ def fetch_youtube_channel(config: SourceConfig) -> list[SignalArticle]:
                 "category": config["category"],
                 "priority": config["priority"],
                 "type": "youtube_ytdlp",
-                "published": published_at.strftime("%Y-%m-%d") if published_at else "",
+                "published": published_at.strftime("%Y-%m-%d"),
                 "summary": summary[:300],
             }
         )
 
     filtered_out = raw_count - len(articles)
-    suffix = f" (filtered out {filtered_out})" if filtered_out else ""
+    extras: list[str] = []
+    if filtered_out:
+        extras.append(f"filtered out {filtered_out}")
+    if missing_dates:
+        extras.append(f"missing date {missing_dates}")
+    suffix = f" ({', '.join(extras)})" if extras else ""
     print(f"  - YT/{config['name']}: kept {len(articles)}{suffix}")
     return articles
 
@@ -133,4 +142,3 @@ def fetch_youtube_search(config: SourceConfig) -> list[SignalArticle]:
     suffix = f" ({', '.join(extra)})" if extra else ""
     print(f"  - YT/search:{query[:30]}: kept {len(articles)}{suffix}")
     return articles
-
