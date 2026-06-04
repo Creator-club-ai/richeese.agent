@@ -31,13 +31,12 @@ Active v1 skills:
 
 Skills install to `~/.claude/skills/` via `scripts/install_skills.sh` so they are callable from the Obsidian vault (the workspace).
 
-Compatibility notes:
+Runtime notes:
 
-- `AGENTS.md` is the Codex-style wrapper.
-- `CLAUDE.md` is the Claude-style wrapper.
-- Claude reads `.claude/*`.
-- Codex reads `.codex/*`.
-- Keep both runtime folders synchronized when changing shared policy or skills.
+- This repo is Claude-only. Claude reads `.claude/*`; `CLAUDE.md` is the single wrapper.
+- The Codex runtime (`.codex/*`, `AGENTS.md`) has been removed — do not reintroduce it.
+- The live editorial system runs in the `richesse-obsidian` vault. This repo is the skill
+  source: skills install from here into `~/.claude/skills/` via `scripts/install_skills.sh`.
 - Commands may exist as aliases, but they must stay thin wrappers.
 
 Do not duplicate substantive workflow policy here.
