@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Copy content-os-* skills from this project into the personal Claude and Codex
-# skill directories so they are callable from any working directory.
+# Copy content-os-* skills from this project into the personal Claude skill
+# directory so they are callable from any working directory.
 #
 # Re-run this whenever a SKILL.md or references/ file changes.
 
@@ -33,23 +33,7 @@ install_set() {
   done
 }
 
-purge_legacy_codex_dupes() {
-  local legacy_dir="$HOME/.codex/skills"
-
-  if [[ ! -d "$legacy_dir" ]]; then
-    return
-  fi
-
-  for s in "${SKILLS[@]}"; do
-    rm -rf "$legacy_dir/$s"
-    echo "removed legacy duplicate $s from $legacy_dir"
-  done
-}
-
 install_set "$ROOT_DIR/.claude/skills" "$HOME/.claude/skills"
-install_set "$ROOT_DIR/.codex/skills" "$HOME/.agents/skills"
-purge_legacy_codex_dupes
 
 echo "---"
 echo "installed claude skills to $HOME/.claude/skills"
-echo "installed codex skills to $HOME/.agents/skills"
